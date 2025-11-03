@@ -5,7 +5,11 @@ import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Profile from "./pages/PublicProfile/Profile";
+import { useEffect } from "react";
+import { useAppDispatch } from "./redux_toolkit/store/hooks";
+import { ThemeActions } from "./redux_toolkit/reducers/themeReducer";
 function App() {
+  const dispatch = useAppDispatch();
   const router = createBrowserRouter([
     {
       path: "",
@@ -22,6 +26,13 @@ function App() {
       ],
     },
   ]);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("blogsEra_theme") || "light";
+    if (savedTheme === "dark") {
+      dispatch(ThemeActions.setTheme(savedTheme));
+    }
+  }, []);
   return (
     <>
       <RouterProvider router={router} />
