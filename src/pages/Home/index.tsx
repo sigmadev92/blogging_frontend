@@ -1,7 +1,9 @@
+import { images } from "../../functions/images";
+
 const Home = () => {
   return (
-    <section>
-      <h2>Home</h2>
+    <section className="relative">
+      <img src={images["bgHome"].src} className="h-screen w-full" />
     </section>
   );
 };

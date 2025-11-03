@@ -15,17 +15,20 @@ const LoggedIn = () => {
       <li>
         <NavLink to={"/dashboard"}>Dashboard</NavLink>
       </li>
-      <li className="relative">
+      <li className="relative flex items-center">
         <CustomButton onClick={() => setIsClicked((prev) => !prev)}>
           <img
             alt="user-image"
             src={user!.profilePic || _default.profilePic}
-            className="rounded-full"
+            className="rounded-full w-6 h-6"
           />
         </CustomButton>
         {isClicked && (
-          <div className="absolute top-2 right-0 bg-white text-black dark:bg-gray-500 dark:text-white ">
-            <CustomButton onClick={() => {}} className="hover:bg-amber-500">
+          <div className="absolute top-8 rounded-md right-0 bg-white text-black dark:bg-gray-500 dark:text-white text-[12px] p-4">
+            <CustomButton
+              onClick={() => {}}
+              className="hover:bg-amber-500 px-3 py-1 rounded-sm"
+            >
               Logout
             </CustomButton>
           </div>

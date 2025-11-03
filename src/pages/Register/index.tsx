@@ -1,6 +1,7 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import TextInput from "../../components/ui/TextInput";
 import { images } from "../../functions/images";
+import toast from "react-hot-toast";
 import {
   BookOpenCheck,
   CircleCheckBig,
@@ -14,8 +15,11 @@ import {
   Users,
 } from "lucide-react";
 import CustomButton from "../../components/ui/Button";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./register.module.css";
+import { usersURL } from "../../functions/backend";
+import { useAppDispatch } from "../../redux_toolkit/store/hooks";
+import { LoaderActions } from "../../redux_toolkit/reducers/loaderReducer";
 const Register = () => {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -23,12 +27,61 @@ const Register = () => {
     password: "",
   });
   const { fullName, email, password } = formData;
-
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    console.log(formData);
+
+    const names = fullName.split(" ");
+    if (names.length < 2 || names.length > 3) {
+      toast.error("Invalid Full Name");
+      return;
+    }
+    const fn = names[0];
+    let mn = "",
+      ln = "";
+
+    if (names.length === 2) {
+      ln = names[1];
+    } else {
+      mn = names[1];
+      ln = names[2];
+    }
+    dispatch(LoaderActions.startLoader("Regstering in"));
+
+    try {
+      const response = await fetch(`${usersURL}/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: {
+            firstName: fn,
+            middleName: mn,
+            lastName: ln,
+          },
+          email,
+          password,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        dispatch(LoaderActions.stopLoader());
+        toast.success("Registered successfully");
+        navigate("/login");
+      } else {
+        dispatch(LoaderActions.stopLoader());
+        toast.error(data.message);
+      }
+    } catch (error: unknown) {
+      console.log(error);
+      dispatch(LoaderActions.stopLoader());
+      toast.error((error as Error).message);
+    }
   }
   return (
     <section className="relative">

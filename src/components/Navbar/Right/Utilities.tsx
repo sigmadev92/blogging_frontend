@@ -13,9 +13,9 @@ const Utilities = () => {
     <div className="flex gap-2 items-center">
       <a
         href="https://github.com/sigmadev92/blogging_frontend"
-        className="p-1 rounded-2xl bg-gray-400 "
+        className="p-1 rounded-2xl "
       >
-        <Github color="white" size={14} />
+        <Github color={theme === "dark" ? "white" : "black"} size={14} />
       </a>
       <CustomButton
         onClick={() => {

@@ -3,19 +3,53 @@ import TextInput from "../../components/ui/TextInput";
 import { images } from "../../functions/images";
 import { LockIcon, Mail } from "lucide-react";
 import CustomButton from "../../components/ui/Button";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAppDispatch } from "../../redux_toolkit/store/hooks";
+import { UserActions } from "../../redux_toolkit/reducers/userReducer";
+import { LoaderActions } from "../../redux_toolkit/reducers/loaderReducer";
+import { usersURL } from "../../functions/backend";
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const { email, password } = formData;
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+
+    if (!email || !password) {
+      toast.error("Please Enter Valid Email and Password");
+      return;
+    }
+    dispatch(LoaderActions.startLoader("Logging in"));
+    try {
+      const response = await fetch(`${usersURL}/signin`, {
+        method: "POST",
+        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      if (data.success) {
+        dispatch(LoaderActions.stopLoader());
+        dispatch(UserActions.setUser(data.user));
+        toast.success("user Added Successfully");
+        navigate("/");
+      } else {
+        dispatch(LoaderActions.stopLoader());
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong");
+      dispatch(LoaderActions.stopLoader());
+    }
   }
   return (
     <section className="relative">

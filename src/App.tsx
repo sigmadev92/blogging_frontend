@@ -10,6 +10,7 @@ import { useAppDispatch } from "./redux_toolkit/store/hooks";
 import { ThemeActions } from "./redux_toolkit/reducers/themeReducer";
 import Credits from "./pages/Credits";
 import ForgotPassword from "./pages/ForgotPassword";
+import { Toaster } from "react-hot-toast";
 function App() {
   const dispatch = useAppDispatch();
   const router = createBrowserRouter([
@@ -39,6 +40,7 @@ function App() {
   }, []);
   return (
     <>
+      <Toaster />
       <RouterProvider router={router} />
     </>
   );
