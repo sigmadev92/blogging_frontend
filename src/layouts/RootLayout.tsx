@@ -6,6 +6,7 @@ import Loader from "../components/Loader";
 
 const RootLayout = () => {
   const { loader } = useAppSelector((state) => state.loader);
+
   return (
     <div className="root-layout">
       <Navbar />

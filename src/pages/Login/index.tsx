@@ -32,6 +32,7 @@ const Login = () => {
     try {
       const response = await fetch(`${usersURL}/signin`, {
         method: "POST",
+        credentials: "include",
         body: JSON.stringify(formData),
         headers: { "Content-Type": "application/json" },
       });

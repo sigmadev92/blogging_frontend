@@ -11,8 +11,13 @@ import { ThemeActions } from "./redux_toolkit/reducers/themeReducer";
 import Credits from "./pages/Credits";
 import ForgotPassword from "./pages/ForgotPassword";
 import { Toaster } from "react-hot-toast";
+import { fetchLoginStatus } from "./redux_toolkit/reducers/userReducer";
+import ProtectSensitive from "./components/ControlRoutes/ProtectSensitive";
+import PreventExposed from "./components/ControlRoutes/PreventExposed";
 function App() {
   const dispatch = useAppDispatch();
+
+  // const { opened } = useAppSelector((state) => state.dropdown);
   const router = createBrowserRouter([
     {
       path: "",
@@ -22,12 +27,24 @@ function App() {
           index: true,
           element: <Home />,
         },
-        { path: "dashboard", element: <Dashboard /> },
-        { path: "register", element: <Register /> },
-        { path: "login", element: <Login /> },
-        { path: "profile/:userId", element: <Profile /> },
+        {
+          path: "dashboard",
+          element: <ProtectSensitive children={<Dashboard />} />,
+        },
+        {
+          path: "register",
+          element: <PreventExposed children={<Register />} />,
+        },
+        { path: "login", element: <PreventExposed children={<Login />} /> },
+        {
+          path: "profile/:userId",
+          element: <ProtectSensitive children={<Profile />} />,
+        },
         { path: "credits", element: <Credits /> },
-        { path: "/password/recover", element: <ForgotPassword /> },
+        {
+          path: "/password/recover",
+          element: <PreventExposed children={<ForgotPassword />} />,
+        },
       ],
     },
   ]);
@@ -37,6 +54,7 @@ function App() {
     if (savedTheme === "dark") {
       dispatch(ThemeActions.setTheme(savedTheme));
     }
+    dispatch(fetchLoginStatus());
   }, []);
   return (
     <>
