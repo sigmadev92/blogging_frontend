@@ -1,6 +1,6 @@
 const Navbar = () => {
   return (
-    <header>
+    <header className="bg-black text-white">
       <div>
         <h1>BlogsEra</h1>
       </div>
