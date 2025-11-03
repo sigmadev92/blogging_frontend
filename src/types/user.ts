@@ -10,11 +10,16 @@ export enum Gender {
   O = "O",
   NS = "NS", // Not Specified
 }
+export enum UserRole {
+  reader = "reader",
+  author = "author",
+}
 export type User = {
   _id: string;
   email: string;
   password?: string;
   fullName: FullName;
   gender: Gender;
+  role: UserRole;
   profilePic: string | null;
 };

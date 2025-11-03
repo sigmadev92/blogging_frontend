@@ -1,7 +1,15 @@
+import { dbLefttabs } from "../../functions/constants/dashboard";
+import { useState } from "react";
+
+import Left from "./Left";
+import Right from "./Right";
+
 const Dashboard = () => {
+  const [tab, setTab] = useState<string>(dbLefttabs[0].label);
   return (
-    <section>
-      <h2>Dashboard</h2>
+    <section className="px-2 flex gap-8 pt-11 dark:bg-black h-full dark:text-white bg-white">
+      <Left setTab={setTab} tab={tab} />
+      <Right tab={tab} />
     </section>
   );
 };

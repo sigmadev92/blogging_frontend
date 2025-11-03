@@ -50,7 +50,7 @@ const LoggedIn = () => {
           />
         </CustomButton>
         {opened && (
-          <div className="absolute top-8 rounded-md right-0 bg-white text-black dark:bg-gray-500 dark:text-white text-[12px] p-4">
+          <div className="absolute top-8 rounded-md right-0 bg-white text-black dark:bg-gray-500 dark:text-white text-[12px] p-4 border ">
             <CustomButton
               className="hover:bg-amber-500 px-3 py-1 rounded-sm"
               onClick={logoutUser}
