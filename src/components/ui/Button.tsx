@@ -7,10 +7,13 @@ const CustomButton = ({
 }: {
   children: React.ReactElement | string;
   className?: string;
-  onClick: () => void;
+  onClick?: () => void;
 }) => {
   return (
-    <button className={`cursor-pointer ${className || ""}`} onClick={onClick}>
+    <button
+      className={`cursor-pointer rounded-md ${className || ""}`}
+      onClick={onClick}
+    >
       {children}
     </button>
   );

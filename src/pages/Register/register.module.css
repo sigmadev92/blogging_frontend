@@ -1,0 +1,19 @@
+.leftUl {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-left: 1rem;
+}
+
+.leftUl > li {
+  display: flex;
+  gap: 0.5rem;
+  cursor: pointer;
+  width: 80%;
+}
+
+.leftUl > li:hover {
+  transform: scale(1.1);
+  background-color: white;
+  color: black;
+}

@@ -8,6 +8,8 @@ import Profile from "./pages/PublicProfile/Profile";
 import { useEffect } from "react";
 import { useAppDispatch } from "./redux_toolkit/store/hooks";
 import { ThemeActions } from "./redux_toolkit/reducers/themeReducer";
+import Credits from "./pages/Credits";
+import ForgotPassword from "./pages/ForgotPassword";
 function App() {
   const dispatch = useAppDispatch();
   const router = createBrowserRouter([
@@ -23,6 +25,8 @@ function App() {
         { path: "register", element: <Register /> },
         { path: "login", element: <Login /> },
         { path: "profile/:userId", element: <Profile /> },
+        { path: "credits", element: <Credits /> },
+        { path: "/password/recover", element: <ForgotPassword /> },
       ],
     },
   ]);
