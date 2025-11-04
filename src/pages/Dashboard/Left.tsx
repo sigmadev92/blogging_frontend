@@ -1,23 +1,29 @@
-import { BoltIcon } from "lucide-react";
+import { BoltIcon, Star } from "lucide-react";
 import CustomButton from "../../components/ui/Button";
 import { dbLefttabs } from "../../functions/constants/dashboard";
 
 const Left = ({
   tab,
   setTab,
+  className,
 }: {
   tab: string;
   setTab: (ele: string) => void;
+  className?: string;
 }) => {
   return (
-    <div className=" rounded-xl bg-[#b6b6b945] h-[450px]   p-2 flex flex-col gap-2 w-[15%]">
+    <div
+      className={`flex flex-col rounded-xl border p-2  gap-2 ${
+        className || ""
+      }`}
+    >
       <CustomButton>
         <span className="flex gap-2 items-center">
           <BoltIcon color="gray" /> <b>Dashboard</b>{" "}
         </span>
       </CustomButton>
       <hr />
-      <div className="max-h-[400px] overflow-y-auto">
+      <div className="max-h-[400px] pb-4  overflow-y-auto">
         <ul className="list-none flex flex-col gap-1">
           {dbLefttabs.map((listItem, idx) => (
             <li
@@ -33,6 +39,11 @@ const Left = ({
             </li>
           ))}
         </ul>
+      </div>
+      <div className="hidden sm:flex flex-col items-center gap-1 text-[12px]  sm:visible">
+        <Star fill="yellow" size={12} />
+        <b>4.3</b>
+        <a href="https://www.trustpilot.com">TrustPilot</a>
       </div>
     </div>
   );

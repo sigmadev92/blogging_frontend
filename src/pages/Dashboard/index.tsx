@@ -8,8 +8,12 @@ const Dashboard = () => {
   const [tab, setTab] = useState<string>(dbLefttabs[0].label);
   return (
     <section className="px-2 flex gap-8 pt-11 dark:bg-black h-full dark:text-white bg-white">
-      <Left setTab={setTab} tab={tab} />
-      <Right tab={tab} />
+      <Left
+        setTab={setTab}
+        tab={tab}
+        className="hidden sm:visible sm:flex w-[15%]"
+      />
+      <Right tab={tab} setTab={setTab} />
     </section>
   );
 };
