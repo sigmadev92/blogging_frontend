@@ -11,7 +11,7 @@ const TextInput = ({
 }: {
   placeholder: string;
   inputType: string;
-  icon: React.ReactElement;
+  icon?: React.ReactElement;
   label: string;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   name: string;

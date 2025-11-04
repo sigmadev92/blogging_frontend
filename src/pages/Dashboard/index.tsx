@@ -11,7 +11,7 @@ const Dashboard = () => {
       <Left
         setTab={setTab}
         tab={tab}
-        className="hidden sm:visible sm:flex w-[15%]"
+        className="hidden sm:visible sm:flex w-[15%] h-fit"
       />
       <Right tab={tab} setTab={setTab} />
     </section>
