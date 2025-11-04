@@ -1,13 +1,18 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import { useAppSelector } from "../../../../../redux_toolkit/store/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../../../../redux_toolkit/store/hooks";
 import toast from "react-hot-toast";
 import { usersURL } from "../../../../../functions/backend";
 import { _default } from "../../../../../functions/images";
 import CustomButton from "../../../../../components/ui/Button";
+import { UserActions } from "../../../../../redux_toolkit/reducers/userReducer";
+import { LoaderActions } from "../../../../../redux_toolkit/reducers/loaderReducer";
 
 const Picture = () => {
   const { user } = useAppSelector((state) => state.user);
-
+  const dispatch = useAppDispatch();
   const [profilePic, setProfilePic] = useState<File | null>(null);
 
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -26,7 +31,7 @@ const Picture = () => {
       toast.error("Please choose a profile pic first");
       return;
     }
-
+    dispatch(LoaderActions.startLoader("Uploading Profile Pic"));
     const formData = new FormData();
 
     formData.append("profilePic", profilePic);
@@ -35,10 +40,14 @@ const Picture = () => {
     try {
       const response = await fetch(`${usersURL}/update/profile-pic`, {
         credentials: "include",
+        method: "PUT",
+        body: formData,
       });
 
       const data = await response.json();
       if (data.success) {
+        const { secure_url, publicId } = data;
+        dispatch(UserActions.setProfilePic({ secure_url, publicId }));
         toast.success("Profile Pic updated successfully");
       } else {
         toast.error(data.message);
@@ -46,6 +55,8 @@ const Picture = () => {
     } catch (error) {
       console.log(error);
       toast.error("Error while uploading pics");
+    } finally {
+      dispatch(LoaderActions.stopLoader());
     }
   };
   return (
@@ -64,7 +75,8 @@ const Picture = () => {
           {!profilePic ? (
             <img
               src={
-                user?.profilePic || _default.profilePic[user?.gender || "NS"]
+                user?.profilePic?.secure_url ||
+                _default.profilePic[user?.gender || "NS"]
               }
               className="w-full h-full"
             />
@@ -93,9 +105,9 @@ const Picture = () => {
           <CustomButton className="bg-blue-500 px-3 py-1">Upload</CustomButton>
         )}
       </form>
-      <div>
+      <div className="flex justify-center mt-12">
         {user?.profilePic && (
-          <CustomButton className="bg-blue-500 px-3 py-1">
+          <CustomButton className="bg-red-500 px-3 py-1">
             Remove Pic
           </CustomButton>
         )}

@@ -21,5 +21,8 @@ export type User = {
   fullName: FullName;
   gender: Gender;
   role: UserRole;
-  profilePic: string | null;
+  profilePic?: {
+    secure_url: string;
+    publicId: string;
+  };
 };

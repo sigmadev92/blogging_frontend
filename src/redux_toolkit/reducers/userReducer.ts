@@ -31,6 +31,14 @@ const userSlice = createSlice({
       state.user = null;
       state.loggedIn = false;
     },
+    setProfilePic: (state, action) => {
+      if (state.user?.profilePic) {
+        state.user.profilePic = action.payload;
+      }
+    },
+    removeProfilePic: (state) => {
+      state.user!.profilePic = { secure_url: "", publicId: "" };
+    },
   },
   extraReducers: (builder) => {
     builder
