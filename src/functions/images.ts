@@ -2,8 +2,12 @@ import bgLogin from "../assets/images/bg-login.jpg";
 import bgHome from "../assets/images/bg-home.jpg";
 import forDashboard from "../assets/images/bg-dashboard.jpg";
 const _default = {
-  profilePic:
-    "https://img.freepik.com/premium-vector/man-avatar-profile-picture-vector-illustration_268834-538.jpg",
+  profilePic: {
+    M: "https://img.freepik.com/free-vector/smiling-redhaired-boy-illustration_1308-176664.jpg",
+    F: "https://img.freepik.com/free-vector/smiling-woman-with-braided-hair_1308-175650.jpg",
+    O: "https://img.freepik.com/premium-vector/vector-flat-illustration-suitable-social-media-profiles-icons-screensavers-as-templatex9-avatar-user-profile-person-icon-profile-picture_719432-1733.jpg",
+    NS: "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-vector-600nw-1745180411.jpg",
+  },
 };
 
 const images = {

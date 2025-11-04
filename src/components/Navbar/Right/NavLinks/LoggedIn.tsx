@@ -45,7 +45,7 @@ const LoggedIn = () => {
         <CustomButton onClick={() => setOpened((prev) => !prev)}>
           <img
             alt="user-image"
-            src={user!.profilePic || _default.profilePic}
+            src={user!.profilePic || _default.profilePic[user?.gender || "NS"]}
             className="rounded-full w-6 h-6"
           />
         </CustomButton>

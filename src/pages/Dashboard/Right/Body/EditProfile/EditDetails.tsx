@@ -1,24 +1,23 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
-import TextInput from "../../../../components/ui/TextInput";
 import {
   useAppDispatch,
   useAppSelector,
-} from "../../../../redux_toolkit/store/hooks";
-import RadioInput from "../../../../components/ui/RadioInput";
+} from "../../../../../redux_toolkit/store/hooks";
+import TextInput from "../../../../../components/ui/TextInput";
+import RadioInput from "../../../../../components/ui/RadioInput";
 import {
   genderMap,
   genderRadioInput,
-} from "../../../../functions/constants/genderValues";
-import CustomButton from "../../../../components/ui/Button";
+} from "../../../../../functions/constants/genderValues";
+import CustomButton from "../../../../../components/ui/Button";
+import { LoaderActions } from "../../../../../redux_toolkit/reducers/loaderReducer";
+import { usersURL } from "../../../../../functions/backend";
 import toast from "react-hot-toast";
-import { usersURL } from "../../../../functions/backend";
-import { LoaderActions } from "../../../../redux_toolkit/reducers/loaderReducer";
-import { UserActions } from "../../../../redux_toolkit/reducers/userReducer";
+import { UserActions } from "../../../../../redux_toolkit/reducers/userReducer";
 
-const EditProfile = () => {
+const EditDetails = () => {
   const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
-
   const [formData, setFormData] = useState({
     firstName: user?.fullName.firstName,
     middleName: user?.fullName.middleName,
@@ -70,48 +69,45 @@ const EditProfile = () => {
     }
   };
   return (
-    <div>
-      <h3 className="font-bold">Edit Profile</h3>
-      <div className="sm:w-[70%] mx-auto">
-        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          <TextInput
-            label="First Name"
-            name="firstName"
-            value={firstName || ""}
-            handleChange={handleChange}
-            placeholder="John"
-            inputType="text"
-          />
-          <TextInput
-            label="Middle Name"
-            name="middleName"
-            value={middleName || ""}
-            handleChange={handleChange}
-            placeholder="K"
-            inputType="text"
-          />
-          <TextInput
-            label="First Name"
-            name="lastName"
-            value={lastName || ""}
-            handleChange={handleChange}
-            placeholder="Cena"
-            inputType="text"
-          />
+    <div className="sm:w-[60%] mx-auto">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        <TextInput
+          label="First Name"
+          name="firstName"
+          value={firstName || ""}
+          handleChange={handleChange}
+          placeholder="John"
+          inputType="text"
+        />
+        <TextInput
+          label="Middle Name"
+          name="middleName"
+          value={middleName || ""}
+          handleChange={handleChange}
+          placeholder="K"
+          inputType="text"
+        />
+        <TextInput
+          label="First Name"
+          name="lastName"
+          value={lastName || ""}
+          handleChange={handleChange}
+          placeholder="Cena"
+          inputType="text"
+        />
 
-          <RadioInput
-            radioFields={genderRadioInput}
-            selected={genderMap[gender || "NS"]}
-            className="flex justify-around items-center"
-            handleChange={handleChange}
-          />
-          <CustomButton className="w-fit px-4 bg-blue-500 py-1">
-            Update
-          </CustomButton>
-        </form>
-      </div>
+        <RadioInput
+          radioFields={genderRadioInput}
+          selected={genderMap[gender || "NS"]}
+          className="flex justify-around items-center"
+          handleChange={handleChange}
+        />
+        <CustomButton className="w-fit px-4 bg-blue-500 py-1">
+          Update
+        </CustomButton>
+      </form>
     </div>
   );
 };
 
-export default EditProfile;
+export default EditDetails;
