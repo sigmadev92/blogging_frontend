@@ -59,6 +59,32 @@ const Picture = () => {
       dispatch(LoaderActions.stopLoader());
     }
   };
+
+  const handleRemovePic = async () => {
+    if (!user?.profilePic) {
+      toast.error("No profile pic found");
+      return;
+    }
+    dispatch(LoaderActions.startLoader("Removing Profile Picture"));
+    try {
+      const response = await fetch(`${usersURL}/remove/profile-pic`, {
+        method: "PUT",
+        credentials: "include",
+      });
+      const data = await response.json();
+      if (data.success) {
+        dispatch(UserActions.removeProfilePic());
+        toast.success("Profile Picture updated");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Some thing went wrong");
+    } finally {
+      dispatch(LoaderActions.stopLoader());
+    }
+  };
   return (
     <div className=" sm:w-[30%]">
       <form
@@ -66,7 +92,7 @@ const Picture = () => {
         onSubmit={handleFileSubmit}
         encType="mulitpart/formdata"
       >
-        {!user?.profilePic && (
+        {!user?.profilePic?.publicId && (
           <p className="text-[12px] text-red-400">
             Profile picture Not set Yet
           </p>
@@ -106,8 +132,11 @@ const Picture = () => {
         )}
       </form>
       <div className="flex justify-center mt-12">
-        {user?.profilePic && (
-          <CustomButton className="bg-red-500 px-3 py-1">
+        {user?.profilePic?.secure_url && (
+          <CustomButton
+            className="bg-red-500 px-3 py-1"
+            onClick={handleRemovePic}
+          >
             Remove Pic
           </CustomButton>
         )}

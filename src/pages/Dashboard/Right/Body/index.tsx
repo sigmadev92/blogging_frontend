@@ -27,7 +27,7 @@ const Body = ({ tab }: { tab: string }) => {
       {tab === "Subscriptions" && <Subscriptions />}
       {tab === "Paid Features" && <PaidFeatures />}
       {tab === "Settings" && <Settings />}
-      {tab === "Your Activity" && <YourActivity />}
+      {tab === "My Activity" && <YourActivity />}
     </>
   );
 };

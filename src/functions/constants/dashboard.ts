@@ -1,7 +1,7 @@
 export const dbLefttabs = [
   { label: "Overview" },
   { label: "Edit Profile" },
-  { label: "Your Activity" },
+  { label: "My Activity" },
   { label: "Subscriptions" },
   { label: "Posts" },
   { label: "Likes" },

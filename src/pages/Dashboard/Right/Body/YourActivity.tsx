@@ -1,5 +1,5 @@
 const YourActivity = () => {
-  return <div>Your Activity</div>;
+  return <div>My Activity</div>;
 };
 
 export default YourActivity;
