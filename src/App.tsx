@@ -37,7 +37,7 @@ function App() {
         },
         { path: "login", element: <PreventExposed children={<Login />} /> },
         {
-          path: "profile/:userId",
+          path: "profile/:medium/:userId",
           element: <ProtectSensitive children={<Profile />} />,
         },
         { path: "credits", element: <Credits /> },
