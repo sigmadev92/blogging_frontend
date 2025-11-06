@@ -88,7 +88,7 @@ const EditDetails = () => {
           inputType="text"
         />
         <TextInput
-          label="First Name"
+          label="Last Name"
           name="lastName"
           value={lastName || ""}
           handleChange={handleChange}

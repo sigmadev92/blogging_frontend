@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import CustomButton from "../../../ui/Button";
 import {
   useAppDispatch,
@@ -9,11 +9,14 @@ import { usersURL } from "../../../../functions/backend";
 import { UserActions } from "../../../../redux_toolkit/reducers/userReducer";
 import toast from "react-hot-toast";
 import { useState } from "react";
+import { PenToolIcon, PlusCircleIcon } from "lucide-react";
 
 const LoggedIn = () => {
   const { user } = useAppSelector((state) => state.user);
   const [opened, setOpened] = useState(false);
+  const [plusMenu, setPlusMenu] = useState(false);
   const dispatch = useAppDispatch();
+  const { pathname } = useLocation();
   const navigate = useNavigate();
   const logoutUser = async () => {
     try {
@@ -23,7 +26,7 @@ const LoggedIn = () => {
       const data = await response.json();
       if (data.success) {
         dispatch(UserActions.logout());
-        navigate("/login");
+        navigate("/out/login");
         toast.success("logged out successfully");
       } else {
         toast.error("failed to Logout");
@@ -35,14 +38,46 @@ const LoggedIn = () => {
   };
   return (
     <>
+      {pathname !== "/in/blog/new" && (
+        <li className="relative">
+          <CustomButton
+            onClick={() => {
+              setPlusMenu((prev) => !prev);
+              setOpened(false);
+            }}
+          >
+            <PlusCircleIcon size={14} />
+          </CustomButton>
+
+          {plusMenu && (
+            <div className="absolute top-8 translate-x-[-50%] rounded border p-2 dark:bg-gray-600 dark:text-white bg-white text-black w-[150px]">
+              <NavLink
+                to={"/in/blog/new"}
+                onClick={() => setPlusMenu(false)}
+                className={
+                  "flex items-center gap-2 hover:bg-amber-500 py-0.5 px-2"
+                }
+              >
+                <PenToolIcon size={14} />
+                <span>Create a blog</span>
+              </NavLink>
+            </div>
+          )}
+        </li>
+      )}
       <li>
         <NavLink to={"/"}>Home</NavLink>
       </li>
       <li>
-        <NavLink to={"/dashboard"}>Dashboard</NavLink>
+        <NavLink to={"/in/dashboard"}>Dashboard</NavLink>
       </li>
       <li className="relative flex items-center">
-        <CustomButton onClick={() => setOpened((prev) => !prev)}>
+        <CustomButton
+          onClick={() => {
+            setOpened((prev) => !prev);
+            setPlusMenu(false);
+          }}
+        >
           <img
             alt="user-image"
             src={
@@ -53,7 +88,7 @@ const LoggedIn = () => {
           />
         </CustomButton>
         {opened && (
-          <div className="absolute top-8 rounded-md right-0 bg-white text-black dark:bg-gray-500 dark:text-white text-[12px] p-4 border ">
+          <div className="absolute top-8 rounded-md right-0 bg-white text-black dark:bg-gray-500 dark:text-white text-[12px] p-2 border ">
             <CustomButton
               className="hover:bg-amber-500 px-3 py-1 rounded-sm"
               onClick={logoutUser}

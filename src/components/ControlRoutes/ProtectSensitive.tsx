@@ -7,7 +7,7 @@ const ProtectSensitive = ({ children }: { children: ReactElement }) => {
   if (loggedIn) {
     return children;
   }
-  return <Navigate to={"/login"} />;
+  return <Navigate to={"/out/login"} />;
 };
 
 export default ProtectSensitive;

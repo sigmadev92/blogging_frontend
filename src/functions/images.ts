@@ -8,6 +8,9 @@ const _default = {
     O: "https://img.freepik.com/premium-vector/vector-flat-illustration-suitable-social-media-profiles-icons-screensavers-as-templatex9-avatar-user-profile-person-icon-profile-picture_719432-1733.jpg",
     NS: "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-vector-600nw-1745180411.jpg",
   },
+  thumbnail: [
+    "https://w0.peakpx.com/wallpaper/956/769/HD-wallpaper-landscape-art-colorful-paintings-cool-flowers-nature.jpg",
+  ],
 };
 
 const images = {
