@@ -28,7 +28,7 @@ const Right = ({
         <Left
           tab={tab}
           setTab={setTab}
-          className="absolute top-10 left-0 w-fit bg-[white] sm:hidden"
+          className="absolute top-10 left-0 w-fit z-20 dark:bg-black dark:text-white bg-white text-black sm:hidden"
         />
       )}
       <Body tab={tab} />
