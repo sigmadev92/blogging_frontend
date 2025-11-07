@@ -17,6 +17,7 @@ import PreventExposed from "./components/ControlRoutes/PreventExposed";
 import InLayout from "./layouts/InLayout";
 import WriteBlog from "./pages/writeBlog";
 import OutLayout from "./layouts/OutLayout";
+
 function App() {
   const dispatch = useAppDispatch();
 
@@ -47,12 +48,14 @@ function App() {
               path: "dashboard",
               element: <ProtectSensitive children={<Dashboard />} />,
             },
+
             {
               path: "blog/new",
               element: <WriteBlog />,
             },
           ],
         },
+
         {
           path: "out",
           element: <PreventExposed children={<OutLayout />} />,

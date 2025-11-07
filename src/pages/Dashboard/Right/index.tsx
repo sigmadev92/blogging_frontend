@@ -21,7 +21,7 @@ const Right = ({
     console.log(isMenuOpened);
   };
   return (
-    <div className="w-full sm:w-[80%] h-[90%] rounded-xl outline-1 outline-black dark:outline-white p-2 relative">
+    <div className="w-full sm:w-[80%] h-[90%]  outline-1 outline-black dark:outline-white relative">
       <Header user={user!} setIsMenuOpened={handleDbMenu} />
       {isMenuOpened && (
         // <span>asas</span>

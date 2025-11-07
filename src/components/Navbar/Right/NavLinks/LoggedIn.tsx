@@ -68,6 +68,7 @@ const LoggedIn = () => {
       <li>
         <NavLink to={"/"}>Home</NavLink>
       </li>
+
       <li>
         <NavLink to={"/in/dashboard"}>Dashboard</NavLink>
       </li>
@@ -88,7 +89,12 @@ const LoggedIn = () => {
           />
         </CustomButton>
         {opened && (
-          <div className="absolute top-8 rounded-md right-0 bg-white text-black dark:bg-gray-500 dark:text-white text-[12px] p-2 border ">
+          <div className="absolute top-8 rounded-md right-0 bg-white text-black dark:bg-gray-500 dark:text-white text-[12px] p-2 border flex flex-col gap-1 w-[150px]">
+            <span className="font-bold block">
+              {user?.fullName.firstName + " " + user?.fullName.lastName}
+            </span>
+            <span>{user?.email}</span>
+            <hr />
             <CustomButton
               className="hover:bg-amber-500 px-3 py-1 rounded-sm"
               onClick={logoutUser}

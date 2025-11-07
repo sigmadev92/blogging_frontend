@@ -1,6 +1,6 @@
 const Profile = () => {
   return (
-    <section>
+    <section className="pt-11">
       <h2>Profile</h2>
     </section>
   );

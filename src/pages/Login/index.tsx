@@ -23,6 +23,7 @@ const Login = () => {
   };
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    console.log("c");
 
     if (!email || !password) {
       toast.error("Please Enter Valid Email and Password");
@@ -87,7 +88,10 @@ const Login = () => {
               icon={<LockIcon size={15} />}
               handleChange={handleChange}
             />
-            <CustomButton className="bg-blue-500 px-3 py-1 text-white">
+            <CustomButton
+              btnType={"submit"}
+              className="bg-blue-500 px-3 py-1 text-white"
+            >
               Login
             </CustomButton>
           </form>

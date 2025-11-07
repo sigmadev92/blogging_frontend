@@ -102,7 +102,10 @@ const EditDetails = () => {
           className="flex justify-around items-center"
           handleChange={handleChange}
         />
-        <CustomButton className="w-fit px-4 bg-blue-500 py-1">
+        <CustomButton
+          btnType={"submit"}
+          className="w-fit px-4 bg-blue-500 py-1"
+        >
           Update
         </CustomButton>
       </form>

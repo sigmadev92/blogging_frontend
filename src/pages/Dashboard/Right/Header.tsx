@@ -16,7 +16,7 @@ const Header = ({
     setInfo((prev) => !prev);
   };
   return (
-    <div className="flex justify-between border-b ">
+    <div className="flex justify-between border-b text-white bg-[#f449e6c8] py-1 px-2">
       <div className="flex gap-0.5 items-center ">
         <CustomButton className="visible sm:hidden" onClick={setIsMenuOpened}>
           <LayoutGrid color="gray" size={16} />
