@@ -42,7 +42,7 @@ const TextInput = ({
         className={`border-light input-custom ${style?.input}`}
         onChange={(e) => handleChange(e)}
       />
-      <div className="absolute top-2 right-3 text-white">{icon}</div>
+      <div className="absolute top-2 right-3">{icon}</div>
     </div>
   );
 };

@@ -1,4 +1,4 @@
 const ForgotPassword = () => {
-  return <section>Forgot Password</section>;
+  return <section className="pt-11">Forgot Password</section>;
 };
 export default ForgotPassword;

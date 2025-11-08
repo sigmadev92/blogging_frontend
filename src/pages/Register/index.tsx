@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import TextInput from "../../components/ui/TextInput";
-import { images } from "../../functions/images";
+// import { images } from "../../functions/images";
 import toast from "react-hot-toast";
 import {
   BookOpenCheck,
@@ -20,6 +20,7 @@ import styles from "./register.module.css";
 import { usersURL } from "../../functions/backend";
 import { useAppDispatch } from "../../redux_toolkit/store/hooks";
 import { LoaderActions } from "../../redux_toolkit/reducers/loaderReducer";
+import { images } from "../../functions/images";
 const Register = () => {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -78,19 +79,20 @@ const Register = () => {
         toast.error(data.message);
       }
     } catch (error: unknown) {
+      console.log(images.bgHome);
       console.log(error);
       dispatch(LoaderActions.stopLoader());
       toast.error((error as Error).message);
     }
   }
   return (
-    <section className="relative">
-      <img src={images["bgLogin"].src} className="h-screen w-full" />
-      <div className="absolute top-0 left-0 w-full h-full bg-[#00000058] flex justify-center gap-8 items-center">
-        <div className="hidden sm:block w-[40%] shadow-2xl  rounded-xl h-[400px]">
-          <div className="p-4 flex flex-col h-full gap-4  text-white">
+    <section className={`pt-11 theme h-full`}>
+      {/* <img src={images["forDashboard"].src} className="h-screen w-full" /> */}
+      <div className="top-0 left-0 w-full h-full flex justify-center gap-8 items-center">
+        <div className="hidden sm:block w-[40%] shadow-md rounded-xl h-[400px] shadow-blue-300">
+          <div className="flex flex-col h-full gap-4 ">
             <h3 className=" text-3xl text-center font-bold">Join Us Today</h3>
-            <p className="p-4 text-[1.5rem]">
+            <p className="p-4">
               Drive yourself in the amazing world of blogs written by top
               Authors and feel the vibes you always love.
             </p>
@@ -124,16 +126,15 @@ const Register = () => {
             </ul>
           </div>
         </div>
-        <div className="w-[90%] sm:w-[40%]   h-[400px] shadow-2xs rounded-2xl text-white px-5">
-          <h3 className="text-white text-3xl text-center font-bold">
-            Sign Up{" "}
-          </h3>
+        <div className="w-[90%] sm:w-[40%]   h-[450px] shadow-2xs rounded-2xl px-5">
+          <h3 className=" text-3xl text-center font-bold">Sign Up </h3>
           <form
             onSubmit={(e) => handleSubmit(e)}
             className="flex flex-col gap-4 mx-auto items-center"
           >
             <TextInput
               label="Full Name"
+              variant="regular"
               placeholder="John F Cena"
               name="fullName"
               inputType="text"
@@ -143,6 +144,7 @@ const Register = () => {
             />
             <TextInput
               label="Email"
+              variant="regular"
               placeholder="email here"
               name="email"
               inputType="email"
@@ -153,25 +155,39 @@ const Register = () => {
             <TextInput
               label="Password"
               placeholder="**********"
+              variant="regular"
               name="password"
               inputType="password"
               value={password}
               icon={<LockIcon size={15} />}
               handleChange={handleChange}
             />
-            <CustomButton className="bg-blue-700 px-3 py-1 text-white">
+            <CustomButton
+              className="text-[14px]"
+              variant="submit"
+              btnType="submit"
+            >
               Register
             </CustomButton>
           </form>
           <p className="text-center my-2">-----OR-----</p>
           <div className="flex justify-center">
-            <CustomButton className="bg-white px-3 py-2 text-black text-[12px] w-fit">
-              Sign In with Google
+            <CustomButton className="" variant="regular-dark">
+              <span className="flex gap-2 items-center">
+                <img
+                  src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Google_Favicon_2025.svg"
+                  className="w-4 h-4"
+                />{" "}
+                Sign In with Google
+              </span>
             </CustomButton>
           </div>
-          <div className="flex justify-between mt-3">
+          <div className="flex justify-center mt-3">
             <p>
-              Already have an account? <NavLink to={"/login"}>Login</NavLink>
+              Already have an account?{" "}
+              <NavLink to={"/out/login"} className={"hover:underline"}>
+                Login
+              </NavLink>
             </p>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import bgLogin from "../assets/images/bg-login.jpg";
-import bgHome from "../assets/images/bg-home.jpg";
+import bgHome from "../assets/images/home-2.png";
 import forDashboard from "../assets/images/bg-dashboard.jpg";
+import blogLogo from "../assets/images/blog-logo.png";
 const _default = {
   profilePic: {
     M: "https://img.freepik.com/free-vector/smiling-redhaired-boy-illustration_1308-176664.jpg",
@@ -40,6 +41,9 @@ const images = {
         href: "https://unsplash.com/@baileyzindel",
       },
     },
+  },
+  blogLogo: {
+    src: blogLogo,
   },
   forDashboard: {
     src: forDashboard,

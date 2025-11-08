@@ -8,7 +8,8 @@ type VariantType =
   | "regular"
   | "regular-confirm"
   | "regular-dark"
-  | "regular-danger";
+  | "regular-danger"
+  | "submit";
 const CustomButton = ({
   children,
   className,
@@ -27,6 +28,8 @@ const CustomButton = ({
   formRef?: string;
 }) => {
   const regular = "rounded px-3 py-1 text-[12px] text-white";
+  const submit =
+    "px-3 py-1 rounded text-[1rem] text-white bg-blue-600 hover:bg-blue-500";
   const variantMap = {
     "rounded-0": "rounded-none",
     "rounded-sm": "rounded-sm",
@@ -35,6 +38,7 @@ const CustomButton = ({
     "regular-confirm": `${regular} bg-blue-600`,
     "regular-dark": `${regular} bg-black dark:bg-white dark:text-black`,
     "regular-danger": `${regular} bg-red-600`,
+    submit,
   };
   return (
     <button
