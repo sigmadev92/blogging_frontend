@@ -2,4 +2,6 @@ const backendURL = "http://localhost:3003";
 
 const usersURL = `${backendURL}/api/users`;
 
-export { backendURL, usersURL };
+const blogsURL = `${backendURL}/api/blogs`;
+
+export { backendURL, usersURL, blogsURL };

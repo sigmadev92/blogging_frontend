@@ -14,7 +14,7 @@ import YourActivity from "./YourActivity";
 
 const Body = ({ tab }: { tab: string }) => {
   return (
-    <>
+    <div className="p-2">
       {tab === "Overview" && <Overview />}
       {tab === "Edit Profile" && <EditProfile />}
       {tab === "Analytics" && <Analytics />}
@@ -28,7 +28,7 @@ const Body = ({ tab }: { tab: string }) => {
       {tab === "Paid Features" && <PaidFeatures />}
       {tab === "Settings" && <Settings />}
       {tab === "My Activity" && <YourActivity />}
-    </>
+    </div>
   );
 };
 

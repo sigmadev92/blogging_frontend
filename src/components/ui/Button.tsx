@@ -1,18 +1,50 @@
 import type React from "react";
 
+type BtnType = "button" | "submit" | "reset";
+type VariantType =
+  | "rounded-0"
+  | "rounded-sm"
+  | "rounded-full"
+  | "regular"
+  | "regular-confirm"
+  | "regular-dark"
+  | "regular-danger";
 const CustomButton = ({
   children,
   className,
   onClick,
+  btnType,
+  disabled,
+  variant,
+  formRef,
 }: {
   children: React.ReactElement | string;
   className?: string;
   onClick?: () => void;
+  btnType?: BtnType;
+  disabled?: boolean;
+  variant?: VariantType;
+  formRef?: string;
 }) => {
+  const regular = "rounded px-3 py-1 text-[12px] text-white";
+  const variantMap = {
+    "rounded-0": "rounded-none",
+    "rounded-sm": "rounded-sm",
+    "rounded-full": "rounded-full",
+    regular,
+    "regular-confirm": `${regular} bg-blue-600`,
+    "regular-dark": `${regular} bg-black dark:bg-white dark:text-black`,
+    "regular-danger": `${regular} bg-red-600`,
+  };
   return (
     <button
-      className={`cursor-pointer rounded-md ${className || ""}`}
+      disabled={disabled}
+      type={btnType || "button"}
+      className={`cursor-pointer ${variantMap[variant || "rounded-0"]} ${
+        disabled ? "bg-gray-300 text-black hover:cursor-default" : ""
+      } ${className || ""}`}
       onClick={onClick}
+      form={formRef}
     >
       {children}
     </button>

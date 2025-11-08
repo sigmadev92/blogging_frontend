@@ -7,7 +7,7 @@ const LoggedOut = () => {
         <NavLink to={"/"}>Home</NavLink>
       </li>
       <li>
-        <NavLink to={"/login"}>Sign In</NavLink>
+        <NavLink to={"/out/login"}>Sign In</NavLink>
       </li>
       <li>
         <NavLink to={"/credits"}>Credits</NavLink>

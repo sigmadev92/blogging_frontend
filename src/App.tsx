@@ -14,6 +14,10 @@ import { Toaster } from "react-hot-toast";
 import { fetchLoginStatus } from "./redux_toolkit/reducers/userReducer";
 import ProtectSensitive from "./components/ControlRoutes/ProtectSensitive";
 import PreventExposed from "./components/ControlRoutes/PreventExposed";
+import InLayout from "./layouts/InLayout";
+import WriteBlog from "./pages/writeBlog";
+import OutLayout from "./layouts/OutLayout";
+
 function App() {
   const dispatch = useAppDispatch();
 
@@ -28,22 +32,45 @@ function App() {
           element: <Home />,
         },
         {
-          path: "dashboard",
-          element: <ProtectSensitive children={<Dashboard />} />,
-        },
-        {
-          path: "register",
-          element: <PreventExposed children={<Register />} />,
-        },
-        { path: "login", element: <PreventExposed children={<Login />} /> },
-        {
           path: "profile/:medium/:userId",
           element: <ProtectSensitive children={<Profile />} />,
         },
         { path: "credits", element: <Credits /> },
         {
-          path: "/password/recover",
-          element: <PreventExposed children={<ForgotPassword />} />,
+          path: "in",
+          element: (
+            <ProtectSensitive>
+              <InLayout />
+            </ProtectSensitive>
+          ),
+          children: [
+            {
+              path: "dashboard",
+              element: <ProtectSensitive children={<Dashboard />} />,
+            },
+
+            {
+              path: "blog/new",
+              element: <WriteBlog />,
+            },
+          ],
+        },
+
+        {
+          path: "out",
+          element: <PreventExposed children={<OutLayout />} />,
+          children: [
+            {
+              path: "register",
+              element: <PreventExposed children={<Register />} />,
+            },
+            { path: "login", element: <PreventExposed children={<Login />} /> },
+
+            {
+              path: "password/recover",
+              element: <PreventExposed children={<ForgotPassword />} />,
+            },
+          ],
         },
       ],
     },

@@ -128,7 +128,9 @@ const Picture = () => {
           Choose Picture
         </label>
         {profilePic && (
-          <CustomButton className="bg-blue-500 px-3 py-1">Upload</CustomButton>
+          <CustomButton className="bg-blue-500 px-3 py-1" btnType="submit">
+            Upload
+          </CustomButton>
         )}
       </form>
       <div className="flex justify-center mt-12">

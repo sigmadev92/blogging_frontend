@@ -72,7 +72,7 @@ const Register = () => {
       if (data.success) {
         dispatch(LoaderActions.stopLoader());
         toast.success("Registered successfully");
-        navigate("/login");
+        navigate("/out/login");
       } else {
         dispatch(LoaderActions.stopLoader());
         toast.error(data.message);

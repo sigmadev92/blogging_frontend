@@ -1,5 +1,5 @@
 import type { ChangeEvent } from "react";
-
+type Variant = "regular";
 const TextInput = ({
   placeholder,
   inputType,
@@ -8,6 +8,8 @@ const TextInput = ({
   handleChange,
   name,
   value,
+  style,
+  variant,
 }: {
   placeholder: string;
   inputType: string;
@@ -16,16 +18,28 @@ const TextInput = ({
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   name: string;
   value: string;
+  gap?: number;
+  style?: {
+    label?: string;
+    input?: string;
+  };
+  variant?: Variant;
 }) => {
+  const regular = "relative flex flex-col gap-1 w-full";
+
+  const maping = {
+    regular,
+    _: "",
+  };
   return (
-    <div className="relative flex flex-col gap-2 w-full">
-      <label className=" text-xl"> {label}</label>
+    <div className={maping[variant || "_"]}>
+      <label className={style?.label || "text-xl"}> {label}</label>
       <input
         type={inputType}
         placeholder={placeholder}
         name={name}
         value={value}
-        className="bg-white text-black px-3 py-2 placeholder:text-[12px] placeholder:text-gray-600"
+        className={`border-light input-custom ${style?.input}`}
         onChange={(e) => handleChange(e)}
       />
       <div className="absolute top-2 right-3 text-white">{icon}</div>
