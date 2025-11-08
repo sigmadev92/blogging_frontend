@@ -8,11 +8,12 @@ import { _default } from "../../functions/images";
 import { useAppDispatch } from "../../redux_toolkit/store/hooks";
 import { LoaderActions } from "../../redux_toolkit/reducers/loaderReducer";
 import { blogsURL } from "../../functions/backend";
-import { useNavigate } from "react-router-dom";
+
 import NavigationOverlay from "../../components/ui/NavigationOverlay";
+import { ImageIcon } from "lucide-react";
 
 const WriteBlog = () => {
-  type Phase = "filling" | "saved" | "publishing";
+  type Phase = "filling" | "saved" | "publishing" | "published";
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [topics, setTopics] = useState<string[]>([]);
@@ -20,13 +21,13 @@ const WriteBlog = () => {
   const [thumbnailForm, setThumbnailForm] = useState(false);
   const [currentBlogId, setCurrentBlogId] = useState<string>("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
-  const [readyToPublish, setReady] = useState<boolean>(true);
   const [isNavigationBox, setIsNaigationBox] = useState<boolean>(false);
-  const [phase, setPhase] = useState<Phase>("publishing");
+  const [phase, setPhase] = useState<Phase>("filling");
   const headingMap = {
-    filling: ["", "Create New Blog"],
+    filling: ["Unsaved", "Create New Blog"],
     saved: ["Blog Saved", "Add Thumbnail"],
     publishing: ["Thumbnail Added", "Publish Now"],
+    published: ["Brilliant Work", "Published"],
   };
 
   const dispatch = useAppDispatch();
@@ -34,7 +35,6 @@ const WriteBlog = () => {
     //verified that it is not already added
     setTopics((prev) => [...prev, newTopic]);
   };
-  const navigate = useNavigate();
 
   const deleteTopic = (idx: number) => {
     setTopics((prev) => prev.filter((_, i) => i !== idx));
@@ -121,7 +121,6 @@ const WriteBlog = () => {
       const data = await response.json();
 
       if (data.success) {
-        setReady(true);
         setPhase("publishing");
         toast.success("Thumbnail added successfully");
       } else {
@@ -137,8 +136,7 @@ const WriteBlog = () => {
 
   const publishBlog = async () => {
     if (!currentBlogId) {
-      setIsNaigationBox(true);
-      // toast.error("Blog not saved yet");
+      toast.error("Blog not saved yet");
       return;
     }
     dispatch(LoaderActions.startLoader("Publishing blog"));
@@ -151,7 +149,8 @@ const WriteBlog = () => {
       const data = await response.json();
 
       if (data.success) {
-        navigate("/");
+        setPhase("published");
+        setIsNaigationBox(true);
 
         dispatch(LoaderActions.stopLoader());
       } else {
@@ -174,10 +173,13 @@ const WriteBlog = () => {
             { link: "/in/dashboard", label: "Dashboard" },
             { link: "/", label: "Home" },
           ]}
-          close={() => setIsNaigationBox(false)}
+          close={() => {
+            setIsNaigationBox(false);
+          }}
         />
       )}
-      <div className="flex justify-between items-center mb-4">
+      {/* header */}
+      <div className="fixed top-11 left-0 w-full backdrop-blur-2xl px-4  box-border z-3 flex justify-between items-center dark:bg-black bg-white">
         <div>
           <h3>{headingMap[phase][0]}</h3>
           <h2 className="text-2xl text-purple-500">{headingMap[phase][1]}</h2>
@@ -185,7 +187,7 @@ const WriteBlog = () => {
 
         <div className="flex gap-2">
           <CustomButton
-            className="rounded-sm bg-blue-500 text-white px-3 py-1"
+            variant="regular-confirm"
             btnType={"submit"}
             formRef={"details"}
           >
@@ -193,28 +195,27 @@ const WriteBlog = () => {
           </CustomButton>
           <CustomButton
             disabled={phase === "filling"}
-            className="rounded-sm bg-blue-500 text-white px-3 py-1"
+            variant="regular-confirm"
             onClick={() => setThumbnailForm(true)}
           >
             Add Thumbnail
           </CustomButton>
           <CustomButton
-            variant={"rounded-sm"}
-            disabled={!readyToPublish}
+            variant={"regular-confirm"}
+            disabled={phase !== "publishing"}
             onClick={publishBlog}
-            className="text-white bg-blue-500 px-3 py-1"
           >
             Publish
           </CustomButton>
         </div>
       </div>
-      <div className="flex justify-between rounded mx-auto h-[80%] relative">
+      <div className="overflow-scroll pt-16 h-full">
         <form
-          className="flex justify-between gap-y-4 w-full"
+          className="flex flex-col md:flex-row md:justify-between gap-y-4 w-full"
           onSubmit={addToDb}
           id="details"
         >
-          <div className="w-[70%] flex flex-col gap-3 border border-blue-200 p-2 rounded">
+          <div className="md:w-[70%] flex flex-col gap-3 border-light p-2">
             <TextInput
               label="Title"
               placeholder="Enter a suitable title (50-200) characters"
@@ -233,8 +234,7 @@ const WriteBlog = () => {
               styles={{
                 label: "text-2xl",
                 outer: "flex flex-col gap-4",
-                textArea:
-                  "border rounded p-2 placeholder:text-gray-300 border-blue-200 resize-none",
+                textArea: "input-custom border-light  resize-none",
               }}
               placeholder="Write in atleast 200 characters"
               handleChange={(e) => {
@@ -242,16 +242,16 @@ const WriteBlog = () => {
               }}
             />
           </div>
-          <div className="w-[25%] rounded border border-blue-200 p-2 flex flex-col gap-4">
+          <div className="md:w-[25%] border-light p-2 flex flex-col gap-4">
             <MultipleValues
               collector={topics}
               addToCollector={addTopic}
               deleteFromCollector={deleteTopic}
-              placeholder="add a topic (5-20) characters"
+              placeholder="add a topic (3-20) characters"
               styles={{ inputField: "" }}
-              label="Topics [2-5]"
+              label="Topics [1-5]"
               inputLength={{ min: 3, max: 20 }}
-              items={{ min: 2, max: 5 }}
+              items={{ min: 1, max: 5 }}
             />
             <MultipleValues
               collector={searchTags}
@@ -267,64 +267,64 @@ const WriteBlog = () => {
         </form>
 
         {thumbnailForm && (
-          <div className="absolute h-full w-full bg-[#38383b8e] backdrop-blur-[3px] z-3 flex flex-col justify-center items-center">
-            <form
-              id="thumbnailForm"
-              onSubmit={addThumbnail}
-              className=" h-full flex flex-col items-center mx-auto gap-4"
-              encType="multipart/form-data"
-            >
-              <p className="font-bold">Please add a thumbnail to your blog.</p>
-              <div className="w-[90%] flex mx-auto justify-between">
-                <div className=" h-[300px] rounded border">
-                  {!thumbnail ? (
-                    <img
-                      src={_default.thumbnail[0]}
-                      alt="thumbnail of blog"
-                      className="h-full"
-                    />
-                  ) : (
-                    <img
-                      src={URL.createObjectURL(thumbnail)}
-                      alt="thumbnail of blog"
-                      className="w-full h-full"
-                    />
-                  )}
-                </div>
-
-                <div className="flex flex-col items-center justify-center gap-4  w-[30%]">
-                  <input
-                    id="thumbnail"
-                    type="file"
-                    accept=".jpg,.jpeg,.png"
-                    onChange={handleFileChange}
-                    className="hidden"
+          //overlay-bg
+          <div className="absolute top-0 left-0 h-full w-full bg-[#38383b8e] backdrop-blur-[2px] z-3 flex justify-center items-center">
+            <div className=" h-[80%] w-full md:w-[60%] flex flex-col md:flex-row md:justify-center items-center gap-4 shadow-xl shadow-blue-200 p-2 rounded-[2xl]">
+              <div className=" w-[90%] rounded-xl overflow-hidden border">
+                {!thumbnail ? (
+                  <img
+                    src={_default.thumbnail[0]}
+                    alt="thumbnail of blog"
+                    className="h-full w-full"
                   />
+                ) : (
+                  <img
+                    src={URL.createObjectURL(thumbnail)}
+                    alt="thumbnail of blog"
+                    className="w-full h-full"
+                  />
+                )}
+              </div>
+              <form
+                onSubmit={addThumbnail}
+                className="flex flex-col items-center justify-center gap-4  w-[30%]"
+              >
+                <input
+                  id="thumbnail"
+                  type="file"
+                  accept=".jpg,.jpeg,.png"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+
+                <CustomButton variant={"regular-dark"}>
                   <label
                     htmlFor="thumbnail"
-                    className="text-[12px] px-3 py-1 bg-blue-500 w-fit text-white cursor-pointer"
+                    className="flex gap-1 items-center cursor-pointer"
                   >
-                    Choose Picture
+                    Choose <ImageIcon size={12} />
                   </label>
+                </CustomButton>
 
-                  <CustomButton
-                    btnType={"submit"}
-                    className="text-[12px] px-2 py-1 rounded bg-amber-400 text-white"
-                    disabled={!thumbnail}
-                  >
-                    Add Thumbnail
-                  </CustomButton>
-                  <CustomButton
-                    btnType={"button"}
-                    onClick={() => {
-                      setThumbnailForm(false);
-                    }}
-                  >
-                    Cancel
-                  </CustomButton>
-                </div>
-              </div>
-            </form>
+                <CustomButton
+                  btnType={"submit"}
+                  variant={"regular-confirm"}
+                  disabled={!thumbnail}
+                >
+                  Add Thumbnail
+                </CustomButton>
+                <CustomButton
+                  variant="regular-danger"
+                  btnType={"button"}
+                  onClick={() => {
+                    setThumbnailForm(false);
+                    if (phase !== "publishing") setThumbnail(null);
+                  }}
+                >
+                  Cancel
+                </CustomButton>
+              </form>
+            </div>
           </div>
         )}
       </div>

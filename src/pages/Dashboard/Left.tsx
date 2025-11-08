@@ -1,4 +1,4 @@
-import { BoltIcon, Star } from "lucide-react";
+import { BoltIcon } from "lucide-react";
 import CustomButton from "../../components/ui/Button";
 import { dbLefttabs } from "../../functions/constants/dashboard";
 
@@ -12,11 +12,7 @@ const Left = ({
   className?: string;
 }) => {
   return (
-    <div
-      className={`flex flex-col rounded-xl border p-2  gap-2 ${
-        className || ""
-      }`}
-    >
+    <div className={`flex flex-col p-2 border-light  gap-2 ${className || ""}`}>
       <CustomButton>
         <span className="flex gap-2 items-center">
           <BoltIcon color="gray" /> <b>Dashboard</b>{" "}
@@ -39,11 +35,6 @@ const Left = ({
             </li>
           ))}
         </ul>
-      </div>
-      <div className="hidden sm:flex flex-col items-center gap-1 text-[12px]  sm:visible">
-        <Star fill="yellow" size={12} />
-        <b>4.3</b>
-        <a href="https://www.trustpilot.com">TrustPilot</a>
       </div>
     </div>
   );

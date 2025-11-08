@@ -1,5 +1,6 @@
 import { Trash2Icon } from "lucide-react";
 import { useState } from "react";
+import CustomButton from "./Button";
 
 const MultipleValues = ({
   collector,
@@ -69,13 +70,10 @@ const MultipleValues = ({
           disabled={collector.length === items.max}
         />
         {error && <p className="text-[12px] text-red-500">{error}</p>}
-        <button
-          type="button"
+        <CustomButton
+          btnType="button"
           onClick={addBtn}
-          className={`${
-            styles.addBtn ||
-            "text-[12px] bg-blue-400 text-white px-3 py-1 rounded cursor-pointer"
-          }`}
+          variant={"regular-confirm"}
           disabled={
             inputValue.length > inputLength.max ||
             inputValue.length < inputLength.min ||
@@ -83,7 +81,7 @@ const MultipleValues = ({
           }
         >
           Add
-        </button>
+        </CustomButton>
       </div>
 
       {collector.length > 0 && (
@@ -92,7 +90,7 @@ const MultipleValues = ({
             {collector.map((item, idx) => (
               <li
                 key={idx}
-                className="text-[12px] px-2 py-0.5 rounded bg-amber-300 text-blue-500"
+                className="text-[12px] px-2 py-0.5 rounded bg-black text-white dark:bg-white dark:text-black"
               >
                 {item}{" "}
                 <button
