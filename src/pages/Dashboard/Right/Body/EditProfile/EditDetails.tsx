@@ -69,10 +69,12 @@ const EditDetails = () => {
     }
   };
   return (
-    <div className="sm:w-[60%] mx-auto">
+    <div className="sm:w-[60%] mx-auto h-[90%] overflow-scroll">
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <TextInput
           label="First Name"
+          variant="regular"
+          style={{ label: "text-[14px]" }}
           name="firstName"
           value={firstName || ""}
           handleChange={handleChange}
@@ -82,6 +84,8 @@ const EditDetails = () => {
         <TextInput
           label="Middle Name"
           name="middleName"
+          variant="regular"
+          style={{ label: "text-[14px]" }}
           value={middleName || ""}
           handleChange={handleChange}
           placeholder="K"
@@ -90,6 +94,8 @@ const EditDetails = () => {
         <TextInput
           label="Last Name"
           name="lastName"
+          style={{ label: "text-[14px]", input: "text-[14px]" }}
+          variant="regular"
           value={lastName || ""}
           handleChange={handleChange}
           placeholder="Cena"
@@ -99,7 +105,7 @@ const EditDetails = () => {
         <RadioInput
           radioFields={genderRadioInput}
           selected={genderMap[gender || "NS"]}
-          className="flex justify-around items-center"
+          className="flex gap-4 items-center"
           handleChange={handleChange}
         />
         <CustomButton

@@ -34,7 +34,7 @@ main {
 }
 
 @utility input-custom {
-  @apply px-3 py-2 placeholder:text-[12px] placeholder:text-gray-600;
+  @apply px-3 py-1 placeholder:text-[12px] placeholder:text-gray-600;
 }
 
 input:focus,
