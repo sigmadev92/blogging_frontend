@@ -2,6 +2,9 @@ import bgLogin from "../assets/images/bg-login.jpg";
 import bgHome from "../assets/images/home-2.png";
 import forDashboard from "../assets/images/bg-dashboard.jpg";
 import blogLogo from "../assets/images/blog-logo.png";
+import girlReadingBook from "../assets/images/girl-reading-book.png";
+import nightScene from "../assets/images/night-scene.jpg";
+import girlHoldingBook from "../assets/images/girl-holding-book.png";
 const _default = {
   profilePic: {
     M: "https://img.freepik.com/free-vector/smiling-redhaired-boy-illustration_1308-176664.jpg",
@@ -15,6 +18,17 @@ const _default = {
 };
 
 const images = {
+  girlHoldingBook: {
+    src: girlHoldingBook,
+    credits: {},
+  },
+  nightScene: {
+    src: nightScene,
+    credits: {
+      platform: "Freepik.com",
+      href: "freepik.com",
+    },
+  },
   bgLogin: {
     src: bgLogin,
     credits: {
@@ -51,6 +65,15 @@ const images = {
       platform: {
         name: "Freepik",
         href: "www.freepik.com",
+      },
+    },
+  },
+  girlReadingBook: {
+    src: girlReadingBook,
+    credit: {
+      platform: {
+        name: "Clean Png",
+        href: "https://www.cleanpng.com",
       },
     },
   },
