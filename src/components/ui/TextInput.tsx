@@ -1,4 +1,6 @@
-import type { ChangeEvent } from "react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { useState, type ChangeEvent } from "react";
+import CustomButton from "./Button";
 type Variant = "regular";
 const TextInput = ({
   placeholder,
@@ -26,16 +28,20 @@ const TextInput = ({
   variant?: Variant;
 }) => {
   const regular = "relative flex flex-col gap-1 w-full";
-
+  const [it, setIt] = useState<boolean>(inputType === "password");
   const maping = {
     regular,
     _: "",
   };
   return (
-    <div className={maping[variant || "_"]}>
+    <div
+      className={`${maping[variant || "_"]} ${
+        inputType === "password" ? "relative" : ""
+      }`}
+    >
       <label className={style?.label || "text-xl"}> {label}</label>
       <input
-        type={inputType}
+        type={inputType === "password" ? (it ? "password" : "text") : inputType}
         placeholder={placeholder}
         name={name}
         value={value}
@@ -43,6 +49,15 @@ const TextInput = ({
         onChange={(e) => handleChange(e)}
       />
       <div className="absolute top-2 right-3">{icon}</div>
+      {inputType === "password" && (
+        <CustomButton
+          className="absolute right-2 top-10"
+          variant="rounded-0"
+          onClick={() => setIt((prev) => !prev)}
+        >
+          {it ? <EyeIcon size={16} /> : <EyeOffIcon size={16} />}
+        </CustomButton>
+      )}
     </div>
   );
 };

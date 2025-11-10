@@ -5,5 +5,5 @@ export const heroLinks = [
   { href: "/resources", label: "Resources" },
   { href: "/shows", label: "Shows" },
   { href: "/vlogs", label: "Vlogs" },
-  { href: "news", label: "Weekly News" },
+  { href: "/news/weekly", label: "Weekly News" },
 ];

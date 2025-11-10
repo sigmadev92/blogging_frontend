@@ -17,6 +17,13 @@ import PreventExposed from "./components/ControlRoutes/PreventExposed";
 import InLayout from "./layouts/InLayout";
 import WriteBlog from "./pages/writeBlog";
 import OutLayout from "./layouts/OutLayout";
+import Authors from "./pages/Authors";
+import Books from "./pages/Books";
+import Resources from "./pages/Resources";
+import Shows from "./pages/Shows";
+import Vlogs from "./pages/Vlogs";
+import Blogs from "./pages/Blogs";
+import WeeklyNews from "./pages/WeeklyNews";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -36,6 +43,13 @@ function App() {
           element: <ProtectSensitive children={<Profile />} />,
         },
         { path: "credits", element: <Credits /> },
+        { path: "authors", element: <Authors /> },
+        { path: "books", element: <Books /> },
+        { path: "resources", element: <Resources /> },
+        { path: "shows", element: <Shows /> },
+        { path: "vlogs", element: <Vlogs /> },
+        { path: "blogs", element: <Blogs /> },
+        { path: "news/weekly", element: <WeeklyNews /> },
         {
           path: "in",
           element: (
