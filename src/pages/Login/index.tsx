@@ -10,6 +10,7 @@ import { useAppDispatch } from "../../redux_toolkit/store/hooks";
 import { LoaderActions } from "../../redux_toolkit/reducers/loaderReducer";
 
 import { images } from "../../functions/images";
+import { UserActions } from "../../redux_toolkit/reducers/userReducer";
 const Login = () => {
   const [formData, setFormData] = useState({
     fullName: "",
@@ -45,6 +46,7 @@ const Login = () => {
       const data = await response.json();
       if (data.success) {
         dispatch(LoaderActions.stopLoader());
+        dispatch(UserActions.setUser(data.user));
         toast.success("Logged in successfully");
         navigate("/");
       } else {
