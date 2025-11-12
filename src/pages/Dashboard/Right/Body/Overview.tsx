@@ -9,7 +9,7 @@ const Overview = () => {
   const { profilePic, gender, fullName, _id, role } = user!;
   const { firstName, lastName, middleName } = fullName;
   return (
-    <div className="mx-auto w-[50%] py-3 flex flex-col gap-3">
+    <div className="mx-auto md:w-[50%] py-3 flex flex-col gap-3">
       <p className="text-red-400">
         All of this data is not public. You can control the privacy of your data
         in Settings

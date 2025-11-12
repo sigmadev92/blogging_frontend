@@ -37,6 +37,10 @@ main {
   @apply px-3 py-1 placeholder:text-[12px] placeholder:text-gray-600;
 }
 
+@utility center {
+  @apply h-full w-full flex flex-col justify-center items-center;
+}
+
 input:focus,
 textarea:focus {
   outline: none;

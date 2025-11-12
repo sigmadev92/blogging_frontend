@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import TextInput from "../../components/ui/TextInput";
 import CustomTextArea from "../../components/ui/TextArea";
 import MultipleValues from "../../components/ui/MultipleValues";
@@ -11,10 +11,11 @@ import { blogsURL } from "../../functions/backend";
 
 import NavigationOverlay from "../../components/ui/NavigationOverlay";
 import { ImageIcon } from "lucide-react";
-import { myBlogsActions } from "../../redux_toolkit/reducers/myblogsReducer";
+import { useLocation } from "react-router-dom";
 
-const WriteBlog = () => {
+const EditBlog = () => {
   type Phase = "filling" | "saved" | "publishing" | "published";
+  const { pathname } = useLocation();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [topics, setTopics] = useState<string[]>([]);
@@ -37,6 +38,9 @@ const WriteBlog = () => {
     setTopics((prev) => [...prev, newTopic]);
   };
 
+  useEffect(() => {
+    console.log(pathname);
+  }, []);
   const deleteTopic = (idx: number) => {
     setTopics((prev) => prev.filter((_, i) => i !== idx));
   };
@@ -152,7 +156,6 @@ const WriteBlog = () => {
       if (data.success) {
         setPhase("published");
         setIsNaigationBox(true);
-        dispatch(myBlogsActions.addNewBlog(data.blog));
 
         dispatch(LoaderActions.stopLoader());
       } else {
@@ -170,7 +173,7 @@ const WriteBlog = () => {
     <section className="pt-11 px-4 bg-white text-black dark:bg-black dark:text-white h-full relative">
       {isNavigationBox && (
         <NavigationOverlay
-          message={"Your Blog has been Published"}
+          message={"Your Post has been Published"}
           navs={[
             { link: "/in/dashboard", label: "Dashboard" },
             { link: "/", label: "Home" },
@@ -335,4 +338,4 @@ const WriteBlog = () => {
   );
 };
 
-export default WriteBlog;
+export default EditBlog;

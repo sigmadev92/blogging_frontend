@@ -22,7 +22,11 @@ const Right = ({
   };
   return (
     <div className="w-full sm:w-[80%] h-[90%] border-light relative">
-      <Header user={user!} setIsMenuOpened={handleDbMenu} />
+      <Header
+        user={user!}
+        setIsMenuOpened={handleDbMenu}
+        isMenuOpened={isMenuOpened}
+      />
       {isMenuOpened && (
         // <span>asas</span>
         <Left

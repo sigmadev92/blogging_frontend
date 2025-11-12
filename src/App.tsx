@@ -24,6 +24,8 @@ import Shows from "./pages/Shows";
 import Vlogs from "./pages/Vlogs";
 import Blogs from "./pages/Blogs";
 import WeeklyNews from "./pages/WeeklyNews";
+import ViewBlog from "./pages/Blogs/ViewBlog";
+import EditBlog from "./pages/EditBlog";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -49,6 +51,10 @@ function App() {
         { path: "shows", element: <Shows /> },
         { path: "vlogs", element: <Vlogs /> },
         { path: "blogs", element: <Blogs /> },
+        {
+          path: "blog/view/:blogId",
+          element: <ViewBlog />,
+        },
         { path: "news/weekly", element: <WeeklyNews /> },
         {
           path: "in",
@@ -66,6 +72,10 @@ function App() {
             {
               path: "blog/new",
               element: <WriteBlog />,
+            },
+            {
+              path: "blog/edit/:blogId",
+              element: <EditBlog />,
             },
           ],
         },

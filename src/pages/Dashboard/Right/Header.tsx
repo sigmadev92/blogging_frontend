@@ -1,4 +1,4 @@
-import { InfoIcon, LayoutGrid } from "lucide-react";
+import { InfoIcon, MenuIcon, SquareXIcon } from "lucide-react";
 import type { User } from "../../../types/user";
 import CustomButton from "../../../components/ui/Button";
 import { useState } from "react";
@@ -6,9 +6,11 @@ import { useState } from "react";
 const Header = ({
   user,
   setIsMenuOpened,
+  isMenuOpened,
 }: {
   user: User;
   setIsMenuOpened: () => void;
+  isMenuOpened?: boolean;
 }) => {
   const [isInfo, setInfo] = useState(false);
 
@@ -19,7 +21,11 @@ const Header = ({
     <div className="flex justify-between border-b text-white bg-[#f449e6c8] py-1 px-2">
       <div className="flex gap-0.5 items-center ">
         <CustomButton className="visible sm:hidden" onClick={setIsMenuOpened}>
-          <LayoutGrid color="gray" size={16} />
+          {!isMenuOpened ? (
+            <MenuIcon size={16} color="white" />
+          ) : (
+            <SquareXIcon size={16} color="white" />
+          )}
         </CustomButton>
         <h3>{user?.fullName.firstName + " " + user?.fullName.lastName}</h3>
       </div>
