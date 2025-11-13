@@ -5,15 +5,10 @@ import Body from "./Body";
 import Header from "./Header";
 import Left from "../Left";
 
-const Right = ({
-  tab,
-  setTab,
-}: // setTab,
-{
-  tab: string;
-  setTab: (ele: string) => void;
-}) => {
+const Right = () => {
   const { user } = useAppSelector((state) => state.user);
+  const { tab } = useAppSelector((state) => state.dbMenu);
+
   const [isMenuOpened, setIsMenuOpened] = useState(false);
 
   const handleDbMenu = () => {
@@ -29,11 +24,7 @@ const Right = ({
       />
       {isMenuOpened && (
         // <span>asas</span>
-        <Left
-          tab={tab}
-          setTab={setTab}
-          className="absolute top-10 left-0 w-fit z-20 dark:bg-black dark:text-white bg-white text-black sm:hidden"
-        />
+        <Left className="absolute top-10 left-0 w-fit z-20 dark:bg-black dark:text-white bg-white text-black sm:hidden" />
       )}
       <Body tab={tab} />
     </div>

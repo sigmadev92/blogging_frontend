@@ -32,6 +32,15 @@ const myBlogsSlice = createSlice({
     addNewBlog: (state, action) => {
       state.myBlogs.push(action.payload);
     },
+
+    updateBlog: (state, action) => {
+      const { _id }: { _id: string } = action.payload;
+
+      const idx = state.myBlogs.findIndex((ele) => ele._id === _id);
+      if (idx > -1) {
+        state.myBlogs[idx] = action.payload;
+      }
+    },
   },
   extraReducers(builder) {
     builder

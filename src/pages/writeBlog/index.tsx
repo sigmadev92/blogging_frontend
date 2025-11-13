@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import TextInput from "../../components/ui/TextInput";
 import CustomTextArea from "../../components/ui/TextArea";
 import MultipleValues from "../../components/ui/MultipleValues";
@@ -13,9 +13,11 @@ import { LoaderActions } from "../../redux_toolkit/reducers/loaderReducer";
 import { blogsURL } from "../../functions/backend";
 
 import NavigationOverlay from "../../components/ui/NavigationOverlay";
-import { ImageIcon, SkipBackIcon } from "lucide-react";
+import { CornerUpLeftIcon, ImageIcon } from "lucide-react";
 import { myBlogsActions } from "../../redux_toolkit/reducers/myblogsReducer";
 import { UserActions } from "../../redux_toolkit/reducers/userReducer";
+import { NavLink } from "react-router-dom";
+import { dbMenuActions } from "../../redux_toolkit/reducers/dbMenuReducer";
 // import { UserActions } from "../../redux_toolkit/reducers/userReducer";
 
 const WriteBlog = () => {
@@ -29,7 +31,6 @@ const WriteBlog = () => {
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [isNavigationBox, setIsNaigationBox] = useState<boolean>(false);
   const [phase, setPhase] = useState<Phase>("filling");
-
   const { user } = useAppSelector((state) => state.user);
   const headingMap = {
     filling: ["Unsaved", "Create New Blog"],
@@ -39,6 +40,10 @@ const WriteBlog = () => {
   };
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(dbMenuActions.setTab("Posts"));
+  }, []);
   const addTopic = (newTopic: string) => {
     //verified that it is not already added
     setTopics((prev) => [...prev, newTopic]);
@@ -197,9 +202,15 @@ const WriteBlog = () => {
       {/* header */}
       <div className="fixed top-11 left-0 w-full backdrop-blur-2xl px-4  box-border z-3 flex justify-between items-center dark:bg-black bg-white">
         <div className="flex gap-2 items-center">
-          <div>
-            <SkipBackIcon />
-            <p>Blogs</p>
+          <div
+            className={
+              "bg-blue-600 rounded px-2 py-1 text-white hover:bg-blue-500"
+            }
+          >
+            <NavLink to={"/in/dashboard"}>
+              <CornerUpLeftIcon size={14} />
+              <span className="text-[12px]">Blogs</span>
+            </NavLink>
           </div>
           <div>
             <h3>{headingMap[phase][0]}</h3>

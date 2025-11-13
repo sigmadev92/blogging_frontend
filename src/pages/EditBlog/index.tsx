@@ -12,6 +12,8 @@ import { blogsURL } from "../../functions/backend";
 import NavigationOverlay from "../../components/ui/NavigationOverlay";
 import { CornerUpLeftIcon, ImageIcon } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
+import { dbMenuActions } from "../../redux_toolkit/reducers/dbMenuReducer";
+import { myBlogsActions } from "../../redux_toolkit/reducers/myblogsReducer";
 
 const EditBlog = () => {
   type Phase = "filling" | "saved" | "publishing" | "published";
@@ -37,6 +39,7 @@ const EditBlog = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    dispatch(dbMenuActions.setTab("Posts"));
     const blogId = pathname.split("/")[4];
 
     const fetchBlog = async () => {
@@ -166,7 +169,9 @@ const EditBlog = () => {
       const data = await response.json();
       if (!data.success) {
         toast.error(data.message);
+        return;
       }
+      dispatch(myBlogsActions.updateBlog(data.blog));
       setStatus("Saved");
     } catch (error) {
       console.log(error);
