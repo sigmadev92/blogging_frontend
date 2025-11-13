@@ -4,6 +4,8 @@ import CustomButton from "./Button";
 import { PencilIcon, Trash2Icon } from "lucide-react";
 import type { FullName } from "../../types/user";
 import { useAppSelector } from "../../redux_toolkit/store/hooks";
+import { _default } from "../../functions/images";
+import { useState } from "react";
 
 const BlogBox = ({
   blog,
@@ -20,12 +22,13 @@ const BlogBox = ({
   const { title, thumbnail, _id } = blog;
   const { user } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
+  const [deleting, setDeleting] = useState<boolean>(false);
 
   return (
-    <li className="h-[200px] w-[300px] theme border-light p-2 relative hover:shadow-blue-400 cursor-pointer hover:shadow-md">
+    <li className="h-[200px] w-[300px] theme border-light p-2 relative hover:shadow-blue-400 cursor-pointer hover:shadow-md overflow-hidden">
       <div className="h-[60%] w-full">
         <img
-          src={thumbnail.secure_url}
+          src={thumbnail?.secure_url || _default.thumbnail[0]}
           alt="the thumbnail of this blog post"
           className="h-full w-full"
         />
@@ -38,7 +41,11 @@ const BlogBox = ({
       </NavLink>
 
       <div className="absolute p-2 w-full bottom-0 flex justify-between">
-        <p className="text-[12px]">{author.fullName.firstName}</p>
+        {deleting ? (
+          <p className="text-[12px] text-red-500">Deleting...</p>
+        ) : (
+          <p className="text-[12px]">{author.fullName.firstName}</p>
+        )}
         {user?._id === author.authorId && (
           <div className="flex gap-3 pr-4">
             <CustomButton
@@ -49,7 +56,10 @@ const BlogBox = ({
             </CustomButton>
             <CustomButton
               className="hover:text-red-600"
-              onClick={() => deleteBlogBtn && deleteBlogBtn(_id)}
+              onClick={() => {
+                setDeleting(true);
+                if (deleteBlogBtn) deleteBlogBtn(_id);
+              }}
             >
               <Trash2Icon size={14} />
             </CustomButton>

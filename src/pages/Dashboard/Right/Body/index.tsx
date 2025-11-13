@@ -14,7 +14,7 @@ import YourActivity from "./YourActivity";
 
 const Body = ({ tab }: { tab: string }) => {
   return (
-    <div className="p-2">
+    <div className="p-2 h-[95%] overflow-hidden">
       {tab === "Overview" && <Overview />}
       {tab === "Edit Profile" && <EditProfile />}
       {tab === "Analytics" && <Analytics />}

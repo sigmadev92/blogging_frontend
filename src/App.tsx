@@ -6,7 +6,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Profile from "./pages/PublicProfile/Profile";
 import { useEffect } from "react";
-import { useAppDispatch } from "./redux_toolkit/store/hooks";
+import { useAppDispatch, useAppSelector } from "./redux_toolkit/store/hooks";
 import { ThemeActions } from "./redux_toolkit/reducers/themeReducer";
 import Credits from "./pages/Credits";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -26,15 +26,20 @@ import Blogs from "./pages/Blogs";
 import WeeklyNews from "./pages/WeeklyNews";
 import ViewBlog from "./pages/Blogs/ViewBlog";
 import EditBlog from "./pages/EditBlog";
+import { LoaderActions } from "./redux_toolkit/reducers/loaderReducer";
+import NotFound from "./pages/NotFound";
 
 function App() {
   const dispatch = useAppDispatch();
+
+  const { loggedIn } = useAppSelector((state) => state.user);
 
   // const { opened } = useAppSelector((state) => state.dropdown);
   const router = createBrowserRouter([
     {
       path: "",
       element: <RootLayout />,
+      errorElement: <NotFound />,
       children: [
         {
           index: true,
@@ -101,12 +106,20 @@ function App() {
   ]);
 
   useEffect(() => {
+    console.log("started");
     const savedTheme = localStorage.getItem("blogsEra_theme") || "light";
+    dispatch(LoaderActions.startLoader("Reloading Screen"));
     if (savedTheme === "dark") {
       dispatch(ThemeActions.setTheme(savedTheme));
     }
-    dispatch(fetchLoginStatus());
-  }, []);
+    const start = async () => {
+      await dispatch(fetchLoginStatus());
+      dispatch(LoaderActions.stopLoader());
+      console.log("ended");
+    };
+
+    start();
+  }, [loggedIn, dispatch]);
   return (
     <>
       <Toaster />

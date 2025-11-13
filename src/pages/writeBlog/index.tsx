@@ -5,13 +5,18 @@ import MultipleValues from "../../components/ui/MultipleValues";
 import CustomButton from "../../components/ui/Button";
 import toast from "react-hot-toast";
 import { _default } from "../../functions/images";
-import { useAppDispatch } from "../../redux_toolkit/store/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../redux_toolkit/store/hooks";
 import { LoaderActions } from "../../redux_toolkit/reducers/loaderReducer";
 import { blogsURL } from "../../functions/backend";
 
 import NavigationOverlay from "../../components/ui/NavigationOverlay";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, SkipBackIcon } from "lucide-react";
 import { myBlogsActions } from "../../redux_toolkit/reducers/myblogsReducer";
+import { UserActions } from "../../redux_toolkit/reducers/userReducer";
+// import { UserActions } from "../../redux_toolkit/reducers/userReducer";
 
 const WriteBlog = () => {
   type Phase = "filling" | "saved" | "publishing" | "published";
@@ -24,6 +29,8 @@ const WriteBlog = () => {
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [isNavigationBox, setIsNaigationBox] = useState<boolean>(false);
   const [phase, setPhase] = useState<Phase>("filling");
+
+  const { user } = useAppSelector((state) => state.user);
   const headingMap = {
     filling: ["Unsaved", "Create New Blog"],
     saved: ["Blog Saved", "Add Thumbnail"],
@@ -55,8 +62,9 @@ const WriteBlog = () => {
 
     setThumbnail(file);
   };
-  const addToDb = async (e: FormEvent) => {
-    e.preventDefault();
+
+  const addToDb = async () => {
+    // e.preventDefault();
     if (
       !title ||
       !description ||
@@ -67,8 +75,6 @@ const WriteBlog = () => {
       return;
     }
 
-    console.log({ title, description, searchTags, topics });
-
     dispatch(LoaderActions.startLoader("Saving blog"));
 
     try {
@@ -78,18 +84,26 @@ const WriteBlog = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title, description, topics, searchTags }),
+        body: JSON.stringify({
+          title,
+          description,
+          topics,
+          searchTags,
+        }),
       });
-
+      console.log(response.status);
       const data = await response.json();
-
       if (data.success) {
+        console.log(data);
         setCurrentBlogId(data.blogId);
         setPhase("saved");
+        if (user!.role !== "author") dispatch(UserActions.setRole("author"));
         toast.success("blog Added Successfully.");
       } else {
         toast.error(data.message);
       }
+
+      console.log("Sasds");
     } catch (error) {
       console.log(error);
       toast.error("Error AT client");
@@ -182,16 +196,22 @@ const WriteBlog = () => {
       )}
       {/* header */}
       <div className="fixed top-11 left-0 w-full backdrop-blur-2xl px-4  box-border z-3 flex justify-between items-center dark:bg-black bg-white">
-        <div>
-          <h3>{headingMap[phase][0]}</h3>
-          <h2 className="text-2xl text-purple-500">{headingMap[phase][1]}</h2>
+        <div className="flex gap-2 items-center">
+          <div>
+            <SkipBackIcon />
+            <p>Blogs</p>
+          </div>
+          <div>
+            <h3>{headingMap[phase][0]}</h3>
+            <h2 className="text-2xl text-purple-500">{headingMap[phase][1]}</h2>
+          </div>
         </div>
 
         <div className="flex gap-2">
           <CustomButton
             variant="regular-confirm"
-            btnType={"submit"}
-            formRef={"details"}
+            formRef="details"
+            onClick={addToDb}
           >
             Save
           </CustomButton>
@@ -214,7 +234,6 @@ const WriteBlog = () => {
       <div className="overflow-scroll pt-16 h-full">
         <form
           className="flex flex-col md:flex-row md:justify-between gap-y-4 w-full"
-          onSubmit={addToDb}
           id="details"
         >
           <div className="md:w-[70%] flex flex-col gap-3 border-light p-2">
@@ -324,7 +343,7 @@ const WriteBlog = () => {
                     if (phase !== "publishing") setThumbnail(null);
                   }}
                 >
-                  Cancel
+                  Close
                 </CustomButton>
               </form>
             </div>

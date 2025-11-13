@@ -9,16 +9,16 @@ const Overview = () => {
   const { profilePic, gender, fullName, _id, role } = user!;
   const { firstName, lastName, middleName } = fullName;
   return (
-    <div className="mx-auto md:w-[50%] py-3 flex flex-col gap-3">
+    <div className="mx-auto lg:w-[50%] py-3 flex flex-col gap-3">
       <p className="text-red-400">
         All of this data is not public. You can control the privacy of your data
         in Settings
       </p>
-      <div className="flex gap-16 items-center">
+      <div className="flex shrink-0 gap-16 items-center">
         <div className=" w-40 h-40">
           <img
             src={profilePic?.secure_url || _default.profilePic[gender || "NS"]}
-            className="w-full h-full rounded-full"
+            className="w-full h-full rounded-full shrink-0"
           />
         </div>
         <div>

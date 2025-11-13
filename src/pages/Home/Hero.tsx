@@ -11,14 +11,12 @@ const Hero = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch(`${blogsURL}/`, {
+        const response = await fetch(`${blogsURL}/all`, {
           method: "GET",
         });
         const data = await response.json();
 
-        if (data.success) {
-          setBlogs(data.blogs);
-        }
+        setBlogs(data.blogs);
       } catch (error) {
         console.log(error);
       }

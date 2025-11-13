@@ -10,8 +10,8 @@ import { LoaderActions } from "../../redux_toolkit/reducers/loaderReducer";
 import { blogsURL } from "../../functions/backend";
 
 import NavigationOverlay from "../../components/ui/NavigationOverlay";
-import { ImageIcon } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { CornerUpLeftIcon, ImageIcon } from "lucide-react";
+import { NavLink, useLocation } from "react-router-dom";
 
 const EditBlog = () => {
   type Phase = "filling" | "saved" | "publishing" | "published";
@@ -23,24 +23,65 @@ const EditBlog = () => {
   const [thumbnailForm, setThumbnailForm] = useState(false);
   const [currentBlogId, setCurrentBlogId] = useState<string>("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
+  const [stringThumbnail, setStringThumbnail] = useState<string>("");
   const [isNavigationBox, setIsNaigationBox] = useState<boolean>(false);
-  const [phase, setPhase] = useState<Phase>("filling");
+  const [status, setStatus] = useState<string>("Save");
+  const [phase, setPhase] = useState<Phase>("saved");
   const headingMap = {
     filling: ["Unsaved", "Create New Blog"],
     saved: ["Blog Saved", "Add Thumbnail"],
     publishing: ["Thumbnail Added", "Publish Now"],
-    published: ["Brilliant Work", "Published"],
+    published: ["Published", "Edit your Blog"],
   };
 
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const blogId = pathname.split("/")[4];
+
+    const fetchBlog = async () => {
+      try {
+        const response = await fetch(`${blogsURL}/one/${blogId}`, {
+          credentials: "include",
+          method: "GET",
+        });
+        const data = await response.json();
+        if (data.success) {
+          const blog = data.blog;
+          setTitle(blog.title);
+          setCurrentBlogId(blogId);
+          setDescription(blog.description);
+          setSeachTags(blog.searchTags);
+          setTopics(blog.topics);
+          if (blog.thumbnail?.publicId) {
+            setPhase("publishing");
+            setStringThumbnail(blog.thumbnail.secure_url);
+          }
+          if (blog.isPublished) {
+            setPhase("published");
+          }
+        } else {
+          toast.error(data.message);
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Error fetching blog");
+      }
+    };
+    fetchBlog();
+  }, []);
+
+  useEffect(() => {
+    if (status === "Saved") {
+      setTimeout(() => {
+        setStatus("Save");
+      }, 1000);
+    }
+  }, [status]);
   const addTopic = (newTopic: string) => {
     //verified that it is not already added
     setTopics((prev) => [...prev, newTopic]);
   };
-
-  useEffect(() => {
-    console.log(pathname);
-  }, []);
   const deleteTopic = (idx: number) => {
     setTopics((prev) => prev.filter((_, i) => i !== idx));
   };
@@ -59,8 +100,16 @@ const EditBlog = () => {
 
     setThumbnail(file);
   };
-  const addToDb = async (e: FormEvent) => {
+
+  const handleSaveBtn = (e: FormEvent) => {
     e.preventDefault();
+    if (phase === "filling") {
+      addToDb();
+      return;
+    }
+    updateBlog();
+  };
+  const addToDb = async () => {
     if (
       !title ||
       !description ||
@@ -99,6 +148,29 @@ const EditBlog = () => {
       toast.error("Error AT client");
     } finally {
       dispatch(LoaderActions.stopLoader());
+    }
+  };
+
+  const updateBlog = async () => {
+    try {
+      setStatus("Saving");
+      const response = await fetch(`${blogsURL}/edit/${currentBlogId}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, description, topics, searchTags }),
+      });
+
+      const data = await response.json();
+      if (!data.success) {
+        toast.error(data.message);
+      }
+      setStatus("Saved");
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in updating blog");
     }
   };
 
@@ -185,19 +257,20 @@ const EditBlog = () => {
       )}
       {/* header */}
       <div className="fixed top-11 left-0 w-full backdrop-blur-2xl px-4  box-border z-3 flex justify-between items-center dark:bg-black bg-white">
-        <div>
-          <h3>{headingMap[phase][0]}</h3>
-          <h2 className="text-2xl text-purple-500">{headingMap[phase][1]}</h2>
+        <div className="flex gap-2 items-center">
+          <div className={"bg-blue-600 rounded px-2 py-1 text-white"}>
+            <NavLink to={"/in/dashboard"}>
+              <CornerUpLeftIcon size={14} />
+              <span className="text-[12px]">Blogs</span>
+            </NavLink>
+          </div>
+          <div>
+            <h3>{headingMap[phase][0]}</h3>
+            <h2 className="text-2xl text-purple-500">{headingMap[phase][1]}</h2>
+          </div>
         </div>
 
         <div className="flex gap-2">
-          <CustomButton
-            variant="regular-confirm"
-            btnType={"submit"}
-            formRef={"details"}
-          >
-            Save
-          </CustomButton>
           <CustomButton
             disabled={phase === "filling"}
             variant="regular-confirm"
@@ -206,18 +279,27 @@ const EditBlog = () => {
             Add Thumbnail
           </CustomButton>
           <CustomButton
-            variant={"regular-confirm"}
-            disabled={phase !== "publishing"}
-            onClick={publishBlog}
+            variant="regular-confirm"
+            btnType={"submit"}
+            formRef={"details"}
           >
-            Publish
+            {status}
           </CustomButton>
+          {phase !== "published" && (
+            <CustomButton
+              variant={"regular-confirm"}
+              disabled={!["publishing", "published"].includes(phase)}
+              onClick={publishBlog}
+            >
+              Publish
+            </CustomButton>
+          )}
         </div>
       </div>
       <div className="overflow-scroll pt-16 h-full">
         <form
           className="flex flex-col md:flex-row md:justify-between gap-y-4 w-full"
-          onSubmit={addToDb}
+          onSubmit={handleSaveBtn}
           id="details"
         >
           <div className="md:w-[70%] flex flex-col gap-3 border-light p-2">
@@ -279,7 +361,7 @@ const EditBlog = () => {
               <div className=" w-[90%] rounded-xl overflow-hidden border">
                 {!thumbnail ? (
                   <img
-                    src={_default.thumbnail[0]}
+                    src={stringThumbnail || _default.thumbnail[0]}
                     alt="thumbnail of blog"
                     className="h-full w-full"
                   />

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
   useAppDispatch,
   useAppSelector,
@@ -14,12 +14,9 @@ import BlogBox from "../../../../components/ui/BlogBox";
 const Posts = () => {
   const { isFetched, myBlogs } = useAppSelector((state) => state.myBlogs);
   const { user } = useAppSelector((state) => state.user);
-  const [isDeleting, setDeleting] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const deleteBlogBtn = async (_id: string) => {
-    setDeleting(true);
     await dispatch(myBlogAsyncActions.deleteBlog(_id));
-    setDeleting(false);
   };
 
   useEffect(() => {
@@ -45,15 +42,10 @@ const Posts = () => {
   }, []);
 
   return (
-    <div className="h-full">
+    <div className="h-full flex flex-col gap-4">
       <h2 className="font-bold">My blogs</h2>
       {myBlogs.length > 0 ? (
-        <div className="w-full h-full overflow-scroll relative">
-          {isDeleting && (
-            <div className="absolute top-0 left-0 w-full center backdrop-blur-[2px] z-5">
-              <p className="text-red-600 text-4xl font-bold">Deleting post</p>
-            </div>
-          )}
+        <div className="w-full h-full overflow-scroll">
           <ul className="flex gap-2 flex-wrap shrink-0 list-none">
             {myBlogs.map((blogItem, idx) => (
               <BlogBox

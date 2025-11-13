@@ -27,6 +27,9 @@ const userSlice = createSlice({
       state.user = action.payload;
       state.loggedIn = true;
     },
+    setRole: (state, action) => {
+      state.user!.role = action.payload;
+    },
     logout: (state) => {
       state.user = null;
       state.loggedIn = false;
