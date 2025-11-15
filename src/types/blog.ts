@@ -19,6 +19,20 @@ export type Blog = {
   createdAt?: Date;
   updatedAt?: Date;
 };
+
+export type PublicBlog = Blog & {
+  authorId: {
+    fullName: FullName;
+    profilePic: {
+      secure_url: string;
+      publicId: string;
+    };
+    email: string;
+    _id: string;
+    username?: string;
+  };
+};
+
 export type BlogDetails = {
   authorName: FullName;
   authorId: string;
