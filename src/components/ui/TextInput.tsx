@@ -27,7 +27,7 @@ const TextInput = ({
   };
   variant?: Variant;
 }) => {
-  const regular = "relative flex flex-col gap-1 w-full";
+  const regular = "relative flex flex-col gap-2 w-full";
   const [it, setIt] = useState<boolean>(inputType === "password");
   const maping = {
     regular,
@@ -39,11 +39,15 @@ const TextInput = ({
         inputType === "password" ? "relative" : ""
       }`}
     >
-      <label className={style?.label || "text-xl"}> {label}</label>
+      <label htmlFor={name} className={style?.label || "text-xl"}>
+        {" "}
+        {label}
+      </label>
       <input
         type={inputType === "password" ? (it ? "password" : "text") : inputType}
         placeholder={placeholder}
         name={name}
+        id={name}
         value={value}
         className={`border-light input-custom ${style?.input}`}
         onChange={(e) => handleChange(e)}

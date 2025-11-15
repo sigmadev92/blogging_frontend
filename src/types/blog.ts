@@ -27,6 +27,9 @@ export type PublicBlog = Blog & {
       secure_url: string;
       publicId: string;
     };
+    email: string;
+    _id: string;
+    username?: string;
   };
 };
 
