@@ -171,7 +171,7 @@ const ViewBlog = () => {
             </div>
             <div className=" h-[250px] overflow-auto border-light flex flex-col items-center gap-4 text-[12px] p-2">
               <h2 className=" font-bold">Search Tags for this post</h2>
-              <ul className="flex flex-wrap gap-2 list-none">
+              <ul className="flex flex-wrap gap-2 list-none w-full">
                 {blog.searchTags.map((item, idx) => (
                   <li
                     key={idx}
