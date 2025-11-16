@@ -25,8 +25,8 @@ const BlogBox = ({
   const [deleting, setDeleting] = useState<boolean>(false);
 
   return (
-    <li className="h-[200px] w-[300px] theme border-light p-2 relative hover:shadow-blue-400 cursor-pointer hover:shadow-md overflow-hidden">
-      <div className="h-[60%] w-full">
+    <li className="h-[100px] w-full md:h-[200px] md:w-[300px] flex gap-4 md:block theme border-light p-2 relative hover:shadow-blue-400 cursor-pointer hover:shadow-md overflow-hidden">
+      <div className="h-full md:h-[60%] w-[40%] md:w-full">
         <img
           src={thumbnail?.secure_url || _default.thumbnail[0]}
           alt="the thumbnail of this blog post"
@@ -40,7 +40,7 @@ const BlogBox = ({
         {title}
       </NavLink>
 
-      <div className="absolute p-2 w-full bottom-0 flex justify-between">
+      <div className="absolute p-2 w-[55%] left-[43%] md:w-full md:left-0 bottom-0 flex justify-between">
         {deleting ? (
           <p className="text-[12px] text-red-500">Deleting...</p>
         ) : (

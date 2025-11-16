@@ -46,8 +46,8 @@ function App() {
           element: <Home />,
         },
         {
-          path: "profile/:medium/:userId",
-          element: <ProtectSensitive children={<Profile />} />,
+          path: "profile/:medium/:value",
+          element: <Profile />,
         },
         { path: "credits", element: <Credits /> },
         { path: "authors", element: <Authors /> },

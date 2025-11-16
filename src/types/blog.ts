@@ -20,6 +20,13 @@ export type Blog = {
   updatedAt?: Date;
 };
 
+export type PublicBlog1 = Blog & {
+  authorId: {
+    fullName: FullName;
+    _id: string;
+  };
+};
+
 export type PublicBlog = Blog & {
   authorId: {
     fullName: FullName;
