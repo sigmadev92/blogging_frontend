@@ -17,6 +17,9 @@ export enum UserRole {
 export type User = {
   _id: string;
   email: string;
+  isMailVerified?: boolean;
+  isAccountVerified?: boolean;
+  isPremiumAccount?: boolean;
   password?: string;
   fullName: FullName;
   gender: Gender;
@@ -25,4 +28,10 @@ export type User = {
     secure_url: string;
     publicId: string;
   };
+  userName?: string;
+  thumbnail?: {
+    secure_url: string;
+    publicId: string;
+  };
+  about?: string;
 };
