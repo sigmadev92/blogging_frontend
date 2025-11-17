@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "./redux_toolkit/store/hooks";
 import { ThemeActions } from "./redux_toolkit/reducers/themeReducer";
 import Credits from "./pages/Credits";
 import ForgotPassword from "./pages/ForgotPassword";
-import { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { fetchLoginStatus } from "./redux_toolkit/reducers/userReducer";
 import ProtectSensitive from "./components/ControlRoutes/ProtectSensitive";
 import PreventExposed from "./components/ControlRoutes/PreventExposed";
@@ -28,11 +28,19 @@ import ViewBlog from "./pages/Blogs/ViewBlog";
 import EditBlog from "./pages/EditBlog";
 import { LoaderActions } from "./redux_toolkit/reducers/loaderReducer";
 import NotFound from "./pages/NotFound";
+import {
+  LikeActions,
+  LikeThunkActions,
+} from "./redux_toolkit/reducers/likeReducer";
+import { blogsURL } from "./functions/backend";
 
 function App() {
   const dispatch = useAppDispatch();
 
   const { loggedIn } = useAppSelector((state) => state.user);
+  const { isFetched, likes, isLikedBlogsFetched } = useAppSelector(
+    (state) => state.like
+  );
 
   // const { opened } = useAppSelector((state) => state.dropdown);
   const router = createBrowserRouter([
@@ -120,6 +128,41 @@ function App() {
 
     start();
   }, [loggedIn, dispatch]);
+
+  useEffect(() => {
+    const fetchLikes = async () => {
+      await dispatch(LikeThunkActions.fetchMyLikesOnly());
+    };
+    if (loggedIn && !isFetched) {
+      fetchLikes();
+    }
+  }, [loggedIn]);
+
+  useEffect(() => {
+    const fetchLikedBlogs = async () => {
+      const response = await fetch(`${blogsURL}/selected-blogs`, {
+        method: "POST",
+        body: JSON.stringify({ blogIds: Object.keys(likes) }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        console.log("heheheh");
+        toast.error(`Request Failed ${response.status}`);
+        return;
+      }
+      const data = await response.json();
+      console.log(data);
+      dispatch(LikeActions.setLikedBlogs(data.blogs));
+    };
+
+    if (Object.keys(likes).length > 0 && !isLikedBlogsFetched) {
+      console.log("usus");
+      fetchLikedBlogs();
+    }
+  }, [likes]);
   return (
     <>
       <Toaster />

@@ -45,3 +45,7 @@ export type BlogDetails = {
   authorId: string;
   blogs: Blog[];
 };
+
+export type LikedBlogs = {
+  [key: string]: PublicBlog1;
+};

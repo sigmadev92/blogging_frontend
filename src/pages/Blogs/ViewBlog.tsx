@@ -16,14 +16,22 @@ import {
 } from "lucide-react";
 import CustomButton from "../../components/ui/Button";
 import TextInput from "../../components/ui/TextInput";
-import { useAppSelector } from "../../redux_toolkit/store/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../redux_toolkit/store/hooks";
+import NavigationOverlay from "../../components/ui/NavigationOverlay";
+import { LikeThunkActions } from "../../redux_toolkit/reducers/likeReducer";
 
 const ViewBlog = () => {
   const { user } = useAppSelector((state) => state.user);
+  const { likes } = useAppSelector((state) => state.like);
   const { pathname } = useLocation();
   const [blog, setBlog] = useState<PublicBlog | null>(null);
   const [fullName, setFullName] = useState<string>("");
   const [inputComment, setComment] = useState<string>("");
+  const [showNavBox, setNavBox] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
   useEffect(() => {
     const blogId = pathname.split("/")[3];
 
@@ -40,7 +48,6 @@ const ViewBlog = () => {
         setBlog(data.blog);
         const { firstName, middleName, lastName } = data.blog.authorId.fullName;
         setFullName(firstName + " " + middleName + " " + lastName);
-        console.log(data.blog);
       } catch (error) {
         console.log(error);
         toast.error("Error at client side");
@@ -48,22 +55,88 @@ const ViewBlog = () => {
     };
     fetchBlog();
   }, []);
+
+  const likeDislikeBtnFn = async (action: 1 | -1) => {
+    if (!blog) return;
+    console.log(action);
+    if (!user) {
+      setNavBox(true);
+      return;
+    }
+    await dispatch(LikeThunkActions.likeDislike({ blogId: blog!._id, action }));
+  };
+  const unlikeBtnFn = async () => {
+    if (!blog) return;
+    if (!user) {
+      setNavBox(true);
+      return;
+    }
+
+    await dispatch(LikeThunkActions.unlike({ blogId: blog._id }));
+  };
   return (
     <section className="pt-11 theme h-full">
+      {showNavBox && (
+        <NavigationOverlay
+          navs={[{ label: "Login", link: "/out/login" }]}
+          message="You are not logged in"
+          close={() => setNavBox(false)}
+        />
+      )}
       {blog ? (
         <div className="sm:flex justify-between px-4 h-[95%]">
           <div className="sm:w-[70%] border-light p-4 flex flex-col gap-4 h-full overflow-y-scroll">
             <div className="flex justify-between items-center">
               <p className="text-[12px] text-gray-500">
                 Last Edited {getTimeAgo(blog.updatedAt!)}
+                <span>{blog._id}</span>
               </p>
+
               <div className=" p-1 flex gap-4 items-center">
-                <CustomButton>
-                  <ThumbsUpIcon className="hover:text-blue-500" size={16} />
-                </CustomButton>
-                <CustomButton>
-                  <ThumbsDownIcon className="hover:text-red-500" size={16} />
-                </CustomButton>
+                {likes[blog._id]?.action === 1 ? (
+                  <CustomButton
+                    onClick={() => {
+                      unlikeBtnFn();
+                    }}
+                  >
+                    <ThumbsUpIcon
+                      className="hover:text-blue-500"
+                      size={16}
+                      fill="blue"
+                    />
+                  </CustomButton>
+                ) : (
+                  <CustomButton
+                    onClick={() => {
+                      likeDislikeBtnFn(1);
+                    }}
+                  >
+                    <ThumbsUpIcon className="hover:text-blue-500" size={16} />
+                  </CustomButton>
+                )}
+
+                {likes[blog._id]?.action === -1 ? (
+                  <CustomButton
+                    onClick={() => {
+                      unlikeBtnFn();
+                    }}
+                  >
+                    <ThumbsDownIcon
+                      className="hover:text-red-500"
+                      size={16}
+                      fill="red"
+                    />
+                  </CustomButton>
+                ) : (
+                  <CustomButton
+                    onClick={() => {
+                      likeDislikeBtnFn(-1);
+                    }}
+                  >
+                    <ThumbsDownIcon className="hover:text-red-500" size={16} />
+                  </CustomButton>
+                )}
+
                 <CustomButton
                   onClick={() => {
                     document.getElementById("comment")!.focus();
@@ -101,22 +174,24 @@ const ViewBlog = () => {
               <p className="mt-4">{blog.description}</p>
 
               <h3>Comments</h3>
-              <div className="flex flex-col gap-4 px-4 mb-4">
-                <TextInput
-                  label="Add your comment"
-                  style={{ label: "text-[14px]" }}
-                  inputType="text"
-                  placeholder="how you feel about this post? Please be respectful"
-                  icon={<MessageSquareTextIcon size={16} />}
-                  handleChange={(e) => setComment(e.target.value)}
-                  value={inputComment}
-                  name="comment"
-                  variant="regular"
-                />
-                <CustomButton variant="regular-confirm" className="w-fit">
-                  Post
-                </CustomButton>
-              </div>
+              {user && (
+                <div className="flex flex-col gap-4 px-4 mb-4">
+                  <TextInput
+                    label="Add your comment"
+                    style={{ label: "text-[14px]" }}
+                    inputType="text"
+                    placeholder="how you feel about this post? Please be respectful"
+                    icon={<MessageSquareTextIcon size={16} />}
+                    handleChange={(e) => setComment(e.target.value)}
+                    value={inputComment}
+                    name="comment"
+                    variant="regular"
+                  />
+                  <CustomButton variant="regular-confirm" className="w-fit">
+                    Post
+                  </CustomButton>
+                </div>
+              )}
             </div>
           </div>
           <div className="hidden md:visible w-[20%] sm:flex flex-col gap-4">
@@ -145,29 +220,28 @@ const ViewBlog = () => {
                   /@{blog.authorId.username}
                 </NavLink>
               )}
-              {!user ||
-                (blog.authorId._id !== user._id && (
-                  <>
-                    <CustomButton
-                      variant={"regular-dark"}
-                      className="hover:bg-blue-400 hover:text-white"
-                    >
-                      <span className="flex gap-2 items-center">
-                        <UserPlusIcon size={16} />
-                        <span className="">Follow</span>
-                      </span>
-                    </CustomButton>
-                    <CustomButton
-                      variant={"regular"}
-                      className="bg-[#bc168a] hover:bg-blue-400 hover:text-white"
-                    >
-                      <span className="flex gap-2 items-center">
-                        <HandHeartIcon size={16} />
-                        <span className="">Donate</span>
-                      </span>
-                    </CustomButton>
-                  </>
-                ))}
+              {blog.authorId._id !== user?._id && (
+                <>
+                  <CustomButton
+                    variant={"regular-dark"}
+                    className="hover:bg-blue-400 hover:text-white"
+                  >
+                    <span className="flex gap-2 items-center">
+                      <UserPlusIcon size={16} />
+                      <span className="">Follow</span>
+                    </span>
+                  </CustomButton>
+                  <CustomButton
+                    variant={"regular"}
+                    className="bg-[#bc168a] hover:bg-blue-400 hover:text-white"
+                  >
+                    <span className="flex gap-2 items-center">
+                      <HandHeartIcon size={16} />
+                      <span className="">Donate</span>
+                    </span>
+                  </CustomButton>
+                </>
+              )}
             </div>
             <div className=" h-[250px] overflow-auto border-light flex flex-col items-center gap-4 text-[12px] p-2">
               <h2 className=" font-bold">Search Tags for this post</h2>

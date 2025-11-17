@@ -27,6 +27,7 @@ const NavigationOverlay = ({
               {navs.map(({ link, label }, idx) => (
                 <li key={idx}>
                   <CustomButton
+                    className="hover:bg-blue-500"
                     onClick={() => navigate(link)}
                     variant={"regular-dark"}
                   >

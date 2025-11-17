@@ -4,4 +4,6 @@ const usersURL = `${backendURL}/api/users`;
 
 const blogsURL = `${backendURL}/api/blogs`;
 
-export { backendURL, usersURL, blogsURL };
+const likesURL = `${backendURL}/api/likes`;
+
+export { backendURL, usersURL, blogsURL, likesURL };

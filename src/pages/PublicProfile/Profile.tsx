@@ -95,9 +95,11 @@ const Profile = () => {
                 }
               />
               <div className="flex flex-col gap-2 w-[280px]">
-                <span className=" font-bold -mb-2">
-                  {author.userName || "@username"}
-                </span>
+                {author.userName && (
+                  <span className=" font-bold -mb-2">
+                    {author.userName || "@username"}
+                  </span>
+                )}
                 {fullName && <h2 className="font-bold">{fullName}</h2>}
                 {!user ||
                   (author._id !== user._id && (
@@ -143,22 +145,22 @@ const Profile = () => {
                           )}
                         </div>
                       </div>
-                      <div className="flex justify-around items-center gap-3">
-                        <div className="flex flex-col items-center">
-                          <span>{blogs.length}</span>
-                          <span className="text-[12px]">Blogs</span>
-                        </div>
-                        <div className="flex flex-col items-center">
-                          <span>0</span>
-                          <span className="text-[12px]">Followers</span>
-                        </div>
-                        <div className="flex flex-col items-center">
-                          <span>0</span>
-                          <span className="text-[12px]">Following</span>
-                        </div>
-                      </div>
                     </>
                   ))}
+                <div className="flex justify-around items-center gap-3">
+                  <div className="flex flex-col items-center">
+                    <span>{blogs.length}</span>
+                    <span className="text-[12px]">Blogs</span>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <span>0</span>
+                    <span className="text-[12px]">Followers</span>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <span>0</span>
+                    <span className="text-[12px]">Following</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -167,7 +169,7 @@ const Profile = () => {
               <h3 className="text-3xl mb-4">About author</h3>
               <p>{author.about || "Nothing here"}</p>
             </div>
-            <div className="md:w-[70%] p-2">
+            <div className="md:w-[70%] p-2 h-[200px] md:h-full overflow-scroll">
               <h3 className="text-3xl mb-4">Blogs from the Author</h3>
 
               <ul className="list-none flex gap-4 flex-wrap">

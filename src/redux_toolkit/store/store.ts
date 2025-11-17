@@ -4,6 +4,7 @@ import { ThemeRducer } from "../reducers/themeReducer";
 import { LoaderReducer } from "../reducers/loaderReducer";
 import { myBlogReducer } from "../reducers/myblogsReducer";
 import { dbMenuReducer } from "../reducers/dbMenuReducer";
+import { LikeReducer } from "../reducers/likeReducer";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     loader: LoaderReducer,
     myBlogs: myBlogReducer,
     dbMenu: dbMenuReducer,
+    like: LikeReducer,
   },
 });
 
