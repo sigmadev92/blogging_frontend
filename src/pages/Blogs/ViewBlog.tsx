@@ -74,22 +74,32 @@ const ViewBlog = () => {
 
     await dispatch(LikeThunkActions.unlike({ blogId: blog._id }));
   };
+
+  const commentBtnFn = () => {
+    if (!blog) return;
+    if (!user) {
+      setNavBox(true);
+      return;
+    }
+    document.getElementById("comment")!.focus();
+  };
+
+  const postCommentBtnFn = async () => {};
   return (
     <section className="pt-11 theme h-full">
       {showNavBox && (
         <NavigationOverlay
           navs={[{ label: "Login", link: "/out/login" }]}
-          message="You are not logged in"
+          message="You are not logged in. Please login to Continue"
           close={() => setNavBox(false)}
         />
       )}
       {blog ? (
         <div className="sm:flex justify-between px-4 h-[95%]">
-          <div className="sm:w-[70%] border-light p-4 flex flex-col gap-4 h-full overflow-y-scroll">
+          <div className="sm:w-[70%] border-light p-4 flex flex-col gap-4 h-full ">
             <div className="flex justify-between items-center">
               <p className="text-[12px] text-gray-500">
                 Last Edited {getTimeAgo(blog.updatedAt!)}
-                <span>{blog._id}</span>
               </p>
 
               <div className=" p-1 flex gap-4 items-center">
@@ -137,11 +147,7 @@ const ViewBlog = () => {
                   </CustomButton>
                 )}
 
-                <CustomButton
-                  onClick={() => {
-                    document.getElementById("comment")!.focus();
-                  }}
-                >
+                <CustomButton onClick={() => commentBtnFn()}>
                   <MessageSquareTextIcon
                     className="hover:text-[#de12d3]"
                     size={16}
@@ -159,9 +165,12 @@ const ViewBlog = () => {
               <h2 className="text-2xl font-bold">{blog.title}</h2>
 
               {fullName && (
-                <p className="visible sm:hidden text-[12px] text-gray-400 pl-4">
+                <NavLink
+                  to={`/profile/id/${blog.authorId._id}`}
+                  className="block sm:hidden text-[12px] text-gray-400 pl-4 hover:underline"
+                >
                   by {fullName}
-                </p>
+                </NavLink>
               )}
               {blog.thumbnail && (
                 <img
@@ -187,7 +196,11 @@ const ViewBlog = () => {
                     name="comment"
                     variant="regular"
                   />
-                  <CustomButton variant="regular-confirm" className="w-fit">
+                  <CustomButton
+                    variant="regular-confirm"
+                    className="w-fit"
+                    onClick={postCommentBtnFn}
+                  >
                     Post
                   </CustomButton>
                 </div>

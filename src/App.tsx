@@ -33,11 +33,11 @@ import {
   LikeThunkActions,
 } from "./redux_toolkit/reducers/likeReducer";
 import { blogsURL } from "./functions/backend";
-
+import { initSocket } from "./webSockets/socketService";
 function App() {
   const dispatch = useAppDispatch();
 
-  const { loggedIn } = useAppSelector((state) => state.user);
+  const { loggedIn, user } = useAppSelector((state) => state.user);
   const { isFetched, likes, isLikedBlogsFetched } = useAppSelector(
     (state) => state.like
   );
@@ -163,6 +163,12 @@ function App() {
       fetchLikedBlogs();
     }
   }, [likes]);
+
+  useEffect(() => {
+    if (user) {
+      initSocket(user._id);
+    }
+  }, [user]);
   return (
     <>
       <Toaster />
