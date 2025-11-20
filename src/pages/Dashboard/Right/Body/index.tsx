@@ -6,7 +6,6 @@ import Followers from "./Followers";
 import Following from "./Following";
 import Likes from "./Likes";
 import Overview from "./Overview";
-import PaidFeatures from "./PaidFeatures";
 import Posts from "./Posts";
 import Settings from "./Settings";
 import Subscriptions from "./Subscriptions";
@@ -25,7 +24,6 @@ const Body = ({ tab }: { tab: string }) => {
       {tab === "Complaints" && <Complaints />}
       {tab === "Posts" && <Posts />}
       {tab === "Subscriptions" && <Subscriptions />}
-      {tab === "Paid Features" && <PaidFeatures />}
       {tab === "Settings" && <Settings />}
       {tab === "My Activity" && <YourActivity />}
     </div>

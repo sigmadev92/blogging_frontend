@@ -31,9 +31,11 @@ const Header = ({
       </div>
       <div className="flex gap-2 items-center relative">
         <b className="capitalize">{user?.role}</b>
-        <CustomButton onClick={handleClick}>
-          <InfoIcon size={16} />
-        </CustomButton>
+        {user.role !== "author" && (
+          <CustomButton onClick={handleClick}>
+            <InfoIcon size={16} />
+          </CustomButton>
+        )}
 
         {isInfo && (
           <div className="absolute right-0 top-8 w-[170px] rounded bg-white text-black dark:bg-black dark:text-[aqua] text-[12px] p-2 border">

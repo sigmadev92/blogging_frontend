@@ -6,7 +6,7 @@ import { ExternalLink } from "lucide-react";
 
 const Overview = () => {
   const { user } = useAppSelector((state) => state.user);
-  const { profilePic, gender, fullName, _id, role } = user!;
+  const { profilePic, gender, fullName, _id, role, userName } = user!;
   const { firstName, lastName, middleName } = fullName;
   return (
     <div className="mx-auto lg:w-[50%] py-3 flex flex-col gap-3">
@@ -22,6 +22,7 @@ const Overview = () => {
           />
         </div>
         <div>
+          <h4>{userName || "Username not set yet"}</h4>
           <h3 className="text-2xl font-bold">
             {firstName + " " + middleName + " " + lastName}
           </h3>
@@ -43,11 +44,7 @@ const Overview = () => {
       <hr className="my-3" />
       <div>
         <h3 className="text-cyan-400 text-2xl">About me</h3>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-          Necessitatibus quae sint esse corrupti sed, eum minima mollitia
-          architecto. Soluta, ipsam nemo? Vitae, consequatur?
-        </p>
+        <p>Not set yet</p>
       </div>
     </div>
   );

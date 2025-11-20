@@ -41,6 +41,10 @@ main {
   @apply h-full w-full flex flex-col justify-center items-center;
 }
 
+@utility theme-shadow {
+  @apply shadow-md dark:shadow-blue-600 shadow-blue-700 rounded p-2;
+}
+
 input:focus,
 textarea:focus {
   outline: none;

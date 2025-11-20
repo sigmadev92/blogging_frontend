@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   loader: false,
+  premiumDiv: false,
   waitMessage: "",
 };
 
@@ -16,6 +17,9 @@ const loaderSlice = createSlice({
     stopLoader: (state) => {
       state.loader = false;
       state.waitMessage = "";
+    },
+    setPremiumDiv: (state, action) => {
+      state.premiumDiv = action.payload;
     },
   },
 });

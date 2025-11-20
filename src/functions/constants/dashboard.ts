@@ -10,6 +10,5 @@ export const dbLefttabs = [
   { label: "Following" },
   { label: "Analytics" },
   { label: "Complaints" },
-  { label: "Paid Features" },
   { label: "Settings" },
 ];
