@@ -24,7 +24,7 @@ import Shows from "./pages/Shows";
 import Vlogs from "./pages/Vlogs";
 import Blogs from "./pages/Blogs";
 import WeeklyNews from "./pages/WeeklyNews";
-import ViewBlog from "./pages/Blogs/ViewBlog";
+import ViewBlog from "./pages/ViewBlog";
 import EditBlog from "./pages/EditBlog";
 import { LoaderActions } from "./redux_toolkit/reducers/loaderReducer";
 import NotFound from "./pages/NotFound";
@@ -34,6 +34,7 @@ import {
 } from "./redux_toolkit/reducers/likeReducer";
 import { blogsURL } from "./functions/backend";
 import { initSocket } from "./webSockets/socketService";
+import { FollowThunkActions } from "./redux_toolkit/reducers/followReducer";
 function App() {
   const dispatch = useAppDispatch();
 
@@ -133,7 +134,11 @@ function App() {
     const fetchLikes = async () => {
       await dispatch(LikeThunkActions.fetchMyLikesOnly());
     };
+    const followInfo = async () => {
+      await dispatch(FollowThunkActions.fetchFollowInfo());
+    };
     if (loggedIn && !isFetched) {
+      followInfo();
       fetchLikes();
     }
   }, [loggedIn]);
