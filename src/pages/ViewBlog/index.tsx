@@ -49,7 +49,11 @@ const ViewBlog = () => {
       {blog ? (
         <div className="sm:flex justify-between px-4 h-[95%]">
           <ViewBlogLeft fullName={fullName} blog={blog} setNavBox={setNavBox} />
-          <ViewBlogRight fullName={fullName} blog={blog} />
+          <ViewBlogRight
+            fullName={fullName}
+            blog={blog}
+            setNavBox={setNavBox}
+          />
         </div>
       ) : (
         <div className="center">

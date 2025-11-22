@@ -5,7 +5,8 @@ import { LoaderReducer } from "../reducers/loaderReducer";
 import { myBlogReducer } from "../reducers/myblogsReducer";
 import { dbMenuReducer } from "../reducers/dbMenuReducer";
 import { LikeReducer } from "../reducers/likeReducer";
-import {FollowReducer} from "../reducers/followReducer.ts";
+import { FollowReducer } from "../reducers/followReducer.ts";
+import { visitedUserReducer } from "../reducers/visitedUserFollow.ts";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     dbMenu: dbMenuReducer,
     like: LikeReducer,
     follow: FollowReducer,
+    visitedUser: visitedUserReducer,
   },
 });
 

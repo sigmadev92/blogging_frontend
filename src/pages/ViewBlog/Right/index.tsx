@@ -9,9 +9,11 @@ import FollowBtn from "../../../components/ui/FollowBtn";
 const ViewBlogRight = ({
   blog,
   fullName,
+  setNavBox,
 }: {
   fullName: string;
   blog: PublicBlog;
+  setNavBox: (e: boolean) => void;
 }) => {
   const { user } = useAppSelector((state) => state.user);
 
@@ -49,6 +51,7 @@ const ViewBlogRight = ({
                 userName: blog.authorId.username,
                 profilePic: blog.authorId.profilePic,
               }}
+              setNavBox={setNavBox}
             />
             <CustomButton
               variant={"regular"}

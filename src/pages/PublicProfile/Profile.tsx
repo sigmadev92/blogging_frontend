@@ -7,17 +7,22 @@ import { _default } from "../../functions/images";
 import type { Blog } from "../../types/blog";
 import CustomButton from "../../components/ui/Button";
 import { HandHeartIcon, MailIcon, UserPlusIcon } from "lucide-react";
-import { useAppSelector } from "../../redux_toolkit/store/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../redux_toolkit/store/hooks";
 import BlogBox from "../../components/ui/BlogBox";
-
+import { visitedUserThunkActions } from "../../redux_toolkit/reducers/visitedUserFollow";
+type Medium = "id" | "username";
 const Profile = () => {
-  type Medium = "id" | "username";
   const { user } = useAppSelector((state) => state.user);
   const { medium, value } = useParams<{ medium: Medium; value: string }>();
   const [author, setAuthor] = useState<User | null>(null);
   const [error, setError] = useState<string>("");
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [fullName, setFullName] = useState<string>("");
+  const visitedUser = useAppSelector((state) => state.visitedUser);
+  const dispatch = useAppDispatch();
   // for showing info about premium account
   const [isInfo1, setInfo1] = useState<boolean>(false);
   useEffect(() => {
@@ -48,7 +53,11 @@ const Profile = () => {
     if (!author) {
       return;
     }
-
+    const fetchFollowInfo = async () => {
+      await dispatch(
+        visitedUserThunkActions.fetchFollowDetails({ userId: author!._id })
+      );
+    };
     const fetchBlogs = async () => {
       try {
         const response = await fetch(`${blogsURL}/all/${author._id}`);
@@ -68,6 +77,7 @@ const Profile = () => {
       }
     };
     console.log(medium, value);
+    fetchFollowInfo();
     fetchBlogs();
   }, [author]);
 
@@ -153,11 +163,11 @@ const Profile = () => {
                     <span className="text-[12px]">Blogs</span>
                   </div>
                   <div className="flex flex-col items-center">
-                    <span>0</span>
+                    <span>{visitedUser.followers.length}</span>
                     <span className="text-[12px]">Followers</span>
                   </div>
                   <div className="flex flex-col items-center">
-                    <span>0</span>
+                    <span>{visitedUser.following.length}</span>
                     <span className="text-[12px]">Following</span>
                   </div>
                 </div>

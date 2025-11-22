@@ -79,7 +79,7 @@ const deleteSentRequest = createAsyncThunk(
       credentials: "include",
       method: "DELETE",
     });
-
+    console.log("sas");
     if (!response.ok) {
       throw new Error(`Request Failed ${response.status}`);
     }
@@ -177,6 +177,51 @@ const followSlice = createSlice({
         console.log(action.payload);
         const user = action.payload;
         state.pendingOutgoing[(user as User)._id] = user;
+      });
+
+    builder
+      .addCase(acceptRequest.rejected, (_, action) => {
+        toast.error((action.error as Error).message);
+      })
+      .addCase(acceptRequest.fulfilled, (state, action) => {
+        const user = action.payload;
+        console.log(user);
+        delete state.pendingIncomming[user._id];
+        state.followers[user._id] = user;
+      });
+    builder
+      .addCase(deleteSentRequest.rejected, (_, action) => {
+        toast.error((action.error as Error).message);
+      })
+      .addCase(deleteSentRequest.fulfilled, (state, action) => {
+        const { requestedTo } = action.payload;
+        delete state.pendingOutgoing[requestedTo];
+      });
+
+    builder
+      .addCase(deleteReceivedRequest.rejected, (_, action) => {
+        toast.error((action.error as Error).message);
+      })
+      .addCase(deleteReceivedRequest.fulfilled, (state, action) => {
+        const { requestedBy } = action.payload;
+        delete state.pendingOutgoing[requestedBy];
+      });
+
+    builder
+      .addCase(unfollowUser.rejected, (_, action) => {
+        toast.error((action.error as Error).message);
+      })
+      .addCase(unfollowUser.fulfilled, (state, action) => {
+        const { requestedTo } = action.payload;
+        delete state.following[requestedTo];
+      });
+    builder
+      .addCase(removeFollower.rejected, (_, action) => {
+        toast.error((action.error as Error).message);
+      })
+      .addCase(removeFollower.fulfilled, (state, action) => {
+        const { requestedBy } = action.payload;
+        delete state.following[requestedBy];
       });
   },
 });

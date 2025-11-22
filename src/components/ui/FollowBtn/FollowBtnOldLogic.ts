@@ -1,54 +1,7 @@
-import { ChevronDownIcon, UserPlusIcon } from "lucide-react";
-import {
-  useAppDispatch,
-  useAppSelector,
-} from "../../redux_toolkit/store/hooks";
-import type { FullName } from "../../types/user";
-
-import CustomButton from "./Button";
-import { FollowThunkActions } from "../../redux_toolkit/reducers/followReducer";
-import { useState } from "react";
-type User = {
-  _id: string;
-  fullName: FullName;
-  profilePic?: { secure_url: string; publicId: string };
-  userName?: string;
-};
-const FollowBtn = ({ user }: { user: User }) => {
-  const { followers, following, pendingOutgoing, pendingIncomming } =
-    useAppSelector((state) => state.follow);
-  const myUser = useAppSelector((state) => state.user);
-  const dispatch = useAppDispatch();
-  const [isDivOpened, setIsDivOpened] = useState<boolean>(false);
-
-  const followBtnFn = async () => {
-    await dispatch(FollowThunkActions.followRequest(user));
-  };
-  const acceptRqstBtnFn = async () => {
-    await dispatch(FollowThunkActions.acceptRequest(user));
-  };
-  const deleteSentRqstBtnFn = async () => {
-    await dispatch(
-      FollowThunkActions.deleteSentRequest({ requestedTo: myUser.user!._id })
-    );
-  };
-  const deleteReceivedRqstBtnFn = async () => {
-    await dispatch(
-      FollowThunkActions.deleteReceivedRequest({ requestedBy: user._id })
-    );
-  };
-  const unfollowBtnFn = async () => {
-    await dispatch(FollowThunkActions.unfollowUser({ requestedTo: user._id }));
-  };
-
-  const removeFollowerBtnFn = async () => {
-    await dispatch(
-      FollowThunkActions.removeFollower({ requestedBy: myUser.user!._id })
-    );
-  };
-  return (
-    <div>
-      {!pendingOutgoing[user._id] &&
+/**
+ * 
+ * 
+ *  {!pendingOutgoing[user._id] &&
       !pendingIncomming[user._id] &&
       !following[user._id] &&
       !followers[user._id] ? (
@@ -289,8 +242,4 @@ const FollowBtn = ({ user }: { user: User }) => {
           )}
         </div>
       ) : null}
-    </div>
-  );
-};
-
-export default FollowBtn;
+ */
