@@ -17,7 +17,7 @@ const Likes = () => {
       </div>
       <div className="h-[88%]">
         {len.length > 0 ? (
-          <div className="h-full overflow-scroll">
+          <div className="h-full overflow-y-auto">
             <ul className="flex gap-2">
               {len.map((blogItem, idx) => (
                 <BlogBox

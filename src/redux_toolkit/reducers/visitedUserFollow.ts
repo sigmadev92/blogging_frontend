@@ -1,18 +1,18 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { followURL } from "../../functions/backend";
 import toast from "react-hot-toast";
-import type { FullName } from "../../types/user";
+import type { FollowUser, FollowUserObject } from "../../types/user";
+import { FollowThunkActions } from "../AsyncThunkActions/follow";
 
-type User = {
-  _id: string;
-  fullName: FullName;
-  profilePic?: { secure_url: string; publicId: string };
-  userName?: string;
-};
-const initialState: { userId: string; followers: User[]; following: User[] } = {
+const { followRequest, acceptRequest, removeFollower } = FollowThunkActions;
+const initialState: {
+  userId: string;
+  followers: FollowUserObject;
+  following: FollowUserObject;
+} = {
   userId: "",
-  followers: [],
-  following: [],
+  followers: {},
+  following: {},
 };
 
 const fetchFollowDetails = createAsyncThunk(
@@ -30,8 +30,8 @@ const fetchFollowDetails = createAsyncThunk(
     }: {
       profiles: {
         status: "accepted";
-        requestedTo: User;
-        requestedBy: User;
+        requestedTo: FollowUser;
+        requestedBy: FollowUser;
       }[];
     } = await response.json();
 
@@ -43,20 +43,24 @@ const visitedUserSlice = createSlice({
   initialState,
   reducers: {
     addFollower: (state, action) => {
-      state.followers.push(action.payload);
+      const { user, me }: { user: FollowUser; me: FollowUser } = action.payload;
+      if (state.userId && state.userId === user._id) {
+        state.followers[me._id] = me;
+      }
     },
     removeFollower: (state, action) => {
       const id = action.payload;
-      const idx = state.followers.findIndex((ele) => ele._id === id);
-      state.followers.splice(idx, 1);
+      delete state.followers[id];
     },
     addFollowing: (state, action) => {
-      state.following.push(action.payload);
+      const { me }: { me: FollowUser } = action.payload;
+      if (!state.following[me._id]) {
+        state.following[me._id] = me;
+      }
     },
     removeFollowing: (state, action) => {
       const id = action.payload;
-      const idx = state.following.findIndex((ele) => ele._id === id);
-      state.following.splice(idx, 1);
+      delete state.following[id];
     },
   },
   extraReducers(builder) {
@@ -69,12 +73,30 @@ const visitedUserSlice = createSlice({
         state.userId = userId;
         profiles.forEach((rqst) => {
           if (rqst.requestedBy._id === userId) {
-            state.following.push(rqst.requestedTo);
+            state.following[rqst.requestedTo._id] = rqst.requestedTo;
           } else {
-            state.followers.push(rqst.requestedBy);
+            state.followers[rqst.requestedBy._id] = rqst.requestedBy;
           }
         });
       });
+    builder.addCase(followRequest.fulfilled, (state, action) => {
+      const { data, user } = action.payload;
+      // if the logged in user is seeing a profile and the profile _id is same as the account followed by loggedIn user
+      if (state.userId && state.userId === user._id) {
+        if (data.isPublic) state.followers[data.sender._id] = data.sender;
+      }
+    });
+    builder.addCase(acceptRequest.fulfilled, (state, action) => {
+      const { me, user } = action.payload;
+      if (state.userId && state.userId === user._id) {
+        state.following[me._id] = me;
+      }
+    });
+    builder.addCase(removeFollower.fulfilled, (state, action) => {
+      const { requestedBy, myId } = action.payload;
+      if (state.userId === requestedBy && state.following[myId])
+        delete state.following[myId];
+    });
   },
 });
 

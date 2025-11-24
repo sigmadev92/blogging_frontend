@@ -7,7 +7,7 @@ import { dbMenuReducer } from "../reducers/dbMenuReducer";
 import { LikeReducer } from "../reducers/likeReducer";
 import { FollowReducer } from "../reducers/followReducer.ts";
 import { visitedUserReducer } from "../reducers/visitedUserFollow.ts";
-
+import listenerMiddleware from "../actions/listenerMiddleWare.ts";
 const store = configureStore({
   reducer: {
     user: UserReducer,
@@ -19,6 +19,8 @@ const store = configureStore({
     follow: FollowReducer,
     visitedUser: visitedUserReducer,
   },
+  middleware: (getDefault) =>
+    getDefault().prepend(listenerMiddleware.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

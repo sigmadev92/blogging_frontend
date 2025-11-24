@@ -30,7 +30,7 @@ const Blogs = () => {
         </div>
         <div className="md:w-[83%] border-light h-full">
           {blogs.length > 0 ? (
-            <div className="w-full h-full flex justify-center overflow-scroll p-1">
+            <div className="w-full h-full flex justify-center overflow-y-auto overflow-x-hidden p-1">
               <ul className="flex gap-2 flex-wrap list-none">
                 {blogs.map((blogItem, idx) => (
                   <BlogBox

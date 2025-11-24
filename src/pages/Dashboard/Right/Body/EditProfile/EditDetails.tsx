@@ -69,7 +69,7 @@ const EditDetails = () => {
     }
   };
   return (
-    <div className="sm:w-[60%] mx-auto h-[90%] overflow-scroll">
+    <div className="sm:w-[60%] mx-auto h-[90%] overflow-y-auto">
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <TextInput
           label="First Name"

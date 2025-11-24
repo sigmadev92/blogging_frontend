@@ -1,9 +1,10 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import type { Like, LikeObject } from "../../types/like";
-import { blogsURL, likesURL } from "../../functions/backend";
+import { createSlice } from "@reduxjs/toolkit";
+import type { LikeObject } from "../../types/like";
 import toast from "react-hot-toast";
 import type { LikedBlogs, PublicBlog1 } from "../../types/blog";
+import { LikeThunkActions } from "../AsyncThunkActions/like";
 
+const { fetchMyLikesOnly, likeDislike, unlike } = LikeThunkActions;
 const initialState: {
   likes: LikeObject;
   isFetched: boolean;
@@ -15,71 +16,6 @@ const initialState: {
   likedBlogs: {},
   isLikedBlogsFetched: false,
 };
-
-const fetchMyLikesOnly = createAsyncThunk("fetchMyLikesOnly", async () => {
-  const response = await fetch(`${likesURL}/blogs`, {
-    method: "GET",
-    credentials: "include",
-  });
-
-  if (!response.ok) {
-    throw new Error(`Request Failed ${response.status}`);
-  }
-
-  const data: { success: boolean; message?: string; likes: Like[] } =
-    await response.json();
-
-  return data;
-});
-
-const likeDislike = createAsyncThunk(
-  "likeDislike",
-  async ({ blogId, action }: { blogId: string; action: 1 | -1 }) => {
-    const response = await fetch(`${likesURL}/like/${blogId}/${action}`, {
-      credentials: "include",
-      method: "PUT",
-    });
-
-    if (!response.ok) {
-      console.log("here");
-      throw new Error(`Request Failed ${response.status}`);
-    }
-
-    const response2 = await fetch(`${blogsURL}/selected-blogs`, {
-      method: "post",
-      body: JSON.stringify({ blogIds: [blogId] }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response2.ok) {
-      throw new Error("Post Liked but cannot be fetched");
-    }
-
-    const data2 = await response2.json();
-    const data: { success: boolean; message: string; like: Like } =
-      await response.json();
-
-    return { data, data2 };
-  }
-);
-
-const unlike = createAsyncThunk(
-  "unlike",
-  async ({ blogId }: { blogId: string }) => {
-    const response = await fetch(`${likesURL}/unlike/${blogId}`, {
-      credentials: "include",
-      method: "DELETE",
-    });
-
-    if (!response.ok) {
-      throw new Error(`Request failed ${response.status}`);
-    }
-
-    return { blogId };
-  }
-);
 
 const likeSlice = createSlice({
   name: "like",
@@ -136,6 +72,4 @@ const LikeReducer = likeSlice.reducer;
 
 const LikeActions = likeSlice.actions;
 
-const LikeThunkActions = { fetchMyLikesOnly, likeDislike, unlike };
-
-export { LikeActions, LikeReducer, LikeThunkActions };
+export { LikeActions, LikeReducer };

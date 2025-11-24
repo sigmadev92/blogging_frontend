@@ -6,13 +6,15 @@ import { blogsURL, usersURL } from "../../functions/backend";
 import { _default } from "../../functions/images";
 import type { Blog } from "../../types/blog";
 import CustomButton from "../../components/ui/Button";
-import { HandHeartIcon, MailIcon, UserPlusIcon } from "lucide-react";
+import { HandHeartIcon, MailIcon } from "lucide-react";
 import {
   useAppDispatch,
   useAppSelector,
 } from "../../redux_toolkit/store/hooks";
 import BlogBox from "../../components/ui/BlogBox";
 import { visitedUserThunkActions } from "../../redux_toolkit/reducers/visitedUserFollow";
+import FollowBtn from "../../components/ui/FollowBtn";
+import NavigationOverlay from "../../components/ui/NavigationOverlay";
 type Medium = "id" | "username";
 const Profile = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -22,6 +24,7 @@ const Profile = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [fullName, setFullName] = useState<string>("");
   const visitedUser = useAppSelector((state) => state.visitedUser);
+  const [navBox, setNavBox] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   // for showing info about premium account
   const [isInfo1, setInfo1] = useState<boolean>(false);
@@ -77,12 +80,25 @@ const Profile = () => {
       }
     };
     console.log(medium, value);
-    fetchFollowInfo();
+    if (!visitedUser.userId) {
+      fetchFollowInfo();
+    }
+
     fetchBlogs();
   }, [author]);
 
   return (
-    <section className="theme h-full">
+    <section className="theme h-full relative">
+      {navBox && (
+        <NavigationOverlay
+          close={() => {
+            setNavBox(false);
+          }}
+          navs={[{ label: "Login", link: "/out/login" }]}
+          message="You are not logged in"
+        />
+      )}
+
       {author ? (
         <div className="h-full flex flex-col gap-[5%]">
           <div
@@ -115,15 +131,14 @@ const Profile = () => {
                   (author._id !== user._id && (
                     <>
                       <div className="flex gap-2">
-                        <CustomButton
-                          variant={"regular-dark"}
-                          className="hover:bg-blue-400 hover:text-white"
-                        >
-                          <span className="flex gap-2 items-center">
-                            <UserPlusIcon size={16} />
-                            <span className="">Follow</span>
-                          </span>
-                        </CustomButton>
+                        <FollowBtn
+                          user={{
+                            _id: author._id,
+                            fullName: author.fullName,
+                            userName: author.userName,
+                          }}
+                          setNavBox={setNavBox}
+                        />
                         <CustomButton
                           variant={"regular"}
                           className="bg-[#bc168a] hover:bg-blue-400 hover:text-white"
@@ -163,11 +178,11 @@ const Profile = () => {
                     <span className="text-[12px]">Blogs</span>
                   </div>
                   <div className="flex flex-col items-center">
-                    <span>{visitedUser.followers.length}</span>
+                    <span>{Object.keys(visitedUser.followers).length}</span>
                     <span className="text-[12px]">Followers</span>
                   </div>
                   <div className="flex flex-col items-center">
-                    <span>{visitedUser.following.length}</span>
+                    <span>{Object.keys(visitedUser.following).length}</span>
                     <span className="text-[12px]">Following</span>
                   </div>
                 </div>
@@ -179,7 +194,7 @@ const Profile = () => {
               <h3 className="text-3xl mb-4">About author</h3>
               <p>{author.about || "Nothing here"}</p>
             </div>
-            <div className="md:w-[70%] p-2 h-[200px] md:h-full overflow-scroll">
+            <div className="md:w-[70%] p-2 h-[200px] md:h-full overflow-y-auto">
               <h3 className="text-3xl mb-4">Blogs from the Author</h3>
 
               <ul className="list-none flex gap-4 flex-wrap">

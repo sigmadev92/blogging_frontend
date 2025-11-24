@@ -20,6 +20,7 @@ const PremiumAccount = () => {
 
         <div className="min-h-[250px] md:w-[50%] mx-auto flex flex-col gap-4 text-md theme-shadow p-4">
           <p>Access to people who visited your profile</p>
+          <p>Access to mails of Authors for contact</p>
           <p>Premium account badge with your name</p>
           <p>Guaranteed reply from 1 of your favourite creators a month</p>
           <p>

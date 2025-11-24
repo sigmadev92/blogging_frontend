@@ -8,4 +8,14 @@ const likesURL = `${backendURL}/api/likes`;
 
 const followURL = `${backendURL}/api/requests`;
 
-export { backendURL, usersURL, blogsURL, likesURL ,followURL};
+const cloudinaryImagesURL =
+  "https://res.cloudinary.com/dwyeologv/image/upload/blog_app/images";
+const cloudinary_profilePicURL = `${cloudinaryImagesURL}/profile_pics`;
+export {
+  backendURL,
+  usersURL,
+  blogsURL,
+  likesURL,
+  followURL,
+  cloudinary_profilePicURL,
+};

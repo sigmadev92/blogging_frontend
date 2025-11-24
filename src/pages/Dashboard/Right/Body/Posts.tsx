@@ -45,7 +45,7 @@ const Posts = () => {
     <div className="h-full flex flex-col gap-4">
       <h2 className="font-bold">My blogs</h2>
       {myBlogs.length > 0 ? (
-        <div className="w-full h-full overflow-scroll">
+        <div className="w-full h-full overflow-y-auto">
           <ul className="flex gap-2 flex-wrap shrink-0 list-none">
             {myBlogs.map((blogItem, idx) => (
               <BlogBox

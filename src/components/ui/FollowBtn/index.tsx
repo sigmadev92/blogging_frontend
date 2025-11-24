@@ -5,15 +5,16 @@ import {
 } from "../../../redux_toolkit/store/hooks";
 
 import CustomButton from "../Button";
-import { FollowThunkActions } from "../../../redux_toolkit/reducers/followReducer";
+import { FollowThunkActions } from "../../../redux_toolkit/AsyncThunkActions/follow";
 import { useEffect, useState } from "react";
-import type { FollowMap, User } from "./constants";
+import type { FollowMap } from "../../../types/follow";
+import type { FollowUser } from "../../../types/user";
 
 const FollowBtn = ({
   user,
   setNavBox,
 }: {
-  user: User;
+  user: FollowUser;
   setNavBox: (e: boolean) => void;
 }) => {
   const [result, setResult] = useState<FollowMap>("0-0-0-0");

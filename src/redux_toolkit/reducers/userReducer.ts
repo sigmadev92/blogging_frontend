@@ -1,23 +1,12 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { type User } from "../../types/user";
-import { usersURL } from "../../functions/backend";
+import { UserThunkActions } from "../AsyncThunkActions/user";
+
+const { fetchLoginStatus } = UserThunkActions;
 const initialState: { loggedIn: boolean; user: User | null } = {
   loggedIn: false,
   user: null,
 };
-
-const fetchLoginStatus = createAsyncThunk("fetchLoginStatus", async () => {
-  const response = await fetch(`${usersURL}/auth`, {
-    method: "GET",
-    credentials: "include",
-  });
-
-  if (!response.ok) {
-    throw new Error(`Error ${response.statusText}`);
-  }
-  const data = await response.json();
-  return data;
-});
 
 const userSlice = createSlice({
   name: "user",
@@ -65,4 +54,4 @@ const UserReducer = userSlice.reducer;
 
 const UserActions = userSlice.actions;
 
-export { UserActions, UserReducer, fetchLoginStatus };
+export { UserActions, UserReducer };

@@ -6,7 +6,9 @@ import { ExternalLink } from "lucide-react";
 
 const Overview = () => {
   const { user } = useAppSelector((state) => state.user);
-  const { profilePic, gender, fullName, _id, role, userName } = user!;
+  const { myBlogs } = useAppSelector((state) => state.myBlogs);
+  const { followers, following } = useAppSelector((state) => state.follow);
+  const { profilePic, gender, fullName, _id, userName } = user!;
   const { firstName, lastName, middleName } = fullName;
   return (
     <div className="mx-auto lg:w-[50%] py-3 flex flex-col gap-3">
@@ -33,11 +35,11 @@ const Overview = () => {
             Public Profile <ExternalLink size={12} />
           </NavLink>
           <p>{genderMap[gender]}</p>
-          <p>Account : {role === "author" ? "Public" : "Private"}</p>
+          <p>Account : {user?.isPublic ? "Public" : "Private"}</p>
           <div className="flex gap-4">
-            <p>0 Blogs</p>
-            <p>0 Followers</p>
-            <p>0 Following</p>
+            <p>{myBlogs.length} Blogs</p>
+            <p>{Object.keys(followers).length} Followers</p>
+            <p>{Object.keys(following).length} Following</p>
           </div>
         </div>
       </div>

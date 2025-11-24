@@ -15,7 +15,7 @@ const Picture = () => {
   const dispatch = useAppDispatch();
   const [profilePic, setProfilePic] = useState<File | null>(null);
 
-  const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0];
     if (!file) {
       toast.error("Please choose a valid profile picture");

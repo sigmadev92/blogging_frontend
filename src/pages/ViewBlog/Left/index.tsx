@@ -6,7 +6,7 @@ import {
   useAppSelector,
 } from "../../../redux_toolkit/store/hooks";
 import type { PublicBlog } from "../../../types/blog";
-import { LikeThunkActions } from "../../../redux_toolkit/reducers/likeReducer";
+import { LikeThunkActions } from "../../../redux_toolkit/AsyncThunkActions/like";
 import {
   FlagIcon,
   MessageSquareTextIcon,
