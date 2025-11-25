@@ -101,8 +101,8 @@ const unfollowUser = createAsyncThunk(
     if (!response.ok) {
       throw new Error(`Request Failed ${response.status}`);
     }
-
-    return { requestedTo };
+    const data: { myId: string; hisId: string } = await response.json();
+    return data;
   }
 );
 

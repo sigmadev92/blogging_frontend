@@ -130,8 +130,10 @@ const followSlice = createSlice({
         toast.error((action.error as Error).message);
       })
       .addCase(unfollowUser.fulfilled, (state, action) => {
-        const { requestedTo } = action.payload;
-        delete state.following[requestedTo];
+        const { hisId } = action.payload;
+        if (state.following[hisId]) {
+          delete state.following[hisId];
+        }
       });
     builder
       .addCase(removeFollower.rejected, (_, action) => {

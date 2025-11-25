@@ -50,6 +50,7 @@ export const initSocket = (userId: string) => {
   socket.on(
     "user-accepted-my-request",
     ({ user, me }: { user: FollowUser; me: FollowUser }) => {
+      console.log(user, me);
       store.dispatch(showToast({ type: "request-accepted", user }));
       store.dispatch(FollowActions.userAcceptedMyRequest({ user }));
       store.dispatch(visitedUserActions.addFollower({ user, me }));
@@ -65,10 +66,21 @@ export const initSocket = (userId: string) => {
   );
   socket.on(
     "they-unfollowed",
-    ({ user, premium }: { user: FollowUser; premium: boolean }) => {
+    ({
+      user,
+      premium,
+      myId,
+    }: {
+      user: FollowUser;
+      premium: boolean;
+      myId: string;
+    }) => {
       store.dispatch(FollowActions.userUnfollowed({ userId: user._id }));
       if (premium)
         store.dispatch(showToast({ type: "user-unfollowed-you", user }));
+      store.dispatch(
+        visitedUserActions.removeFollowing({ myId, hisId: user._id })
+      );
     }
   );
   socket.on(

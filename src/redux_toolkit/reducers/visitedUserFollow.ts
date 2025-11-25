@@ -4,7 +4,8 @@ import toast from "react-hot-toast";
 import type { FollowUser, FollowUserObject } from "../../types/user";
 import { FollowThunkActions } from "../AsyncThunkActions/follow";
 
-const { followRequest, acceptRequest, removeFollower } = FollowThunkActions;
+const { followRequest, acceptRequest, removeFollower, unfollowUser } =
+  FollowThunkActions;
 const initialState: {
   userId: string;
   followers: FollowUserObject;
@@ -59,8 +60,10 @@ const visitedUserSlice = createSlice({
       }
     },
     removeFollowing: (state, action) => {
-      const id = action.payload;
-      delete state.following[id];
+      const { myId, hisId } = action.payload;
+      if (state.userId && state.userId === hisId) {
+        delete state.following[myId];
+      }
     },
   },
   extraReducers(builder) {
@@ -90,6 +93,12 @@ const visitedUserSlice = createSlice({
       const { me, user } = action.payload;
       if (state.userId && state.userId === user._id) {
         state.following[me._id] = me;
+      }
+    });
+    builder.addCase(unfollowUser.fulfilled, (state, action) => {
+      const { myId, hisId } = action.payload;
+      if (state.userId && state.userId === hisId) {
+        delete state.followers[myId];
       }
     });
     builder.addCase(removeFollower.fulfilled, (state, action) => {
