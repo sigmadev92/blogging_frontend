@@ -122,7 +122,7 @@ const removeFollower = createAsyncThunk(
     }
 
     const { myId }: { myId: string } = await response.json();
-
+    console.log(myId, requestedBy);
     return { requestedBy, myId };
   }
 );

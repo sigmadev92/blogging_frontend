@@ -87,6 +87,7 @@ export const initSocket = (userId: string) => {
     "user-removed-me",
     ({ myId, hisId }: { myId: string; hisId: string }) => {
       store.dispatch(FollowActions.userRemovedMe({ myId, hisId }));
+      store.dispatch(visitedUserActions.removeFollower({ hisId, myId }));
     }
   );
   socket.on("getOnlineUsers", (onlineUsers) => {

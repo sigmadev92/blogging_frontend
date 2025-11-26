@@ -50,8 +50,9 @@ const visitedUserSlice = createSlice({
       }
     },
     removeFollower: (state, action) => {
-      const id = action.payload;
-      delete state.followers[id];
+      const { myId, hisId } = action.payload;
+      if (state.userId === hisId && state.followers[myId])
+        delete state.followers[myId];
     },
     addFollowing: (state, action) => {
       const { me }: { me: FollowUser } = action.payload;

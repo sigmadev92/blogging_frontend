@@ -6,7 +6,7 @@ import { blogsURL, usersURL } from "../../functions/backend";
 import { _default } from "../../functions/images";
 import type { Blog } from "../../types/blog";
 import CustomButton from "../../components/ui/Button";
-import { HandHeartIcon, MailIcon } from "lucide-react";
+import { HandHeartIcon, LockIcon, MailIcon } from "lucide-react";
 import {
   useAppDispatch,
   useAppSelector,
@@ -189,28 +189,37 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          <div className="h-[55%] flex flex-wrap px-4">
-            <div className="md:w-[30%] p-2">
-              <h3 className="text-3xl mb-4">About author</h3>
-              <p>{author.about || "Nothing here"}</p>
-            </div>
-            <div className="md:w-[70%] p-2 h-[200px] md:h-full overflow-y-auto">
-              <h3 className="text-3xl mb-4">Blogs from the Author</h3>
+          {author.isPublic || visitedUser.followers[user!._id] ? (
+            <div className="h-[55%] flex flex-wrap px-4">
+              <div className="md:w-[30%] p-2">
+                <h3 className="text-3xl mb-4">About author</h3>
+                <p>{author.about || "Nothing here"}</p>
+              </div>
+              <div className="md:w-[70%] p-2 h-[200px] md:h-full overflow-y-auto">
+                <h3 className="text-3xl mb-4">Blogs from the Author</h3>
 
-              <ul className="list-none flex gap-4 flex-wrap">
-                {blogs.map((blogItem, idx) => (
-                  <BlogBox
-                    key={idx}
-                    blog={blogItem}
-                    author={{
-                      fullName: author.fullName,
-                      authorId: author._id,
-                    }}
-                  />
-                ))}
-              </ul>
+                <ul className="list-none flex gap-4 flex-wrap">
+                  {blogs.map((blogItem, idx) => (
+                    <BlogBox
+                      key={idx}
+                      blog={blogItem}
+                      author={{
+                        fullName: author.fullName,
+                        authorId: author._id,
+                      }}
+                    />
+                  ))}
+                </ul>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="h-40 center">
+              <LockIcon size={40} />
+              <p className="text-[12px]  text-gray-500">
+                This account is private
+              </p>
+            </div>
+          )}
         </div>
       ) : (
         <div className="center">

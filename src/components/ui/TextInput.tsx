@@ -24,6 +24,7 @@ const TextInput = ({
   style?: {
     label?: string;
     input?: string;
+    size?: string;
   };
   variant?: Variant;
 }) => {
@@ -37,7 +38,7 @@ const TextInput = ({
     <div
       className={`${maping[variant || "_"]} ${
         inputType === "password" ? "relative" : ""
-      }`}
+      } ${style?.size || ""}`}
     >
       <label htmlFor={name} className={style?.label || "text-xl"}>
         {" "}

@@ -55,8 +55,8 @@ const followSlice = createSlice({
       }
     },
     userRemovedMe: (state, action) => {
-      const { myId } = action.payload;
-      if (state.following[myId]) delete state.followers[myId];
+      const { hisId } = action.payload;
+      if (state.following[hisId]) delete state.following[hisId];
     },
   },
   extraReducers: (builder) => {
@@ -141,7 +141,7 @@ const followSlice = createSlice({
       })
       .addCase(removeFollower.fulfilled, (state, action) => {
         const { requestedBy } = action.payload;
-        delete state.following[requestedBy];
+        delete state.followers[requestedBy];
       });
   },
 });

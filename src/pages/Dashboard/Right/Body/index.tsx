@@ -2,8 +2,7 @@ import Analytics from "./Analytics";
 import Comments from "./Comments";
 import Complaints from "./Complaints";
 import EditProfile from "./EditProfile/index";
-import Followers from "./Followers";
-import Following from "./Following";
+import Connections from "./Connections";
 import Likes from "./Likes";
 import Overview from "./Overview";
 import Posts from "./Posts";
@@ -19,8 +18,7 @@ const Body = ({ tab }: { tab: string }) => {
       {tab === "Analytics" && <Analytics />}
       {tab === "Likes" && <Likes />}
       {tab === "Comments" && <Comments />}
-      {tab === "Followers" && <Followers />}
-      {tab === "Following" && <Following />}
+      {tab === "Connections" && <Connections />}
       {tab === "Complaints" && <Complaints />}
       {tab === "Posts" && <Posts />}
       {tab === "Subscriptions" && <Subscriptions />}
