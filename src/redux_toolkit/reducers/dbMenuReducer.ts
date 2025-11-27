@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { dbLefttabs } from "../../functions/constants/dashboard";
+import { dbLefttabs } from "../../constants/objects/dashboard";
 
 const initialState: { tab: string } = {
   tab: dbLefttabs[0].label,

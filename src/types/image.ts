@@ -1,3 +1,4 @@
 export type ImageType = {
-  publicId?: string;
+  version: string;
+  publicId: string;
 };

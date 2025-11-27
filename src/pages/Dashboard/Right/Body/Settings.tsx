@@ -1,93 +1,11 @@
 import CustomButton from "../../../../components/ui/Button";
 import TextInput from "../../../../components/ui/TextInput";
-import { genderMap } from "../../../../functions/constants/genderValues";
-import { getAge, getZodiac } from "../../../../functions/time";
+import settings from "../../../../constants/objects/settings";
 
 import { useAppSelector } from "../../../../redux_toolkit/store/hooks";
 
 const Settings = () => {
   const { user } = useAppSelector((state) => state.user);
-  const settings = [
-    {
-      legend: "Thumbnail",
-      showValue: false,
-      ask: [
-        { q: "Is thumbnail set", ans: Boolean(user?.thumbnail?.publicId) },
-        { q: "Display on Profile", ans: user?.thumbnailToBeShown },
-      ],
-    },
-    {
-      legend: "Profile Picture",
-      showValue: false,
-      ask: [
-        { q: "Is profilePic set", ans: Boolean(user?.profilePic?.publicId) },
-        { q: "Display on Profile", ans: user?.profilePicToBeShown },
-      ],
-    },
-    {
-      legend: "Email Preferences",
-      showValue: true,
-      value: user?.email,
-      ask: [
-        { q: "Is Email set", ans: true },
-        { q: "Display on Profile", ans: user?.emailToBeShown },
-      ],
-    },
-    {
-      legend: "Date of Birth",
-      showValue: true,
-      value: user?.dob?.toDateString(),
-      ask: [
-        { q: "Is Date of Birth set", ans: false },
-        { q: "Display on Profile", ans: user?.dobToBeShown },
-      ],
-    },
-    {
-      legend: "Age",
-      showValue: true,
-      value: getAge(user?.dob || null),
-      ask: [
-        { q: "Is Age Calculated", ans: user?.dobSet },
-        { q: "Display on Profile", ans: user?.dobToBeShown },
-      ],
-    },
-    {
-      legend: "Zodiac",
-      showValue: true,
-      value: getZodiac(user?.dob || null),
-      ask: [
-        { q: "Is Date of Birth set", ans: user?.dobSet },
-        { q: "Display on Profile", ans: user?.dobToBeShown },
-      ],
-    },
-    {
-      legend: "Nationality",
-      showValue: true,
-      value: user?.country || "Not set yet",
-      ask: [
-        { q: "Is Nationality set", ans: user?.countrySet },
-        { q: "Display on Profile", ans: user?.countryToBeShown },
-      ],
-    },
-    {
-      legend: "Gender",
-      showValue: true,
-      value: genderMap[user?.gender || "NS"],
-      ask: [
-        { q: "Is Gender set", ans: genderMap[user?.gender || "NS"] },
-        { q: "Display on Profile", ans: user?.genderToBeShown },
-      ],
-    },
-    {
-      legend: "Patronize Youself",
-      showValue: user?.getFund.setup,
-      value: user?.getFund.min,
-      ask: [
-        { q: "Is My Transaction system set", ans: user?.getFund.setup },
-        { q: "Display on Profile", ans: user?.getFund.toBeShown },
-      ],
-    },
-  ];
 
   return (
     <div className="h-full overflow-y-auto pr-4">
@@ -98,7 +16,6 @@ const Settings = () => {
             Control profile settings of your account
           </p>
         </div>
-        <CustomButton variant="regular-confirm">Save</CustomButton>
       </div>
       <div className="flex gap-4 items-center text-[0.8rem] justify-center">
         <p>Account Visibility : {user?.isPublic ? "Public" : " Private"}</p>
@@ -145,7 +62,7 @@ const Settings = () => {
       </fieldset>
       <div className="text-[0.8rem] mt-2">
         <form className="flex flex-col gap-3">
-          {settings.map((item, idx) => (
+          {settings(user!).map((item, idx) => (
             <fieldset className="border rounded-xl" key={idx}>
               <legend className="font-bold ml-4">{item.legend}</legend>
               <div className="pl-5 flex flex-col gap-3">

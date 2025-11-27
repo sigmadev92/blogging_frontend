@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 
 import { LoaderActions } from "../redux_toolkit/reducers/loaderReducer";
 import { LikeActions } from "../redux_toolkit/reducers/likeReducer";
-import { blogsURL } from "../functions/backend";
+import { blogsURL } from "../constants/urls/backend";
 import { initSocket } from "../webSockets/socketService";
 import { FollowThunkActions } from "../redux_toolkit/AsyncThunkActions/follow";
 import { LikeThunkActions } from "../redux_toolkit/AsyncThunkActions/like";
@@ -49,7 +49,7 @@ function App() {
       followInfo();
       fetchLikes();
     }
-  }, [loggedIn]);
+  }, [loggedIn, dispatch, isFetched]);
 
   useEffect(() => {
     const fetchLikedBlogs = async () => {
@@ -75,7 +75,7 @@ function App() {
       console.log("usus");
       fetchLikedBlogs();
     }
-  }, [likes]);
+  }, [likes, dispatch, isLikedBlogsFetched]);
 
   useEffect(() => {
     if (user) {

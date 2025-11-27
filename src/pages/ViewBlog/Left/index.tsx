@@ -1,6 +1,6 @@
 import { useState } from "react";
 import CustomButton from "../../../components/ui/Button";
-import getTimeAgo from "../../../functions/time";
+import getTimeAgo from "../../../constants/functions/time";
 import {
   useAppDispatch,
   useAppSelector,

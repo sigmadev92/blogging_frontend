@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { blogsURL } from "../functions/backend";
 import BlogBox from "../components/ui/BlogBox";
 import { type PublicBlog1 } from "../types/blog";
+import { blogsURL } from "../constants/urls/backend";
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState<PublicBlog1[]>([]);

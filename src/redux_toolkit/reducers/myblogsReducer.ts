@@ -1,26 +1,14 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { type Blog } from "../../types/blog";
-import { blogsURL } from "../../functions/backend";
 import toast from "react-hot-toast";
+import { myBlogAsyncActions } from "../AsyncThunkActions/blog";
+
+const { deleteBlog } = myBlogAsyncActions;
 const initialState: { isFetched: boolean; myBlogs: Blog[] } = {
   isFetched: false,
   myBlogs: [],
 };
 
-const deleteBlog = createAsyncThunk("deleteBlog", async (_id: string) => {
-  const response = await fetch(`${blogsURL}/${_id}`, {
-    credentials: "include",
-    method: "DELETE",
-  });
-
-  if (!response.ok) {
-    throw new Error("Request failed" + response.status);
-  }
-
-  const data = await response.json();
-
-  return { data, _id };
-});
 const myBlogsSlice = createSlice({
   name: "myBlogs",
   initialState,
@@ -63,5 +51,5 @@ const myBlogsSlice = createSlice({
 
 const myBlogReducer = myBlogsSlice.reducer;
 const myBlogsActions = myBlogsSlice.actions;
-const myBlogAsyncActions = { deleteBlog };
-export { myBlogReducer, myBlogsActions, myBlogAsyncActions };
+
+export { myBlogReducer, myBlogsActions };

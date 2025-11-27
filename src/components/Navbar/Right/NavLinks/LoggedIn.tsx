@@ -4,15 +4,13 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../redux_toolkit/store/hooks";
-import { _default } from "../../../../functions/images";
-import {
-  cloudinary_profilePicURL,
-  usersURL,
-} from "../../../../functions/backend";
+
 import { UserActions } from "../../../../redux_toolkit/reducers/userReducer";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import { PenToolIcon, PlusCircleIcon } from "lucide-react";
+import { usersURL } from "../../../../constants/urls/backend";
+import ShowProfilePic from "../../../ui/ShowProfilePic";
 
 const LoggedIn = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -82,15 +80,7 @@ const LoggedIn = () => {
             setPlusMenu(false);
           }}
         >
-          <img
-            alt="user-image"
-            src={
-              user?.profilePic?.publicId
-                ? `${cloudinary_profilePicURL}/${user._id}`
-                : _default.profilePic[user?.gender || "NS"]
-            }
-            className="rounded-full w-6 h-6"
-          />
+          <ShowProfilePic user={user!} className="rounded-full w-6 h-6" />
         </CustomButton>
         {opened && (
           <div className="absolute top-8 rounded-md right-0 bg-white text-black dark:bg-gray-500 dark:text-white text-[12px] p-2 border flex flex-col gap-1 w-[150px]">

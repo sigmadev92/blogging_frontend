@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { blogsURL, likesURL } from "../../functions/backend";
 import type { Like } from "../../types/like";
+import { blogsURL, likesURL } from "../../constants/urls/backend";
 
 const fetchMyLikesOnly = createAsyncThunk("fetchMyLikesOnly", async () => {
   const response = await fetch(`${likesURL}/blogs`, {

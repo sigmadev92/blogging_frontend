@@ -29,7 +29,7 @@ const userSlice = createSlice({
       }
     },
     removeProfilePic: (state) => {
-      state.user!.profilePic = { publicId: "" };
+      state.user!.profilePic = { version: "", publicId: "" };
     },
   },
   extraReducers: (builder) => {

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { followURL } from "../../functions/backend";
 import type { FollowUser } from "../../types/user";
+import { followURL } from "../../constants/urls/backend";
 
 const fetchFollowInfo = createAsyncThunk("fetchInfo", async () => {
   const response = await fetch(`${followURL}/fetch`, {

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { usersURL } from "../../functions/backend";
+import { usersURL } from "../../constants/urls/backend";
 
 const fetchLoginStatus = createAsyncThunk("fetchLoginStatus", async () => {
   const response = await fetch(`${usersURL}/auth`, {

@@ -4,16 +4,16 @@ import CustomTextArea from "../../components/ui/TextArea";
 import MultipleValues from "../../components/ui/MultipleValues";
 import CustomButton from "../../components/ui/Button";
 import toast from "react-hot-toast";
-import { _default } from "../../functions/images";
 import { useAppDispatch } from "../../redux_toolkit/store/hooks";
 import { LoaderActions } from "../../redux_toolkit/reducers/loaderReducer";
-import { blogsURL } from "../../functions/backend";
 
 import NavigationOverlay from "../../components/ui/NavigationOverlay";
 import { CornerUpLeftIcon, ImageIcon } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { dbMenuActions } from "../../redux_toolkit/reducers/dbMenuReducer";
 import { myBlogsActions } from "../../redux_toolkit/reducers/myblogsReducer";
+import { blogsURL } from "../../constants/urls/backend";
+import { _default } from "../../constants/images/default";
 
 const EditBlog = () => {
   type Phase = "filling" | "saved" | "publishing" | "published";

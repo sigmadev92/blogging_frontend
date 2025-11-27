@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { User } from "../../types/user";
 import toast from "react-hot-toast";
-import {
-  blogsURL,
-  cloudinary_profileThmbnailURL,
-  usersURL,
-} from "../../functions/backend";
+import { blogsURL, usersURL } from "../../constants/urls/backend";
 import type { Blog } from "../../types/blog";
 import CustomButton from "../../components/ui/Button";
 import { HandHeartIcon, LockIcon, MailIcon } from "lucide-react";
@@ -19,6 +15,7 @@ import { visitedUserThunkActions } from "../../redux_toolkit/reducers/visitedUse
 import FollowBtn from "../../components/ui/FollowBtn";
 import NavigationOverlay from "../../components/ui/NavigationOverlay";
 import ShowProfilePic from "../../components/ui/ShowProfilePic";
+import { cloudinary_thumbnail } from "../../constants/urls/cloudinary";
 type Medium = "id" | "username";
 const Profile = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -109,8 +106,8 @@ const Profile = () => {
             className="h-[40%] relative"
             style={{
               backgroundImage: author.thumbnailToBeShown
-                ? author.thumbnail?.publicId
-                  ? `${cloudinary_profileThmbnailURL}/${author._id}`
+                ? author.thumbnail?.version
+                  ? cloudinary_thumbnail(author._id, author.thumbnail.version)
                   : `url("https://wallpapercave.com/wp/wp8948495.jpg")`
                 : undefined,
               backgroundPosition: "center",

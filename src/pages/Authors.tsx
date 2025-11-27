@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { usersURL } from "../functions/backend";
 import type { User } from "../types/user";
 import { User2Icon } from "lucide-react";
 import UserProfileBox from "../components/ui/UserProfileBox";
+import { usersURL } from "../constants/urls/backend";
 const Authors = () => {
   const [authors, setAuthors] = useState<User[]>([]);
   useEffect(() => {

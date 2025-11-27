@@ -1,5 +1,5 @@
-import { cloudinary_profileThmbnailURL } from "../../functions/backend";
-import { _default } from "../../functions/images";
+import { _default } from "../../constants/images/default";
+import { cloudinary_thumbnail } from "../../constants/urls/cloudinary";
 import type { FollowUser, User } from "../../types/user";
 
 const ShowProfileThumbnail = ({
@@ -16,8 +16,8 @@ const ShowProfileThumbnail = ({
           className={`${className || ""}`}
           alt="user-profile-thumbnail"
           src={
-            user.thumbnail?.publicId
-              ? `${cloudinary_profileThmbnailURL}/${user._id}`
+            user.thumbnail?.version
+              ? cloudinary_thumbnail(user._id, user.profilePic!.version)
               : _default.profileThumbnail[0]
           }
         />

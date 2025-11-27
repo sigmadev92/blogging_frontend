@@ -4,7 +4,7 @@ import {
   useAppSelector,
 } from "../../../../../redux_toolkit/store/hooks";
 import toast from "react-hot-toast";
-import { usersURL } from "../../../../../functions/backend";
+import { usersURL } from "../../../../../constants/urls/backend";
 import CustomButton from "../../../../../components/ui/Button";
 import { UserActions } from "../../../../../redux_toolkit/reducers/userReducer";
 import { LoaderActions } from "../../../../../redux_toolkit/reducers/loaderReducer";
@@ -46,8 +46,8 @@ const Picture = () => {
 
       const data = await response.json();
       if (data.success) {
-        const { secure_url, publicId } = data;
-        dispatch(UserActions.setProfilePic({ secure_url, publicId }));
+        const { publicId } = data;
+        dispatch(UserActions.setProfilePic({ publicId }));
         toast.success("Profile Pic updated successfully");
       } else {
         toast.error(data.message);
@@ -74,7 +74,7 @@ const Picture = () => {
       const data = await response.json();
       if (data.success) {
         dispatch(UserActions.removeProfilePic());
-        toast.success("Profile Picture updated");
+        toast.success("Profile Picture Removed");
       } else {
         toast.error(data.message);
       }

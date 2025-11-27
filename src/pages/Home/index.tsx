@@ -1,4 +1,4 @@
-import { images } from "../../functions/images";
+import { images } from "../../constants/images/credits";
 import Features from "./Features";
 import Hero from "./Hero";
 

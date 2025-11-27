@@ -17,10 +17,10 @@ import {
 import CustomButton from "../../components/ui/Button";
 import { NavLink, useNavigate } from "react-router-dom";
 import styles from "./register.module.css";
-import { usersURL } from "../../functions/backend";
 import { useAppDispatch } from "../../redux_toolkit/store/hooks";
 import { LoaderActions } from "../../redux_toolkit/reducers/loaderReducer";
-import { images } from "../../functions/images";
+import { usersURL } from "../../constants/urls/backend";
+import { images } from "../../constants/images/credits";
 const Register = () => {
   const [formData, setFormData] = useState({
     fullName: "",

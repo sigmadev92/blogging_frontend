@@ -1,4 +1,4 @@
-import { images } from "../../../functions/images";
+import { images } from "../../../constants/images/credits";
 
 const Features = () => {
   return (

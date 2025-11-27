@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { genderMap } from "../../../../functions/constants/genderValues";
+import { genderMap } from "../../../../constants/objects/genderValues";
 import { useAppSelector } from "../../../../redux_toolkit/store/hooks";
 import { ExternalLink } from "lucide-react";
 import ShowProfilePic from "../../../../components/ui/ShowProfilePic";

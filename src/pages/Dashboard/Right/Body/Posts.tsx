@@ -3,13 +3,11 @@ import {
   useAppDispatch,
   useAppSelector,
 } from "../../../../redux_toolkit/store/hooks";
-import {
-  myBlogAsyncActions,
-  myBlogsActions,
-} from "../../../../redux_toolkit/reducers/myblogsReducer";
+import { myBlogsActions } from "../../../../redux_toolkit/reducers/myblogsReducer";
 import toast from "react-hot-toast";
-import { blogsURL } from "../../../../functions/backend";
 import BlogBox from "../../../../components/ui/BlogBox";
+import { blogsURL } from "../../../../constants/urls/backend";
+import { myBlogAsyncActions } from "../../../../redux_toolkit/AsyncThunkActions/blog";
 
 const Posts = () => {
   const { isFetched, myBlogs } = useAppSelector((state) => state.myBlogs);
