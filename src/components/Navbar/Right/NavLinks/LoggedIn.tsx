@@ -5,7 +5,10 @@ import {
   useAppSelector,
 } from "../../../../redux_toolkit/store/hooks";
 import { _default } from "../../../../functions/images";
-import { usersURL } from "../../../../functions/backend";
+import {
+  cloudinary_profilePicURL,
+  usersURL,
+} from "../../../../functions/backend";
 import { UserActions } from "../../../../redux_toolkit/reducers/userReducer";
 import toast from "react-hot-toast";
 import { useState } from "react";
@@ -82,8 +85,9 @@ const LoggedIn = () => {
           <img
             alt="user-image"
             src={
-              user!.profilePic?.secure_url ||
-              _default.profilePic[user?.gender || "NS"]
+              user?.profilePic?.publicId
+                ? `${cloudinary_profilePicURL}/${user._id}`
+                : _default.profilePic[user?.gender || "NS"]
             }
             className="rounded-full w-6 h-6"
           />

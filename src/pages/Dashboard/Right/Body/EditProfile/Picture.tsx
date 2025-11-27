@@ -5,10 +5,10 @@ import {
 } from "../../../../../redux_toolkit/store/hooks";
 import toast from "react-hot-toast";
 import { usersURL } from "../../../../../functions/backend";
-import { _default } from "../../../../../functions/images";
 import CustomButton from "../../../../../components/ui/Button";
 import { UserActions } from "../../../../../redux_toolkit/reducers/userReducer";
 import { LoaderActions } from "../../../../../redux_toolkit/reducers/loaderReducer";
+import ShowProfilePic from "../../../../../components/ui/ShowProfilePic";
 
 const Picture = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -99,13 +99,7 @@ const Picture = () => {
         )}
         <div className="rounded-full w-40 h-40 overflow-hidden">
           {!profilePic ? (
-            <img
-              src={
-                user?.profilePic?.secure_url ||
-                _default.profilePic[user?.gender || "NS"]
-              }
-              className="w-full h-full"
-            />
+            <ShowProfilePic className="h-full w-full" user={user!} />
           ) : (
             <img
               src={URL.createObjectURL(profilePic)}
@@ -134,7 +128,7 @@ const Picture = () => {
         )}
       </form>
       <div className="flex justify-center mt-12">
-        {user?.profilePic?.secure_url && (
+        {user?.profilePic?.publicId && (
           <CustomButton
             className="bg-red-500 px-3 py-1"
             onClick={handleRemovePic}

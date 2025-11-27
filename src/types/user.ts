@@ -6,41 +6,64 @@ export type FullName = {
   lastName: string;
 };
 
-export enum Gender {
-  M = "M",
-  F = "F",
-  O = "O",
-  NS = "NS", // Not Specified
-}
+export type Gender = "M" | "F" | "O" | "NS";
 
 export enum UserRole {
   reader = "reader",
   author = "author",
 }
-export type User = {
-  _id: string;
-  email: string;
-  isMailVerified?: boolean;
-  isPublic: boolean;
-  isAccountVerified?: boolean;
-  isPremiumAccount?: boolean;
-  password?: string;
-  fullName: FullName;
-  gender: Gender;
-  role: UserRole;
-  profilePic?: ImageType;
-  userName?: string;
-  thumbnail?: ImageType;
-  about?: string;
-};
 
 export type FollowUser = {
   _id: string;
   fullName: FullName;
-  profilePic?: ImageType;
   userName?: string;
+  profilePic?: ImageType;
+  thumbnail?: ImageType;
+  profilePicToBeShown: boolean;
+  thumbnailToBeShown?: boolean;
+  gender?: Gender;
 };
 
 export type FollowUserObject = {
   [key: string]: FollowUser;
+};
+
+export type User = {
+  _id: string;
+  email: string;
+  fullName: FullName;
+  OtherLinks?: string[];
+  gender: Gender;
+  dob?: Date;
+  country?: string;
+  profilePic?: ImageType;
+  thumbnail?: ImageType;
+  aboutMe?: string;
+  userName?: string;
+  profileViews: number;
+  blogViews: number;
+  role: UserRole;
+  createdAt: Date;
+  updatedAt: Date;
+  getFund: {
+    setup: boolean;
+    want: boolean;
+    min: number;
+    toBeShown: boolean;
+  };
+
+  isMailVerified: boolean;
+  isAccountVerified: boolean;
+  isPremiumAccount: boolean;
+  emailToBeShown: boolean;
+  genderToBeShown: boolean;
+  profilePicToBeShown: boolean;
+  thumbnailToBeShown: boolean;
+  dobSet: boolean;
+  dobToBeShown: boolean;
+  countrySet: boolean;
+  countryToBeShown: boolean;
+  isPublic: boolean;
+  profileViewsToBeShown: boolean;
+  blogViewsToBeShown: boolean;
 };

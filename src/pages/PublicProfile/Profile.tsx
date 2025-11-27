@@ -2,8 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { User } from "../../types/user";
 import toast from "react-hot-toast";
-import { blogsURL, usersURL } from "../../functions/backend";
-import { _default } from "../../functions/images";
+import {
+  blogsURL,
+  cloudinary_profileThmbnailURL,
+  usersURL,
+} from "../../functions/backend";
 import type { Blog } from "../../types/blog";
 import CustomButton from "../../components/ui/Button";
 import { HandHeartIcon, LockIcon, MailIcon } from "lucide-react";
@@ -15,6 +18,7 @@ import BlogBox from "../../components/ui/BlogBox";
 import { visitedUserThunkActions } from "../../redux_toolkit/reducers/visitedUserFollow";
 import FollowBtn from "../../components/ui/FollowBtn";
 import NavigationOverlay from "../../components/ui/NavigationOverlay";
+import ShowProfilePic from "../../components/ui/ShowProfilePic";
 type Medium = "id" | "username";
 const Profile = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -104,21 +108,19 @@ const Profile = () => {
           <div
             className="h-[40%] relative"
             style={{
-              backgroundImage:
-                author.thumbnail?.secure_url ||
-                `url("https://wallpapercave.com/wp/wp8948495.jpg")`,
+              backgroundImage: author.thumbnailToBeShown
+                ? author.thumbnail?.publicId
+                  ? `${cloudinary_profileThmbnailURL}/${author._id}`
+                  : `url("https://wallpapercave.com/wp/wp8948495.jpg")`
+                : undefined,
               backgroundPosition: "center",
               backgroundSize: "cover",
             }}
           >
             <div className="flex gap-4 items-center absolute w-[400px] -bottom-8 left-[50%] translate-x-[-50%] backdrop-blur-md rounded p-2">
-              <img
+              <ShowProfilePic
+                user={author}
                 className="rounded-full h-28 w-28"
-                alt="profile"
-                src={
-                  author.profilePic?.secure_url ||
-                  _default.profilePic[author.gender]
-                }
               />
               <div className="flex flex-col gap-2 w-[280px]">
                 {author.userName && (
@@ -136,6 +138,7 @@ const Profile = () => {
                             _id: author._id,
                             fullName: author.fullName,
                             userName: author.userName,
+                            profilePicToBeShown: author.profilePicToBeShown,
                           }}
                           setNavBox={setNavBox}
                         />
@@ -193,7 +196,7 @@ const Profile = () => {
             <div className="h-[55%] flex flex-wrap px-4">
               <div className="md:w-[30%] p-2">
                 <h3 className="text-3xl mb-4">About author</h3>
-                <p>{author.about || "Nothing here"}</p>
+                <p>{author.aboutMe || "Nothing here"}</p>
               </div>
               <div className="md:w-[70%] p-2 h-[200px] md:h-full overflow-y-auto">
                 <h3 className="text-3xl mb-4">Blogs from the Author</h3>

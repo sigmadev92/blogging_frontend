@@ -11,6 +11,7 @@ const followURL = `${backendURL}/api/requests`;
 const cloudinaryImagesURL =
   "https://res.cloudinary.com/dwyeologv/image/upload/blog_app/images";
 const cloudinary_profilePicURL = `${cloudinaryImagesURL}/profile_pics`;
+const cloudinary_profileThmbnailURL = `${cloudinaryImagesURL}/thumbnails`;
 export {
   backendURL,
   usersURL,
@@ -18,4 +19,5 @@ export {
   likesURL,
   followURL,
   cloudinary_profilePicURL,
+  cloudinary_profileThmbnailURL,
 };
