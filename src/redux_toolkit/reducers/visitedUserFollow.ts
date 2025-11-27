@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { followURL } from "../../functions/backend";
+
 import toast from "react-hot-toast";
 import type { FollowUser, FollowUserObject } from "../../types/user";
 import { FollowThunkActions } from "../AsyncThunkActions/follow";
+import { followURL } from "../../constants/urls/backend";
 
 const { followRequest, acceptRequest, removeFollower, unfollowUser } =
   FollowThunkActions;

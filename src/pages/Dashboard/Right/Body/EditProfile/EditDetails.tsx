@@ -8,12 +8,12 @@ import RadioInput from "../../../../../components/ui/RadioInput";
 import {
   genderMap,
   genderRadioInput,
-} from "../../../../../functions/constants/genderValues";
+} from "../../../../../constants/objects/genderValues";
 import CustomButton from "../../../../../components/ui/Button";
 import { LoaderActions } from "../../../../../redux_toolkit/reducers/loaderReducer";
-import { usersURL } from "../../../../../functions/backend";
 import toast from "react-hot-toast";
 import { UserActions } from "../../../../../redux_toolkit/reducers/userReducer";
+import { usersURL } from "../../../../../constants/urls/backend";
 
 const EditDetails = () => {
   const { user } = useAppSelector((state) => state.user);

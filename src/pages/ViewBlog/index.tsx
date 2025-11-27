@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { blogsURL } from "../../functions/backend";
 import toast from "react-hot-toast";
 import type { PublicBlog } from "../../types/blog";
 import NavigationOverlay from "../../components/ui/NavigationOverlay";
 import ViewBlogLeft from "./Left";
 import ViewBlogRight from "./Right";
+import { blogsURL } from "../../constants/urls/backend";
 
 const ViewBlog = () => {
   const { pathname } = useLocation();

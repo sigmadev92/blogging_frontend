@@ -23,7 +23,6 @@ import OutLayout from "../layouts/OutLayout";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import ForgotPassword from "../pages/ForgotPassword";
-import type React from "react";
 
 const CustomRouter = () => {
   const router = createBrowserRouter([

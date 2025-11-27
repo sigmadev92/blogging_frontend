@@ -1,4 +1,4 @@
 export type ImageType = {
-  secure_url: string;
+  version: string;
   publicId: string;
 };

@@ -10,6 +10,7 @@ type VariantType =
   | "regular-dark"
   | "regular-danger"
   | "regular-subscribe"
+  | "regular-critical"
   | "submit";
 const CustomButton = ({
   children,
@@ -38,8 +39,9 @@ const CustomButton = ({
     regular,
     "regular-confirm": `${regular} bg-blue-600`,
     "regular-dark": `${regular} bg-black dark:bg-white dark:text-black`,
-    "regular-danger": `${regular} bg-red-600`,
+    "regular-danger": `${regular} bg-red-600 hover:bg-red-500`,
     "regular-subscribe": `${regular} bg-orange-500`,
+    "regular-critical": `${regular} bg-orange-500 hover:bg-orange-600`,
     submit,
   };
   return (

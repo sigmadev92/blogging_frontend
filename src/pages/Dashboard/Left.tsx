@@ -1,6 +1,6 @@
 import { BoltIcon } from "lucide-react";
 import CustomButton from "../../components/ui/Button";
-import { dbLefttabs } from "../../functions/constants/dashboard";
+import { dbLefttabs } from "../../constants/objects/dashboard";
 import {
   useAppDispatch,
   useAppSelector,

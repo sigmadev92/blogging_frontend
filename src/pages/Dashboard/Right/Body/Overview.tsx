@@ -1,14 +1,14 @@
 import { NavLink } from "react-router-dom";
-import { genderMap } from "../../../../functions/constants/genderValues";
-import { _default } from "../../../../functions/images";
+import { genderMap } from "../../../../constants/objects/genderValues";
 import { useAppSelector } from "../../../../redux_toolkit/store/hooks";
 import { ExternalLink } from "lucide-react";
+import ShowProfilePic from "../../../../components/ui/ShowProfilePic";
 
 const Overview = () => {
   const { user } = useAppSelector((state) => state.user);
   const { myBlogs } = useAppSelector((state) => state.myBlogs);
   const { followers, following } = useAppSelector((state) => state.follow);
-  const { profilePic, gender, fullName, _id, userName } = user!;
+  const { gender, fullName, _id, userName } = user!;
   const { firstName, lastName, middleName } = fullName;
   return (
     <div className="mx-auto lg:w-[50%] py-3 flex flex-col gap-3">
@@ -18,8 +18,8 @@ const Overview = () => {
       </p>
       <div className="flex shrink-0 gap-16 items-center">
         <div className=" w-40 h-40">
-          <img
-            src={profilePic?.secure_url || _default.profilePic[gender || "NS"]}
+          <ShowProfilePic
+            user={user!}
             className="w-full h-full rounded-full shrink-0"
           />
         </div>

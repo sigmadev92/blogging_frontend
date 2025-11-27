@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { _default } from "../../../functions/images";
 import type { PublicBlog } from "../../../types/blog";
 import { useAppSelector } from "../../../redux_toolkit/store/hooks";
 import { HandHeartIcon } from "lucide-react";
 import CustomButton from "../../../components/ui/Button";
 import FollowBtn from "../../../components/ui/FollowBtn";
+import ShowProfilePic from "../../../components/ui/ShowProfilePic";
 
 const ViewBlogRight = ({
   blog,
@@ -22,8 +22,8 @@ const ViewBlogRight = ({
       <div className=" max-h-[250px] border-light flex flex-col items-center gap-2 py-2">
         <h2>About Author</h2>
 
-        <img
-          src={blog.authorId.profilePic?.secure_url || _default.profilePic.NS}
+        <ShowProfilePic
+          user={blog.authorId}
           className="rounded-full w-20 h-20"
         />
         {fullName && (
@@ -34,25 +34,17 @@ const ViewBlogRight = ({
             {fullName}
           </NavLink>
         )}
-        {blog.authorId.username && (
+        {blog.authorId.userName && (
           <NavLink
-            to={`/profile/username/${blog.authorId.username}`}
+            to={`/profile/username/${blog.authorId.userName}`}
             className=" text-[12px] text-gray-400 hover:underline"
           >
-            /@{blog.authorId.username}
+            /@{blog.authorId.userName}
           </NavLink>
         )}
         {blog.authorId._id !== user?._id && (
           <>
-            <FollowBtn
-              user={{
-                _id: blog.authorId._id,
-                fullName: blog.authorId.fullName,
-                userName: blog.authorId.username,
-                profilePic: blog.authorId.profilePic,
-              }}
-              setNavBox={setNavBox}
-            />
+            <FollowBtn user={blog.authorId} setNavBox={setNavBox} />
             <CustomButton
               variant={"regular"}
               className="bg-[#bc168a] hover:bg-blue-400 hover:text-white"

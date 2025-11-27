@@ -1,4 +1,4 @@
-import type { FullName } from "./user";
+import type { FollowUser, FullName } from "./user";
 
 export enum HeadingType {
   filling = "Create New Blog",
@@ -28,16 +28,7 @@ export type PublicBlog1 = Blog & {
 };
 
 export type PublicBlog = Blog & {
-  authorId: {
-    fullName: FullName;
-    profilePic: {
-      secure_url: string;
-      publicId: string;
-    };
-    email: string;
-    _id: string;
-    username?: string;
-  };
+  authorId: FollowUser;
 };
 
 export type BlogDetails = {

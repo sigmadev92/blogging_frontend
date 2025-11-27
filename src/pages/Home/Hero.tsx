@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import CustomButton from "../../components/ui/Button";
 import { SearchIcon } from "lucide-react";
-import { blogsURL } from "../../functions/backend";
 import { NavLink } from "react-router-dom";
-import { heroLinks } from "../../functions/constants/heroLinks";
+import { heroLinks } from "../../constants/objects/heroLinks";
+import { blogsURL } from "../../constants/urls/backend";
 
 const Hero = () => {
   const [blogs, setBlogs] = useState([]);
