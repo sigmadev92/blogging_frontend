@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { type User } from "../../types/user";
 import { UserThunkActions } from "../AsyncThunkActions/user";
+import toast from "react-hot-toast";
 
-const { fetchLoginStatus } = UserThunkActions;
+const { fetchLoginStatus, toggleAccountVisibility, toggleDisplayParam } =
+  UserThunkActions;
 const initialState: { loggedIn: boolean; user: User | null } = {
   loggedIn: false,
   user: null,
@@ -12,6 +14,13 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
+    toggleVisibilityParam: (state, action) => {
+      console.log(action.payload);
+      state.user = {
+        ...state.user!,
+        [action.payload.param]: action.payload.value,
+      };
+    },
     setUser: (state, action) => {
       state.user = action.payload;
       state.loggedIn = true;
@@ -45,6 +54,23 @@ const userSlice = createSlice({
         if (status) {
           state.loggedIn = true;
           state.user = data.user;
+        }
+      });
+    builder
+      .addCase(toggleAccountVisibility.rejected, (_, action) => {
+        toast.error((action.error as Error).message);
+      })
+      .addCase(toggleAccountVisibility.fulfilled, (state, action) => {
+        if (state.user) state.user.isPublic = action.payload;
+      });
+    builder
+      .addCase(toggleDisplayParam.rejected, (_, action) => {
+        toast.error((action.error as Error).message);
+      })
+      .addCase(toggleDisplayParam.fulfilled, (state, action) => {
+        const { param, newValue } = action.payload;
+        if (state.user) {
+          state.user = { ...state.user, [param]: newValue };
         }
       });
   },

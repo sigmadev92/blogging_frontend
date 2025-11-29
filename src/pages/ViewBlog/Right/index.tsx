@@ -24,6 +24,7 @@ const ViewBlogRight = ({
 
         <ShowProfilePic
           user={blog.authorId}
+          showHere={true}
           className="rounded-full w-20 h-20"
         />
         {fullName && (

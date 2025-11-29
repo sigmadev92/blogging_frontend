@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { usersURL } from "../../constants/urls/backend";
+import { userSettingsURL, usersURL } from "../../constants/urls/backend";
 
 const fetchLoginStatus = createAsyncThunk("fetchLoginStatus", async () => {
   const response = await fetch(`${usersURL}/auth`, {
@@ -14,4 +14,37 @@ const fetchLoginStatus = createAsyncThunk("fetchLoginStatus", async () => {
   return data;
 });
 
-export const UserThunkActions = { fetchLoginStatus };
+const toggleAccountVisibility = createAsyncThunk("accountVisi", async () => {
+  const response = await fetch(`${userSettingsURL}/toggle/visibility`, {
+    method: "PUT",
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error(`Request Failed ${response.status}`);
+  }
+  const { newStatus }: { newStatus: boolean } = await response.json();
+  return newStatus;
+});
+
+const toggleDisplayParam = createAsyncThunk(
+  "toggleParam",
+  async ({ param }: { param: string }) => {
+    const response = await fetch(`${userSettingsURL}/toggle/display/${param}`, {
+      method: "PUT",
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error(`Request Failed ${response.status}`);
+    }
+    const { newValue }: { newValue: boolean } = await response.json();
+    return { param, newValue };
+  }
+);
+
+export const UserThunkActions = {
+  fetchLoginStatus,
+  toggleAccountVisibility,
+  toggleDisplayParam,
+};

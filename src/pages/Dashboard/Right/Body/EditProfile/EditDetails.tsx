@@ -14,6 +14,7 @@ import { LoaderActions } from "../../../../../redux_toolkit/reducers/loaderReduc
 import toast from "react-hot-toast";
 import { UserActions } from "../../../../../redux_toolkit/reducers/userReducer";
 import { usersURL } from "../../../../../constants/urls/backend";
+import CustomTextArea from "../../../../../components/ui/TextArea";
 
 const EditDetails = () => {
   const { user } = useAppSelector((state) => state.user);
@@ -23,28 +24,50 @@ const EditDetails = () => {
     middleName: user?.fullName.middleName,
     lastName: user?.fullName.lastName,
     gender: user?.gender,
+    dob: user?.dob,
+    aboutMe: user?.aboutMe || "",
   });
-  const { firstName, lastName, middleName, gender } = formData;
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const { firstName, lastName, middleName, gender, dob, aboutMe } = formData;
+
+  const get18YearsBack = () => {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() - 18);
+    return date.toISOString().split("T")[0];
+  };
+  console.log(dob, dob instanceof Date);
+  const initialDate = dob
+    ? new Date(dob).toISOString().slice(0, 10) // ensure YYYY-MM-DD format
+    : get18YearsBack();
+
+  const [birthdate, setBirthdate] = useState(initialDate);
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(formData);
+    console.log(dob);
     if (
       user?.gender !== gender ||
       firstName !== user?.fullName.firstName ||
       middleName !== user?.fullName.middleName ||
-      lastName !== user?.fullName.lastName
+      lastName !== user?.fullName.lastName ||
+      aboutMe !== user?.aboutMe ||
+      birthdate !== initialDate
     ) {
       dispatch(LoaderActions.startLoader("Updating profile"));
       try {
         const response = await fetch(`${usersURL}/update/profile`, {
           method: "PUT",
+
           credentials: "include",
           body: JSON.stringify({
             gender,
             fullName: { firstName, middleName, lastName },
+            dob: birthdate,
+            dobSet: Boolean(dob),
+            aboutMe,
           }),
           headers: { "Content-Type": "application/json" },
         });
@@ -54,6 +77,12 @@ const EditDetails = () => {
           toast.success("Profile updated Successfully");
           dispatch(UserActions.setUser(data.updatedUser));
           dispatch(LoaderActions.stopLoader());
+          dispatch(
+            UserActions.toggleVisibilityParam({
+              param: "dobSet",
+              value: Boolean(dob),
+            })
+          );
           return;
         } else {
           toast.error("Error while updating details");
@@ -68,39 +97,52 @@ const EditDetails = () => {
       toast.success("Profile updated Successfully");
     }
   };
+
   return (
-    <div className="sm:w-[60%] mx-auto h-[90%] overflow-y-auto">
+    <div className="w-[90%] md:w-[60%] mx-auto max-h-[95%] overflow-y-auto pr-5 pb-4">
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-        <TextInput
-          label="First Name"
-          variant="regular"
-          style={{ label: "text-[14px]" }}
-          name="firstName"
-          value={firstName || ""}
-          handleChange={handleChange}
-          placeholder="John"
-          inputType="text"
-        />
-        <TextInput
-          label="Middle Name"
-          name="middleName"
-          variant="regular"
-          style={{ label: "text-[14px]" }}
-          value={middleName || ""}
-          handleChange={handleChange}
-          placeholder="K"
-          inputType="text"
-        />
-        <TextInput
-          label="Last Name"
-          name="lastName"
-          style={{ label: "text-[14px]", input: "text-[14px]" }}
-          variant="regular"
-          value={lastName || ""}
-          handleChange={handleChange}
-          placeholder="Cena"
-          inputType="text"
-        />
+        <div className="flex flex-col gap-4">
+          <h3 className="font-bold -mb-4">Full Name</h3>
+          <TextInput
+            label="First Name"
+            variant="regular"
+            style={{ label: "text-[14px]" }}
+            name="firstName"
+            value={firstName || ""}
+            handleChange={handleChange}
+            placeholder="John"
+            inputType="text"
+          />
+          <TextInput
+            label="Middle Name"
+            name="middleName"
+            variant="regular"
+            style={{ label: "text-[14px]" }}
+            value={middleName || ""}
+            handleChange={handleChange}
+            placeholder="K"
+            inputType="text"
+          />
+          <TextInput
+            label="Last Name"
+            name="lastName"
+            style={{ label: "text-[14px]", input: "text-[14px]" }}
+            variant="regular"
+            value={lastName || ""}
+            handleChange={handleChange}
+            placeholder="Cena"
+            inputType="text"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label htmlFor="dob">Date of Birth</label>
+          <input
+            type="date"
+            value={birthdate}
+            onChange={(e) => setBirthdate(e.target.value)}
+            max={get18YearsBack()} // optional: enforce min age 18
+          />
+        </div>
 
         <RadioInput
           radioFields={genderRadioInput}
@@ -108,9 +150,22 @@ const EditDetails = () => {
           className="flex gap-4 items-center"
           handleChange={handleChange}
         />
+        <CustomTextArea
+          label="About me"
+          name="aboutMe"
+          value={aboutMe}
+          placeholder="write something about yourself"
+          handleChange={handleChange}
+          styles={{
+            outer: "flex flex-col gap-2 ",
+            textArea:
+              "w-full resize-none placeholder:text-[12px] border-light p-2",
+          }}
+        />
         <CustomButton
           btnType={"submit"}
-          className="w-fit px-4 bg-blue-500 py-1"
+          variant="regular-confirm"
+          className="w-fit"
         >
           Update
         </CustomButton>

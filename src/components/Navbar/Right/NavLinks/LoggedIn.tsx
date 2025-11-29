@@ -80,7 +80,11 @@ const LoggedIn = () => {
             setPlusMenu(false);
           }}
         >
-          <ShowProfilePic user={user!} className="rounded-full w-6 h-6" />
+          <ShowProfilePic
+            user={user!}
+            className="rounded-full w-6 h-6"
+            showHere={true}
+          />
         </CustomButton>
         {opened && (
           <div className="absolute top-8 rounded-md right-0 bg-white text-black dark:bg-gray-500 dark:text-white text-[12px] p-2 border flex flex-col gap-1 w-[150px]">

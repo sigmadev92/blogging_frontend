@@ -29,7 +29,7 @@ const Overview = () => {
             {firstName + " " + middleName + " " + lastName}
           </h3>
           <NavLink
-            to={`/profile/userId/${_id}`}
+            to={`/profile/id/${_id}`}
             className={"text-[14px] px-3 text-blue-400 flex items-center gap-2"}
           >
             Public Profile <ExternalLink size={12} />
@@ -46,7 +46,7 @@ const Overview = () => {
       <hr className="my-3" />
       <div>
         <h3 className="text-cyan-400 text-2xl">About me</h3>
-        <p>Not set yet</p>
+        <p>{user?.aboutMe || "Not set yet"}</p>
       </div>
     </div>
   );

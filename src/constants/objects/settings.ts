@@ -3,13 +3,22 @@ import { getAge, getZodiac } from "../functions/time";
 import { genderMap } from "../objects/genderValues";
 
 export default function settings(user: User) {
-  return [
+  const settings1: {
+    legend: string;
+    showValue: boolean;
+    value?: string | number | null;
+    ask: { q: string; ans: boolean; param?: string }[];
+  }[] = [
     {
       legend: "Thumbnail",
       showValue: false,
       ask: [
         { q: "Is thumbnail set", ans: Boolean(user?.thumbnail?.publicId) },
-        { q: "Display on Profile", ans: user?.thumbnailToBeShown },
+        {
+          q: "Display on Profile",
+          ans: user?.thumbnailToBeShown,
+          param: "thumbnailToBeShown",
+        },
       ],
     },
     {
@@ -17,7 +26,11 @@ export default function settings(user: User) {
       showValue: false,
       ask: [
         { q: "Is profilePic set", ans: Boolean(user?.profilePic?.publicId) },
-        { q: "Display on Profile", ans: user?.profilePicToBeShown },
+        {
+          q: "Display on Profile",
+          ans: user?.profilePicToBeShown,
+          param: "profilePicToBeShown",
+        },
       ],
     },
     {
@@ -26,16 +39,24 @@ export default function settings(user: User) {
       value: user?.email,
       ask: [
         { q: "Is Email set", ans: true },
-        { q: "Display on Profile", ans: user?.emailToBeShown },
+        {
+          q: "Display on Profile",
+          ans: user?.emailToBeShown,
+          param: "emailToBeShown",
+        },
       ],
     },
     {
       legend: "Date of Birth",
       showValue: true,
-      value: user?.dob?.toDateString(),
+      value: user.dob ? new Date(user.dob!).toISOString().split("T")[0] : "",
       ask: [
-        { q: "Is Date of Birth set", ans: false },
-        { q: "Display on Profile", ans: user?.dobToBeShown },
+        { q: "Is Date of Birth set", ans: user.dobSet },
+        {
+          q: "Display on Profile",
+          ans: user?.dobToBeShown,
+          param: "dobToBeShown",
+        },
       ],
     },
     {
@@ -52,7 +73,7 @@ export default function settings(user: User) {
       showValue: true,
       value: getZodiac(user?.dob || null),
       ask: [
-        { q: "Is Date of Birth set", ans: user?.dobSet },
+        { q: "Is Zodiac determined", ans: user?.dobSet },
         { q: "Display on Profile", ans: user?.dobToBeShown },
       ],
     },
@@ -62,7 +83,11 @@ export default function settings(user: User) {
       value: user?.country || "Not set yet",
       ask: [
         { q: "Is Nationality set", ans: user?.countrySet },
-        { q: "Display on Profile", ans: user?.countryToBeShown },
+        {
+          q: "Display on Profile",
+          ans: user?.countryToBeShown,
+          param: "countryToBeShown",
+        },
       ],
     },
     {
@@ -70,8 +95,12 @@ export default function settings(user: User) {
       showValue: true,
       value: genderMap[user?.gender || "NS"],
       ask: [
-        { q: "Is Gender set", ans: genderMap[user?.gender || "NS"] },
-        { q: "Display on Profile", ans: user?.genderToBeShown },
+        { q: "Is Gender set", ans: !(user.gender === "NS") },
+        {
+          q: "Display on Profile",
+          ans: user?.genderToBeShown,
+          param: "genderToBeShown",
+        },
       ],
     },
     {
@@ -80,8 +109,24 @@ export default function settings(user: User) {
       value: user?.getFund.min,
       ask: [
         { q: "Is My Transaction system set", ans: user?.getFund.setup },
-        { q: "Display on Profile", ans: user?.getFund.toBeShown },
+        {
+          q: "Display on Profile",
+          ans: user?.getFund.toBeShown,
+          param: "getFund.toBeShown",
+        },
+      ],
+    },
+    {
+      legend: "Message Settings",
+      showValue: false,
+      value: null,
+      ask: [
+        { q: "Do you want conversations", ans: true },
+        { q: "Do you want people to message you first ?", ans: true },
+        { q: "Display on Profile", ans: true, param: "" },
       ],
     },
   ];
+
+  return settings1;
 }

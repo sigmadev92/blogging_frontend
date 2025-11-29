@@ -1,11 +1,11 @@
 import { io } from "socket.io-client";
-import { backendURL } from "../functions/backend";
 import toast from "react-hot-toast";
 import type { FollowUser } from "../types/user";
 import store from "../redux_toolkit/store/store";
 import { showToast } from "../redux_toolkit/actions/toastActions";
 import { FollowActions } from "../redux_toolkit/reducers/followReducer";
 import { visitedUserActions } from "../redux_toolkit/reducers/visitedUserFollow";
+import { backendURL } from "../constants/urls/backend";
 
 export const initSocket = (userId: string) => {
   const socket = io(backendURL, {
@@ -90,9 +90,6 @@ export const initSocket = (userId: string) => {
       store.dispatch(visitedUserActions.removeFollower({ hisId, myId }));
     }
   );
-  socket.on("getOnlineUsers", (onlineUsers) => {
-    console.log(onlineUsers);
-  });
 
   socket.on("disconnect", () => {
     console.log("Disconnected from socket.io");

@@ -3,9 +3,11 @@ import Picture from "./Picture";
 
 const EditProfile = () => {
   return (
-    <div>
-      <h3 className="font-bold">Edit Profile</h3>
-      <div className="flex justify-around">
+    <div className="h-full">
+      <div className="h-[5%]">
+        <h3 className="font-bold">Edit Profile</h3>
+      </div>
+      <div className="flex flex-wrap-reverse h-[90%] overflow-y-auto">
         <EditDetails />
         <Picture />
       </div>

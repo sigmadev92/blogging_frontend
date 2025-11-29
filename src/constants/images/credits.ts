@@ -1,10 +1,10 @@
-import bgLogin from "../assets/images/bg-login.jpg";
-import bgHome from "../assets/images/home-2.png";
-import forDashboard from "../assets/images/bg-dashboard.jpg";
-import blogLogo from "../assets/images/blog-logo.png";
-import girlReadingBook from "../assets/images/girl-reading-book.png";
-import nightScene from "../assets/images/night-scene.jpg";
-import girlHoldingBook from "../assets/images/girl-holding-book.png";
+import bgLogin from "../../assets/images/bg-login.jpg";
+import bgHome from "../../assets/images/home-2.png";
+import forDashboard from "../../assets/images/bg-dashboard.jpg";
+import blogLogo from "../../assets/images/blog-logo.png";
+import girlReadingBook from "../../assets/images/girl-reading-book.png";
+import nightScene from "../../assets/images/night-scene.jpg";
+import girlHoldingBook from "../../assets/images/girl-holding-book.png";
 const bgHome2 =
   "https://img.freepik.com/premium-photo/golden-sun-rays-illuminate-mountain-peaks-dawn-with-sky-pastel-hues-creating-tranquil-inspiring-scene-generative-ai_262708-31603.jpg?";
 

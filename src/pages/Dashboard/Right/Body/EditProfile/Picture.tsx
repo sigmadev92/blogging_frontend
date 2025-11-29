@@ -43,15 +43,14 @@ const Picture = () => {
         method: "PUT",
         body: formData,
       });
-
-      const data = await response.json();
-      if (data.success) {
-        const { publicId } = data;
-        dispatch(UserActions.setProfilePic({ publicId }));
-        toast.success("Profile Pic updated successfully");
-      } else {
-        toast.error(data.message);
+      if (!response.ok) {
+        throw new Error(`Request Failed ${response.status}`);
       }
+      const data = await response.json();
+      const { publicId, version } = data;
+      console.log(publicId, version);
+      dispatch(UserActions.setProfilePic({ publicId, version }));
+      toast.success("Profile Pic updated successfully");
     } catch (error) {
       console.log(error);
       toast.error("Error while uploading pics");
@@ -71,13 +70,12 @@ const Picture = () => {
         method: "PUT",
         credentials: "include",
       });
-      const data = await response.json();
-      if (data.success) {
-        dispatch(UserActions.removeProfilePic());
-        toast.success("Profile Picture Removed");
-      } else {
-        toast.error(data.message);
+      if (!response.ok) {
+        throw new Error(`Request Failed ${response.status}`);
       }
+
+      dispatch(UserActions.removeProfilePic());
+      toast.success("Profile Picture Removed");
     } catch (error) {
       console.log(error);
       toast.error("Some thing went wrong");
@@ -86,9 +84,9 @@ const Picture = () => {
     }
   };
   return (
-    <div className=" sm:w-[30%]">
+    <div className="mb-4 flex justify-center md:flex-col w-[90%] md:w-[30%] border md:border-0 ">
       <form
-        className="flex flex-col gap-4 items-center"
+        className="flex md:flex-col gap-4 items-center"
         onSubmit={handleFileSubmit}
         encType="mulitpart/formdata"
       >
@@ -97,13 +95,17 @@ const Picture = () => {
             Profile picture Not set Yet
           </p>
         )}
-        <div className="rounded-full w-40 h-40 overflow-hidden">
+        <div className="rounded-full size-20  md:size-40 overflow-hidden">
           {!profilePic ? (
-            <ShowProfilePic className="h-full w-full" user={user!} />
+            <ShowProfilePic
+              className="h-full w-full"
+              user={user!}
+              showHere={true}
+            />
           ) : (
             <img
               src={URL.createObjectURL(profilePic)}
-              className="w-full h-full"
+              className="w-full h-full shrink-0"
             />
           )}
         </div>
@@ -115,22 +117,37 @@ const Picture = () => {
           onChange={onFileChange}
           id="profilePic"
         />
+      </form>
+      <div className=" flex flex-col gap-4 py-2 items-center w-[60%] md:w-full">
         <label
           htmlFor="profilePic"
-          className="text-[12px] bg-purple-500 px-3 py-1 cursor-pointer"
+          className="text-[12px] bg-purple-500 shrink-0 w-[100px] rounded text-center py-1 cursor-pointer"
         >
-          Choose Picture
+          Choose {profilePic ? "Another" : "Picture"}
         </label>
         {profilePic && (
-          <CustomButton className="bg-blue-500 px-3 py-1" btnType="submit">
-            Upload
-          </CustomButton>
+          <>
+            <CustomButton
+              variant="regular-confirm"
+              btnType="submit"
+              className="w-[100px]"
+            >
+              Upload
+            </CustomButton>
+            <CustomButton
+              variant="regular-critical"
+              btnType="submit"
+              onClick={() => setProfilePic(null)}
+              className="w-[100px]"
+            >
+              Cancel
+            </CustomButton>
+          </>
         )}
-      </form>
-      <div className="flex justify-center mt-12">
-        {user?.profilePic?.publicId && (
+        {user?.profilePic?.publicId && !profilePic && (
           <CustomButton
-            className="bg-red-500 px-3 py-1"
+            variant="regular-danger"
+            className="w-[100px]"
             onClick={handleRemovePic}
           >
             Remove Pic

@@ -189,7 +189,9 @@ const Profile = () => {
               </div>
             </div>
           </div>
-          {author.isPublic || visitedUser.followers[user!._id] ? (
+          {author.isPublic ||
+          visitedUser.followers[user?._id || ""] ||
+          user?._id === visitedUser.userId ? (
             <div className="h-[55%] flex flex-wrap px-4">
               <div className="md:w-[30%] p-2">
                 <h3 className="text-3xl mb-4">About author</h3>
