@@ -21,11 +21,13 @@ const ViewBlog = () => {
         const response = await fetch(`${blogsURL}/public/one/${blogId}`, {
           method: "GET",
         });
-        const data = await response.json();
-        if (!data.success) {
-          toast.error(data.message);
-          return;
+        if (!response.ok) {
+          throw new Error(
+            `Request Failed While Fethcing blog ${response.status}`
+          );
         }
+        const data: { blog: PublicBlog } = await response.json();
+
         setBlog(data.blog);
         const { firstName, middleName, lastName } = data.blog.authorId.fullName;
         setFullName(firstName + " " + middleName + " " + lastName);

@@ -23,6 +23,7 @@ import OutLayout from "../layouts/OutLayout";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import ForgotPassword from "../pages/ForgotPassword";
+import VerifyEmail from "../pages/VerifyEmail";
 
 const CustomRouter = () => {
   const router = createBrowserRouter([
@@ -39,6 +40,7 @@ const CustomRouter = () => {
           path: "profile/:medium/:value",
           element: <Profile />,
         },
+        { path: "verify-email", element: <VerifyEmail /> },
         { path: "credits", element: <Credits /> },
         { path: "authors", element: <Authors /> },
         { path: "books", element: <Books /> },
