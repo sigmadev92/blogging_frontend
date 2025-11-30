@@ -3,7 +3,7 @@ import { type Blog } from "../../types/blog";
 import toast from "react-hot-toast";
 import { myBlogAsyncActions } from "../AsyncThunkActions/blog";
 
-const { deleteBlog } = myBlogAsyncActions;
+const { fetchMyBlogs, deleteBlog, toggleVisibility } = myBlogAsyncActions;
 const initialState: { isFetched: boolean; myBlogs: Blog[] } = {
   isFetched: false,
   myBlogs: [],
@@ -32,6 +32,14 @@ const myBlogsSlice = createSlice({
   },
   extraReducers(builder) {
     builder
+      .addCase(fetchMyBlogs.rejected, (_, action) => {
+        toast.error((action.error as Error).message);
+      })
+      .addCase(fetchMyBlogs.fulfilled, (state, action) => {
+        state.isFetched = true;
+        state.myBlogs = action.payload;
+      });
+    builder
       .addCase(deleteBlog.rejected, (_, action) => {
         console.log(action.error);
         toast.error("Problem in deleting blog");
@@ -45,6 +53,21 @@ const myBlogsSlice = createSlice({
             toast.success("Blog deleted successfully");
           }
         }
+      });
+    builder
+      .addCase(toggleVisibility.rejected, (_, action) => {
+        toast.error((action.error as Error).message);
+      })
+      .addCase(toggleVisibility.fulfilled, (state, action) => {
+        const { _id } = action.payload;
+        const idx = state.myBlogs.findIndex((ele) => ele._id === _id);
+
+        if (idx < 0) {
+          toast.error("Something went wrong");
+        }
+        const isPublic = state.myBlogs[idx].isPublic;
+
+        state.myBlogs[idx].isPublic = !isPublic;
       });
   },
 });

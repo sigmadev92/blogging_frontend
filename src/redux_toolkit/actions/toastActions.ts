@@ -7,7 +7,8 @@ const showToast = createAction<{
     | "new-follower"
     | "new-follow-rqst"
     | "request-accepted"
-    | "user-unfollowed-you";
+    | "user-unfollowed-you"
+    | "my-request-deleted";
   user: FollowUser;
 }>("ui/showToast");
 

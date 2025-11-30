@@ -48,6 +48,15 @@ export const initSocket = (userId: string) => {
     }
   );
   socket.on(
+    "user-deleted-their-sent-request",
+    ({ user }: { user: FollowUser }) => {
+      console.log("USer deleted his sent request", user);
+      store.dispatch(
+        FollowActions.userDeletedTheirSentRequest({ userId: user._id })
+      );
+    }
+  );
+  socket.on(
     "user-accepted-my-request",
     ({ user, me }: { user: FollowUser; me: FollowUser }) => {
       console.log(user, me);
@@ -57,8 +66,25 @@ export const initSocket = (userId: string) => {
     }
   );
   socket.on(
+    "user-deleted-my-request",
+    ({
+      user,
+      accountPremium,
+    }: {
+      user: FollowUser;
+      accountPremium: boolean;
+    }) => {
+      console.log("User Deleted my request", user);
+      if (accountPremium) {
+        store.dispatch(showToast({ type: "my-request-deleted", user }));
+      }
+      store.dispatch(FollowActions.userDeletedMyRequest({ userId: user._id }));
+    }
+  );
+  socket.on(
     "new-follower",
     ({ sender, me }: { sender: FollowUser; me: FollowUser }) => {
+      console.log("New follower");
       store.dispatch(showToast({ type: "new-follower", user: sender }));
       store.dispatch(FollowActions.userStartedFollowingMe({ user: sender }));
       store.dispatch(visitedUserActions.addFollowing({ me }));

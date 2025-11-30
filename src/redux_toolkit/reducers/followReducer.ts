@@ -39,6 +39,20 @@ const followSlice = createSlice({
       delete state.pendingOutgoing[user._id];
       state.following[user._id] = user;
     },
+    userDeletedMyRequest: (state, action) => {
+      const { userId } = action.payload;
+      if (state.pendingOutgoing[userId]) {
+        delete state.pendingOutgoing[userId];
+      }
+    },
+    userDeletedTheirSentRequest: (state, action) => {
+      const { userId } = action.payload;
+      console.log(action.payload);
+      console.log(state.pendingIncomming[userId]);
+      if (state.pendingIncomming[userId]) {
+        delete state.pendingIncomming[userId];
+      }
+    },
     userRequestedToFollowMe: (state, action) => {
       const { user }: { user: FollowUser } = action.payload;
 

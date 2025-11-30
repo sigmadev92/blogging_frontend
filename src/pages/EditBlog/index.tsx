@@ -14,10 +14,13 @@ import { dbMenuActions } from "../../redux_toolkit/reducers/dbMenuReducer";
 import { myBlogsActions } from "../../redux_toolkit/reducers/myblogsReducer";
 import { blogsURL } from "../../constants/urls/backend";
 import { _default } from "../../constants/images/default";
+import type { Blog } from "../../types/blog";
+import { myBlogAsyncActions } from "../../redux_toolkit/AsyncThunkActions/blog";
 
 const EditBlog = () => {
   type Phase = "filling" | "saved" | "publishing" | "published";
   const { pathname } = useLocation();
+  // const { user } = useAppSelector((state) => state.user);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [topics, setTopics] = useState<string[]>([]);
@@ -27,6 +30,7 @@ const EditBlog = () => {
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [stringThumbnail, setStringThumbnail] = useState<string>("");
   const [isNavigationBox, setIsNaigationBox] = useState<boolean>(false);
+  const [isBlogPublic, setBlogVisibility] = useState<boolean>(true);
   const [status, setStatus] = useState<string>("Save");
   const [phase, setPhase] = useState<Phase>("saved");
   const headingMap = {
@@ -48,23 +52,23 @@ const EditBlog = () => {
           credentials: "include",
           method: "GET",
         });
-        const data = await response.json();
-        if (data.success) {
-          const blog = data.blog;
-          setTitle(blog.title);
-          setCurrentBlogId(blogId);
-          setDescription(blog.description);
-          setSeachTags(blog.searchTags);
-          setTopics(blog.topics);
-          if (blog.thumbnail?.publicId) {
-            setPhase("publishing");
-            setStringThumbnail(blog.thumbnail.secure_url);
-          }
-          if (blog.isPublished) {
-            setPhase("published");
-          }
-        } else {
-          toast.error(data.message);
+        if (!response.ok) {
+          throw new Error(`Request Failed ${response.status}`);
+        }
+        const { blog }: { blog: Blog } = await response.json();
+
+        setTitle(blog.title);
+        setCurrentBlogId(blogId);
+        setDescription(blog.description);
+        setSeachTags(blog.searchTags);
+        setTopics(blog.topics);
+        setBlogVisibility(blog.isPublic);
+        if (blog.thumbnail?.publicId) {
+          setPhase("publishing");
+          setStringThumbnail(blog.thumbnail.secure_url);
+        }
+        if (blog.isPublished) {
+          setPhase("published");
         }
       } catch (error) {
         console.log(error);
@@ -271,7 +275,9 @@ const EditBlog = () => {
           </div>
           <div>
             <h3>{headingMap[phase][0]}</h3>
-            <h2 className="text-2xl text-purple-500">{headingMap[phase][1]}</h2>
+            <h2 className="text-2xl text-purple-500">
+              {headingMap[phase][1]} ({isBlogPublic ? "Public" : "Private"})
+            </h2>
           </div>
         </div>
 
@@ -290,7 +296,7 @@ const EditBlog = () => {
           >
             {status}
           </CustomButton>
-          {phase !== "published" && (
+          {phase !== "published" ? (
             <CustomButton
               variant={"regular-confirm"}
               disabled={!["publishing", "published"].includes(phase)}
@@ -298,6 +304,17 @@ const EditBlog = () => {
             >
               Publish
             </CustomButton>
+          ) : (
+            <div className="relative">
+              <CustomButton
+                variant="regular-dark"
+                onClick={() =>
+                  dispatch(myBlogAsyncActions.toggleVisibility(currentBlogId))
+                }
+              >
+                <>Make it {isBlogPublic ? "Private" : "Public"}</>
+              </CustomButton>
+            </div>
           )}
         </div>
       </div>
@@ -414,7 +431,7 @@ const EditBlog = () => {
                     if (phase !== "publishing") setThumbnail(null);
                   }}
                 >
-                  Cancel
+                  {stringThumbnail ? "Close" : "Cancel"}
                 </CustomButton>
               </form>
             </div>

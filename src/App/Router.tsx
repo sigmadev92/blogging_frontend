@@ -5,7 +5,7 @@ import PreventExposed from "../components/ControlRoutes/PreventExposed";
 import RootLayout from "../layouts/RootLayout";
 import NotFound from "../pages/NotFound";
 import Home from "../pages/Home";
-import Profile from "../pages/PublicProfile/Profile";
+import Profile from "../pages/PublicProfile";
 import Credits from "../pages/Credits";
 import Authors from "../pages/Authors";
 import Books from "../pages/Books";

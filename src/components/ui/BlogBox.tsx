@@ -3,32 +3,38 @@ import { NavLink, useNavigate } from "react-router-dom";
 import CustomButton from "./Button";
 import { PencilIcon, Trash2Icon } from "lucide-react";
 import type { FullName } from "../../types/user";
-import { useAppSelector } from "../../redux_toolkit/store/hooks";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../redux_toolkit/store/hooks";
 import { _default } from "../../constants/images/default";
 import { useState } from "react";
+import { myBlogAsyncActions } from "../../redux_toolkit/AsyncThunkActions/blog";
 
 const BlogBox = ({
   blog,
   author,
-  deleteBlogBtn,
 }: {
   author: {
     fullName: FullName;
     authorId: string;
   };
   blog: Blog;
-  deleteBlogBtn?: (ele: string) => void;
 }) => {
   const { title, thumbnail, _id } = blog;
   const { user } = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [deleting, setDeleting] = useState<boolean>(false);
+  const deleteBlogBtn = async (_id: string) => {
+    await dispatch(myBlogAsyncActions.deleteBlog(_id));
+  };
 
   return (
     <li className="h-[100px] w-full md:h-[200px] md:w-[300px] flex gap-4 md:block theme border-light p-2 relative hover:shadow-blue-400 cursor-pointer hover:shadow-md overflow-hidden">
       <div className="h-full md:h-[60%] w-[40%] md:w-full">
         <img
-          src={thumbnail.secure_url || _default.thumbnail[0]}
+          src={thumbnail?.secure_url || _default.thumbnail[0]}
           alt="the thumbnail of this blog post"
           className="h-full w-full"
         />

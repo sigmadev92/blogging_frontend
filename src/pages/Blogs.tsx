@@ -11,6 +11,10 @@ const Blogs = () => {
     const fetchBlogs = async () => {
       try {
         const response = await fetch(`${blogsURL}/all`);
+
+        if (!response.ok) {
+          throw new Error(`Request Failed ${response.status}`);
+        }
         const data = await response.json();
 
         console.log(data.blogs);

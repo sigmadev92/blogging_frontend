@@ -12,6 +12,10 @@ export type Blog = {
   description: string;
   searchTags: string[];
   topics: string[];
+  isPublic: boolean;
+  isPublished: boolean;
+  archived: boolean;
+  totalViews: number;
   thumbnail: {
     secure_url: string;
     publicId: string;

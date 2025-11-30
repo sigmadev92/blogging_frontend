@@ -58,7 +58,7 @@ const Hero = () => {
       </div>
 
       <div className="flex flex-col w-full px-5">
-        <h3 className="text-2xl text-white">Top Blogs this month</h3>
+        <h3 className="text-2xl ">Top Blogs this month</h3>
         <div className="flex justify-center items-center">
           {blogs.length > 0 ? <div></div> : <div>No blogs found</div>}
         </div>
