@@ -89,6 +89,7 @@ const Picture = () => {
         className="flex md:flex-col gap-4 items-center"
         onSubmit={handleFileSubmit}
         encType="mulitpart/formdata"
+        id="picture"
       >
         {!user?.profilePic?.publicId && (
           <p className="text-[12px] text-red-400">
@@ -131,12 +132,13 @@ const Picture = () => {
               variant="regular-confirm"
               btnType="submit"
               className="w-[100px]"
+              formRef="picture"
             >
               Upload
             </CustomButton>
             <CustomButton
               variant="regular-critical"
-              btnType="submit"
+              btnType="button"
               onClick={() => setProfilePic(null)}
               className="w-[100px]"
             >

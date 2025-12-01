@@ -22,7 +22,8 @@ import EditBlog from "../pages/EditBlog";
 import OutLayout from "../layouts/OutLayout";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
-import ForgotPassword from "../pages/ForgotPassword";
+import RecoverPassword from "../pages/ForgotPassword/Recover";
+import ResetPassword from "../pages/ForgotPassword/Reset";
 import VerifyEmail from "../pages/VerifyEmail";
 
 const CustomRouter = () => {
@@ -89,7 +90,12 @@ const CustomRouter = () => {
 
             {
               path: "password/recover",
-              element: <PreventExposed children={<ForgotPassword />} />,
+              element: <PreventExposed children={<RecoverPassword />} />,
+            },
+
+            {
+              path: "password/reset",
+              element: <PreventExposed children={<ResetPassword />} />,
             },
           ],
         },

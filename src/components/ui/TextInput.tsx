@@ -12,6 +12,8 @@ const TextInput = ({
   value,
   style,
   variant,
+  min,
+  max,
 }: {
   placeholder: string;
   inputType: string;
@@ -26,6 +28,8 @@ const TextInput = ({
     input?: string;
     size?: string;
   };
+  min?: number;
+  max?: number;
   variant?: Variant;
 }) => {
   const regular = "relative flex flex-col gap-2 w-full";
@@ -49,6 +53,8 @@ const TextInput = ({
         placeholder={placeholder}
         name={name}
         id={name}
+        minLength={min}
+        maxLength={max}
         value={value}
         className={`border-light input-custom ${style?.input}`}
         onChange={(e) => handleChange(e)}
