@@ -2,20 +2,18 @@ import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import TextInput from "../../components/ui/TextInput";
 import CustomTextArea from "../../components/ui/TextArea";
 import MultipleValues from "../../components/ui/MultipleValues";
-import CustomButton from "../../components/ui/Button";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "../../redux_toolkit/store/hooks";
 import { LoaderActions } from "../../redux_toolkit/reducers/loaderReducer";
 
 import NavigationOverlay from "../../components/ui/NavigationOverlay";
-import { CornerUpLeftIcon, ImageIcon } from "lucide-react";
-import { NavLink, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { dbMenuActions } from "../../redux_toolkit/reducers/dbMenuReducer";
 import { myBlogsActions } from "../../redux_toolkit/reducers/myblogsReducer";
 import { blogsURL } from "../../constants/urls/backend";
-import { _default } from "../../constants/images/default";
 import type { Blog } from "../../types/blog";
-import { myBlogAsyncActions } from "../../redux_toolkit/AsyncThunkActions/blog";
+import ThumbnailForm from "./ThumbnailForm";
+import EditBlogHeader from "./Header";
 
 const EditBlog = () => {
   type Phase = "filling" | "saved" | "publishing" | "published";
@@ -33,12 +31,6 @@ const EditBlog = () => {
   const [isBlogPublic, setBlogVisibility] = useState<boolean>(true);
   const [status, setStatus] = useState<string>("Save");
   const [phase, setPhase] = useState<Phase>("saved");
-  const headingMap = {
-    filling: ["Unsaved", "Create New Blog"],
-    saved: ["Blog Saved", "Add Thumbnail"],
-    publishing: ["Thumbnail Added", "Publish Now"],
-    published: ["Published", "Edit your Blog"],
-  };
 
   const dispatch = useAppDispatch();
 
@@ -265,59 +257,14 @@ const EditBlog = () => {
         />
       )}
       {/* header */}
-      <div className="fixed top-11 left-0 w-full backdrop-blur-2xl px-4  box-border z-3 flex justify-between items-center dark:bg-black bg-white">
-        <div className="flex gap-2 items-center">
-          <div className={"bg-blue-600 rounded px-2 py-1 text-white"}>
-            <NavLink to={"/in/dashboard"}>
-              <CornerUpLeftIcon size={14} />
-              <span className="text-[12px]">Blogs</span>
-            </NavLink>
-          </div>
-          <div>
-            <h3>{headingMap[phase][0]}</h3>
-            <h2 className="text-2xl text-purple-500">
-              {headingMap[phase][1]} ({isBlogPublic ? "Public" : "Private"})
-            </h2>
-          </div>
-        </div>
-
-        <div className="flex gap-2">
-          <CustomButton
-            disabled={phase === "filling"}
-            variant="regular-confirm"
-            onClick={() => setThumbnailForm(true)}
-          >
-            Add Thumbnail
-          </CustomButton>
-          <CustomButton
-            variant="regular-confirm"
-            btnType={"submit"}
-            formRef={"details"}
-          >
-            {status}
-          </CustomButton>
-          {phase !== "published" ? (
-            <CustomButton
-              variant={"regular-confirm"}
-              disabled={!["publishing", "published"].includes(phase)}
-              onClick={publishBlog}
-            >
-              Publish
-            </CustomButton>
-          ) : (
-            <div className="relative">
-              <CustomButton
-                variant="regular-dark"
-                onClick={() =>
-                  dispatch(myBlogAsyncActions.toggleVisibility(currentBlogId))
-                }
-              >
-                <>Make it {isBlogPublic ? "Private" : "Public"}</>
-              </CustomButton>
-            </div>
-          )}
-        </div>
-      </div>
+      <EditBlogHeader
+        currentBlogId={currentBlogId}
+        publishBlog={publishBlog}
+        setThumbnailForm={setThumbnailForm}
+        status={status}
+        isBlogPublic={isBlogPublic}
+        phase={phase}
+      />
       <div className="overflow-scroll pt-16 h-full">
         <form
           className="flex flex-col md:flex-row md:justify-between gap-y-4 w-full"
@@ -375,69 +322,19 @@ const EditBlog = () => {
             />
           </div>
         </form>
-
-        {thumbnailForm && (
-          //overlay-bg
-          <div className="absolute top-0 left-0 h-full w-full bg-[#38383b8e] backdrop-blur-[2px] z-3 flex justify-center items-center">
-            <div className=" h-[80%] w-full md:w-[60%] flex flex-col md:flex-row md:justify-center items-center gap-4 shadow-xl shadow-blue-200 p-2 rounded-[2xl]">
-              <div className=" w-[90%] rounded-xl overflow-hidden border">
-                {!thumbnail ? (
-                  <img
-                    src={stringThumbnail || _default.thumbnail[0]}
-                    alt="thumbnail of blog"
-                    className="h-full w-full"
-                  />
-                ) : (
-                  <img
-                    src={URL.createObjectURL(thumbnail)}
-                    alt="thumbnail of blog"
-                    className="w-full h-full"
-                  />
-                )}
-              </div>
-              <form
-                onSubmit={addThumbnail}
-                className="flex flex-col items-center justify-center gap-4  w-[30%]"
-              >
-                <input
-                  id="thumbnail"
-                  type="file"
-                  accept=".jpg,.jpeg,.png"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
-
-                <CustomButton variant={"regular-dark"}>
-                  <label
-                    htmlFor="thumbnail"
-                    className="flex gap-1 items-center cursor-pointer"
-                  >
-                    Choose <ImageIcon size={12} />
-                  </label>
-                </CustomButton>
-
-                <CustomButton
-                  btnType={"submit"}
-                  variant={"regular-confirm"}
-                  disabled={!thumbnail}
-                >
-                  Add Thumbnail
-                </CustomButton>
-                <CustomButton
-                  variant="regular-danger"
-                  btnType={"button"}
-                  onClick={() => {
-                    setThumbnailForm(false);
-                    if (phase !== "publishing") setThumbnail(null);
-                  }}
-                >
-                  {stringThumbnail ? "Close" : "Cancel"}
-                </CustomButton>
-              </form>
-            </div>
-          </div>
-        )}
       </div>
+      {thumbnailForm && (
+        //overlay-bg
+        <ThumbnailForm
+          phase={phase}
+          thumbnail={thumbnail}
+          stringThumbnail={stringThumbnail}
+          setThumbnailForm={setThumbnailForm}
+          addThumbnail={addThumbnail}
+          handleFileChange={handleFileChange}
+          setThumbnail={setThumbnail}
+        />
+      )}
     </section>
   );
 };

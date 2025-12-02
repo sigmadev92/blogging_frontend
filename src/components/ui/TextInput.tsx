@@ -12,6 +12,7 @@ const TextInput = ({
   value,
   style,
   variant,
+  readOnly,
   min,
   max,
 }: {
@@ -28,6 +29,7 @@ const TextInput = ({
     input?: string;
     size?: string;
   };
+  readOnly?: boolean;
   min?: number;
   max?: number;
   variant?: Variant;
@@ -52,6 +54,7 @@ const TextInput = ({
         type={inputType === "password" ? (it ? "password" : "text") : inputType}
         placeholder={placeholder}
         name={name}
+        readOnly={readOnly}
         id={name}
         minLength={min}
         maxLength={max}

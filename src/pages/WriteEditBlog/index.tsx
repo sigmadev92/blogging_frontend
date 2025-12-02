@@ -1,47 +1,23 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { blogsURL } from "../../constants/urls/backend";
-import type { Blog } from "../../types/blog";
-import type { ImageType } from "../../types/image";
+import { useEffect } from "react";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "../../redux_toolkit/store/hooks";
+import editBlogThunkActions from "../../redux_toolkit/AsyncThunkActions/editBlog";
 
 const WriteEditBlog = () => {
-  const [blog, setBlog] = useState<{
-    title: string;
-    description: string;
-    topics: string[];
-    searchTags: string[];
-    thumbnail: ImageType;
-  }>({
-    title: "",
-    description: "",
-    topics: [],
-    searchTags: [],
-    thumbnail: {
-      secure_url: "",
-      publicId: "",
-    },
-  });
-
-  const { blogId } = useParams();
-
+  const { blogId, blog } = useAppSelector((state) => state.editBlog);
+  const dispatch = useAppDispatch();
   useEffect(() => {
-    if (!blogId) {
-      return;
+    if (blogId) {
+      dispatch(editBlogThunkActions.fetchBlog(blogId));
     }
-    const fetchBlog = async () => {
-      const response = await fetch(`${blogsURL}/one/${blogId}`, {
-        credentials: "include",
-        method: "GET",
-      });
-      if (!response.ok) {
-        throw new Error("Request failed" + response.status);
-      }
-      const data: { blog: Blog } = await response.json();
-      setBlog(data.blog);
-    };
-    fetchBlog();
   }, []);
-  return <section className="theme pt-11 h-full">{blog.title}</section>;
+  return (
+    <section className="pt-11 theme h-full">
+      {blog._id && <h2>{blog.title}</h2>}
+    </section>
+  );
 };
 
 export default WriteEditBlog;

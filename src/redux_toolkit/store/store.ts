@@ -8,6 +8,7 @@ import { LikeReducer } from "../reducers/likeReducer";
 import { FollowReducer } from "../reducers/followReducer.ts";
 import { visitedUserReducer } from "../reducers/visitedUserFollow.ts";
 import listenerMiddleware from "../actions/listenerMiddleWare.ts";
+import { editBlogReducer } from "../reducers/editBlogReducer.ts";
 const store = configureStore({
   reducer: {
     user: UserReducer,
@@ -18,6 +19,7 @@ const store = configureStore({
     like: LikeReducer,
     follow: FollowReducer,
     visitedUser: visitedUserReducer,
+    editBlog: editBlogReducer,
   },
   middleware: (getDefault) =>
     getDefault().prepend(listenerMiddleware.middleware),

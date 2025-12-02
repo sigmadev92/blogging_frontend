@@ -24,7 +24,17 @@ const Overview = () => {
           />
         </div>
         <div>
-          <h4>{userName || "Username not set yet"}</h4>
+          {userName ? (
+            <NavLink
+              to={`/profile/username/@${userName}`}
+              className={"text-xl hover:underline"}
+            >
+              <span>/@</span>
+              <span>{userName}</span>
+            </NavLink>
+          ) : (
+            <span>username not set</span>
+          )}
           <h3 className="text-2xl font-bold">
             {firstName + " " + middleName + " " + lastName}
           </h3>

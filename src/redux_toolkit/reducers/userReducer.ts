@@ -3,8 +3,12 @@ import { type User } from "../../types/user";
 import { UserThunkActions } from "../AsyncThunkActions/user";
 import toast from "react-hot-toast";
 
-const { fetchLoginStatus, toggleAccountVisibility, toggleDisplayParam } =
-  UserThunkActions;
+const {
+  fetchLoginStatus,
+  toggleAccountVisibility,
+  toggleDisplayParam,
+  setUsername,
+} = UserThunkActions;
 const initialState: { loggedIn: boolean; user: User | null } = {
   loggedIn: false,
   user: null,
@@ -72,6 +76,15 @@ const userSlice = createSlice({
         if (state.user) {
           state.user = { ...state.user, [param]: newValue };
         }
+      });
+    builder
+      .addCase(setUsername.rejected, (_, action) => {
+        toast.error((action.error as Error).message);
+      })
+      .addCase(setUsername.fulfilled, (state, action) => {
+        const { userName, userNameLastChangedAt } = action.payload;
+        state.user!.userName = userName;
+        state.user!.userNameLastChangedAt = userNameLastChangedAt;
       });
   },
 });

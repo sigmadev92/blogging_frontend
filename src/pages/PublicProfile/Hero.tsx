@@ -38,10 +38,13 @@ const ProfileHero = ({
       <div className="flex gap-4 items-center absolute w-[400px] bottom-0 rounded-md left-[50%] translate-x-[-50%] backdrop-blur-md p-2">
         <ShowProfilePic user={author} className="rounded-full h-28 w-28" />
         <div className="flex flex-col gap-2 w-[280px]">
-          {author.userName && (
-            <span className=" font-bold -mb-2">
-              {author.userName || "@username"}
-            </span>
+          {author.userName ? (
+            <h4 className={""}>
+              <span>@</span>
+              <span>{author.userName}</span>
+            </h4>
+          ) : (
+            <span className="text-[0.8rem]">username not set</span>
           )}
           {fullName && <h2 className="font-bold">{fullName}</h2>}
           {!user ||

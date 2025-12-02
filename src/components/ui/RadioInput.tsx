@@ -14,8 +14,8 @@ const RadioInput = ({
 }) => {
   return (
     <div>
-      <div className="flex justify-between px-2">
-        <p>{radioFields.heading}</p>
+      <div className="flex justify-between ">
+        <p className="font-bold">{radioFields.heading}</p>
         <span>{selected}</span>
       </div>
       <div className={className}>

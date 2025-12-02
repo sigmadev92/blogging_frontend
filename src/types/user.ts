@@ -40,6 +40,7 @@ export type User = {
   thumbnail?: ImageType;
   aboutMe?: string;
   userName?: string;
+  userNameLastChangedAt: Date | null;
   profileViews: number;
   blogViews: number;
   role: UserRole;

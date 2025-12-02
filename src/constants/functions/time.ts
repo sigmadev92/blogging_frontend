@@ -1,3 +1,5 @@
+import type { User } from "../../types/user";
+
 export default function getTimeAgo(time: Date) {
   const diff = Math.floor((Date.now() - new Date(time).getTime()) / 1000);
 
@@ -69,3 +71,12 @@ export function getZodiac(dateInput: string | Date | null): string | null {
 
   return zodiac;
 }
+
+export const canChangeUsername = (user: User) => {
+  if (!user.userNameLastChangedAt) return true;
+  const myDate = new Date(user.userNameLastChangedAt);
+
+  const sixMonths = 1000 * 60 * 60 * 24 * 30 * 6;
+
+  return Date.now() - myDate.getTime() > sixMonths;
+};

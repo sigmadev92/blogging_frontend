@@ -19,12 +19,14 @@ import InLayout from "../layouts/InLayout";
 import Dashboard from "../pages/Dashboard";
 import WriteBlog from "../pages/writeBlog";
 import EditBlog from "../pages/EditBlog";
+
 import OutLayout from "../layouts/OutLayout";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
 import RecoverPassword from "../pages/ForgotPassword/Recover";
 import ResetPassword from "../pages/ForgotPassword/Reset";
 import VerifyEmail from "../pages/VerifyEmail";
+import WriteEditBlog from "../pages/WriteEditBlog";
 
 const CustomRouter = () => {
   const router = createBrowserRouter([
@@ -74,6 +76,14 @@ const CustomRouter = () => {
             {
               path: "blog/edit/:blogId",
               element: <EditBlog />,
+            },
+            {
+              path: "blog/write",
+              element: <WriteEditBlog />,
+            },
+            {
+              path: "blog/edit1",
+              element: <WriteEditBlog />,
             },
           ],
         },

@@ -43,8 +43,29 @@ const toggleDisplayParam = createAsyncThunk(
   }
 );
 
+const setUsername = createAsyncThunk(
+  "setUsername",
+  async ({ userName }: { userName: string }) => {
+    const response = await fetch(`${userSettingsURL}/set/username`, {
+      body: JSON.stringify({ userName }),
+      method: "PUT",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Request Failed ${response.status}`);
+    }
+    const { userNameLastChangedAt }: { userNameLastChangedAt: Date } =
+      await response.json();
+    return { userName, userNameLastChangedAt };
+  }
+);
 export const UserThunkActions = {
   fetchLoginStatus,
   toggleAccountVisibility,
   toggleDisplayParam,
+  setUsername,
 };

@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import {
   useAppDispatch,
   useAppSelector,
@@ -13,13 +13,16 @@ import CustomButton from "../../../../../components/ui/Button";
 import { LoaderActions } from "../../../../../redux_toolkit/reducers/loaderReducer";
 import toast from "react-hot-toast";
 import { UserActions } from "../../../../../redux_toolkit/reducers/userReducer";
-import { usersURL } from "../../../../../constants/urls/backend";
+import { searchURL, usersURL } from "../../../../../constants/urls/backend";
 import CustomTextArea from "../../../../../components/ui/TextArea";
+import { canChangeUsername } from "../../../../../constants/functions/time";
+import { UserThunkActions } from "../../../../../redux_toolkit/AsyncThunkActions/user";
 
 const EditDetails = () => {
   const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState({
+    userName: user?.userName,
     firstName: user?.fullName.firstName,
     middleName: user?.fullName.middleName,
     lastName: user?.fullName.lastName,
@@ -28,13 +31,32 @@ const EditDetails = () => {
     aboutMe: user?.aboutMe || "",
   });
   const { firstName, lastName, middleName, gender, dob, aboutMe } = formData;
+  const [username, setUsername] = useState("");
+  const [status, setStatus] = useState("");
+
+  useEffect(() => {
+    console.log(username);
+    if (username.length === 0) return;
+    console.log(`${searchURL}/check-username?username=${username}`);
+    setTimeout(() => {
+      fetch(`${searchURL}/check-username?username=${username}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if (!data.valid) setStatus("Invalid username");
+          else if (!data.available) setStatus("Already taken ❌");
+          else setStatus("Available ✔");
+        });
+    }, 300); // debounce
+
+    // return () => clearTimeout(timer);
+  }, [username]);
 
   const get18YearsBack = () => {
     const date = new Date();
     date.setFullYear(date.getFullYear() - 18);
     return date.toISOString().split("T")[0];
   };
-  console.log(dob, dob instanceof Date);
   const initialDate = dob
     ? new Date(dob).toISOString().slice(0, 10) // ensure YYYY-MM-DD format
     : get18YearsBack();
@@ -98,8 +120,41 @@ const EditDetails = () => {
     }
   };
 
+  const saveUserName = async () => {
+    await dispatch(UserThunkActions.setUsername({ userName: username }));
+  };
+
   return (
     <div className="w-[90%] md:w-[60%] mx-auto max-h-[95%] overflow-y-auto pr-5 pb-4">
+      <div className="flex gap-4 items-center">
+        <TextInput
+          label="Username"
+          style={{
+            label: "text-[14px] font-bold",
+            size: "flex gap-3 items-center",
+          }}
+          name="userName"
+          max={30}
+          value={formData.userName || username}
+          readOnly={!canChangeUsername(user!)}
+          handleChange={(e) => setUsername(e.target.value)}
+          inputType="text"
+          placeholder="@handle"
+        />
+        <p className="text-[12px] text-green-500">
+          {username.length >= 4 && status === "Available ✔"
+            ? "available"
+            : "Not Available"}
+        </p>
+        <CustomButton
+          variant="regular-confirm"
+          onClick={() => {
+            saveUserName();
+          }}
+        >
+          Set
+        </CustomButton>
+      </div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <div className="flex flex-col gap-4">
           <h3 className="font-bold -mb-4">Full Name</h3>
@@ -135,7 +190,9 @@ const EditDetails = () => {
           />
         </div>
         <div className="flex flex-col gap-2">
-          <label htmlFor="dob">Date of Birth</label>
+          <label htmlFor="dob" className="font-bold">
+            Date of Birth
+          </label>
           <input
             type="date"
             value={birthdate}
@@ -160,6 +217,7 @@ const EditDetails = () => {
             outer: "flex flex-col gap-2 ",
             textArea:
               "w-full resize-none placeholder:text-[12px] border-light p-2",
+            label: "font-bold",
           }}
         />
         <CustomButton

@@ -30,23 +30,36 @@ const Settings = () => {
     {
       q: "Is Account Public",
       ans: user!.isPublic,
-      operation: { label: "Change", fn: toggleVisibility },
+      fieldType: "toggle",
+      operation: [{ label: "Change", fn: toggleVisibility }],
     },
     {
       q: "Is Email Verified",
       ans: user!.isMailVerified,
-      operation: { label: "Verify", fn: () => verifyEmail() },
+      fieldType: "one-time",
+      operation: [
+        { label: "Verify", fn: () => verifyEmail() },
+        { label: "Verified", fn: () => {}, disabled: true },
+      ],
     },
     {
       q: "Is Account Verified",
       ans: user!.isAccountVerified,
-      operation: { label: "Verify", fn: () => verifyAccount() },
+      fieldType: "one-time",
+      operation: [
+        { label: "Verify", fn: () => verifyAccount() },
+        { label: "Verified", fn: () => {}, disabled: true },
+      ],
     },
 
     {
       q: "Is Premium Account",
       ans: user!.isPremiumAccount,
-      operation: { label: "Subscribe", fn: () => buySubscription() },
+      fieldType: "will-end",
+      operation: [
+        { label: "Subscribe", fn: () => buySubscription() },
+        { label: "End Soon", fn: () => {}, disabled: true },
+      ],
     },
   ];
 

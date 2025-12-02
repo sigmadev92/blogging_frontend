@@ -10,4 +10,14 @@ const followURL = `${backendURL}/api/requests`;
 
 const userSettingsURL = `${backendURL}/api/settings/users`;
 
-export { backendURL, usersURL, blogsURL, likesURL, followURL, userSettingsURL };
+const searchURL = `${backendURL}/api/search`;
+
+export {
+  backendURL,
+  usersURL,
+  blogsURL,
+  likesURL,
+  followURL,
+  userSettingsURL,
+  searchURL,
+};
