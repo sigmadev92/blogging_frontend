@@ -1,4 +1,4 @@
-const backendURL = "http://localhost:3003";
+const backendURL = import.meta.env.VITE_API_URL;
 
 const usersURL = `${backendURL}/api/users`;
 
