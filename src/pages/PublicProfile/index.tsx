@@ -16,7 +16,7 @@ import NavigationOverlay from "../../components/ui/NavigationOverlay";
 import ProfileHero from "./Hero";
 type Medium = "id" | "username";
 const Profile = () => {
-  const { user } = useAppSelector((state) => state.user);
+  const { user, loggedIn } = useAppSelector((state) => state.user);
   const { medium, value } = useParams<{ medium: Medium; value: string }>();
   const [author, setAuthor] = useState<User | null>(null);
   const [error, setError] = useState<string>("");
@@ -52,7 +52,7 @@ const Profile = () => {
   }, []);
 
   useEffect(() => {
-    if (!author) {
+    if (!author || !loggedIn) {
       return;
     }
     const fetchFollowInfo = async () => {

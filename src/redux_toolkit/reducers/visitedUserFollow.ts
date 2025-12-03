@@ -22,6 +22,9 @@ const fetchFollowDetails = createAsyncThunk(
   async ({ userId }: { userId: string }) => {
     const response = await fetch(`${followURL}/fetch-other/${userId}`, {
       credentials: "include",
+      headers: {
+        "x-client-secret": import.meta.env.VITE_CLIENT_SECRET,
+      },
     });
     if (!response.ok) {
       throw new Error(`Request Failed ${response.status}`);
