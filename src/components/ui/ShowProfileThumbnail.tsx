@@ -17,7 +17,7 @@ const ShowProfileThumbnail = ({
           alt="user-profile-thumbnail"
           src={
             user.thumbnail?.version
-              ? cloudinary_thumbnail(user._id, user.profilePic!.version)
+              ? cloudinary_thumbnail(user._id, user.thumbnail!.version)
               : _default.profileThumbnail[0]
           }
         />
