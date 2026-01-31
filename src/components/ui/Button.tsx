@@ -37,7 +37,7 @@ const CustomButton = ({
     "rounded-sm": "rounded-sm",
     "rounded-full": "rounded-full",
     regular,
-    "regular-confirm": `${regular} bg-blue-600`,
+    "regular-confirm": `${regular} bg-blue-600 hover:bg-blue-400`,
     "regular-dark": `${regular} bg-black dark:bg-white dark:text-black`,
     "regular-danger": `${regular} bg-red-600 hover:bg-red-500`,
     "regular-subscribe": `${regular} bg-orange-500`,

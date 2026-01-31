@@ -90,8 +90,14 @@ const visitedUserSlice = createSlice({
     builder.addCase(followRequest.fulfilled, (state, action) => {
       const { data, user } = action.payload;
       // if the logged in user is seeing a profile and the profile _id is same as the account followed by loggedIn user
+      console.log(data, user);
+      console.log(state.userId);
       if (state.userId && state.userId === user._id) {
-        if (data.isPublic) state.followers[data.sender._id] = data.sender;
+        console.log("def true");
+        if (data.isPublic) {
+          state.followers[data.sender._id] = data.sender;
+          console.log("true");
+        }
       }
     });
     builder.addCase(acceptRequest.fulfilled, (state, action) => {
@@ -104,10 +110,12 @@ const visitedUserSlice = createSlice({
       const { myId, hisId } = action.payload;
       if (state.userId && state.userId === hisId) {
         delete state.followers[myId];
+        delete state.following[myId];
       }
     });
     builder.addCase(removeFollower.fulfilled, (state, action) => {
       const { requestedBy, myId } = action.payload;
+      console.log("came here on remove");
       if (state.userId === requestedBy && state.following[myId])
         delete state.following[myId];
     });

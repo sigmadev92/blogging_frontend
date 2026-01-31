@@ -12,6 +12,7 @@ const userSettingsURL = `${backendURL}/api/settings/users`;
 
 const searchURL = `${backendURL}/api/search`;
 
+const paymentURL = `${backendURL}/api/payment`;
 export {
   backendURL,
   usersURL,
@@ -20,4 +21,5 @@ export {
   followURL,
   userSettingsURL,
   searchURL,
+  paymentURL,
 };
